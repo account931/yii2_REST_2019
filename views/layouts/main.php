@@ -41,7 +41,8 @@ AppAsset::register($this);
             ['label' => 'Home', 'url' => ['/site/index']],
             ['label' => 'About', 'url' => ['/site/about']],
             ['label' => 'Contact', 'url' => ['/site/contact']],
-			['label' => 'Rest', 'url' => ['/admin/default/index']],
+			['label' => 'Rest Controler', 'url' => ['/rest/index']],        //rest controller
+			['label' => 'Rest Module', 'url' => ['/admin/default/index']], //separate module with it's own controller
             Yii::$app->user->isGuest ? (
                 ['label' => 'Login', 'url' => ['/site/login']]
             ) : (

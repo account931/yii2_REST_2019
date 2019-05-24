@@ -1,5 +1,5 @@
 <?php
-
+//Rest controller. actionIndex & other actions are inherited from yii\rest\ActiveController that is why this controller will work with {public $modelClass} only & no visible actions
 namespace app\controllers;
 
 use Yii;
@@ -30,8 +30,16 @@ class RestController extends ActiveController
     }
 	*/
 	
-	
+
    public $modelClass = 'app\models\User';
    
+   /*
+   public function actionNew()
+    {
+		$result = $modelClass::find()
+        //->where(['>', 'population', 70000000])
+        ->all();
+        return $result;
+	}*/
    
 }

@@ -41,7 +41,7 @@ $config = [
 		
 		//mine JSON---------------------------------------------------------------
 		'response' => [
-           'format' => \yii\web\Response::FORMAT_JSON, //GIVES OUT JSON!!!!!!!!!!!!
+           //'format' => \yii\web\Response::FORMAT_JSON, //GIVES OUT JSON!!!!!!!!!!!!
         ],
 	
 	    //mine JSON
@@ -105,7 +105,7 @@ $config = [
             'showScriptName' => false,  // Hide index.php
 			//'class' => 'yii\web\UrlManager',
             'rules' => [
-			     'class' => 'yii\rest\UrlRule', 'controller' => 'rest', //for rest api
+			     ['class' => 'yii\rest\UrlRule', 'controller' => 'rest'/*, 'extraPatterns' => ['GET /' => 'new'], 'pluralize' => false*/], //for rest api
 				  '<controller:\w+>/<id:\d+>' => '<controller>/view',  //for others
 				  '<controller:\w+>/<action:\w+>/<id:\d+>' => '<controller>/<action>',
                   '<controller:\w+>/<action:\w+>' => '<controller>/<action>',
