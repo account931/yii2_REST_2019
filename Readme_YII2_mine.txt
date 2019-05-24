@@ -1,4 +1,4 @@
-Yii2 Rest Api. Basic template.
+﻿Yii2 Rest Api. Basic template.
 After unzip must create Cookie keys in config/web.php
 
 1. Error page
@@ -20,7 +20,7 @@ After unzip must create Cookie keys in config/web.php
  ===============================================
  How to, lessons:
  #Yii2 basic, registration, login via db->
- https://xn--d1acnqm.xn--j1amh/%D0%B7%D0%B0%D0%BF%D0%B8%D1%81%D0%B8/yii2-basic-%D0%B0%D0%B2%D1%82%D0%BE%D1%80%D0%B8%D0%B7%D0%B0%D1%86%D0%B8%D1%8F-%D0%B8-%D1%80%D0%B5%D0%B3%D0%B8%D1%81%D1%82%D1%80%D0%B0%D1%86%D0%B8%D1%8F-%D1%87%D0%B5%D1%80%D0%B5%D0%B7-%D0%B1%D0%B4
+https://xn--d1acnqm.xn- -j1amh/%D0%B7%D0%B0%D0%BF%D0%B8%D1%81%D0%B8/yii2-basic-%D0%B0%D0%B2%D1%82%D0%BE%D1%80%D0%B8%D0%B7%D0%B0%D1%86%D0%B8%D1%8F-%D0%B8-%D1%80%D0%B5%D0%B3%D0%B8%D1%81%D1%82%D1%80%D0%B0%D1%86%D0%B8%D1%8F-%D1%87%D0%B5%D1%80%D0%B5%D0%B7-%D0%B1%D0%B4
 
  #Yii2 RBAC
  #Yii Rest
@@ -54,16 +54,16 @@ Add your module
  --------------------------------------------
  
  Pretty URL
- 1. In .htaccess in root folder(not in web folder) ->
+1. In .htaccess in root folder(not in web folder) ->
  
- Options +FollowSymlinks 
-RewriteEngine On 
+  Options +FollowSymlinks 
+  RewriteEngine On 
 
-RewriteCond %{REQUEST_URI} !^/web/(assets|css|js|pdf|img)/ 
-RewriteCond %{REQUEST_URI} !index.php 
-RewriteCond %{REQUEST_FILENAME} !-f [OR] 
-RewriteCond %{REQUEST_FILENAME} !-d 
-RewriteRule ^.*$ web/index.php
+  RewriteCond %{REQUEST_URI} !^/web/(assets|css|js|pdf|img)/ 
+  RewriteCond %{REQUEST_URI} !index.php 
+  RewriteCond %{REQUEST_FILENAME} !-f [OR] 
+  RewriteCond %{REQUEST_FILENAME} !-d 
+  RewriteRule ^.*$ web/index.php
 
 2. In config/web/php->
 
@@ -81,6 +81,11 @@ RewriteRule ^.*$ web/index.php
         ),
        ],
 	   //END Pretty
+	   
+3. If CSS/JS crashes with prettyURL, create additional .htaccess in folder /web/
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule . index.php
 ---------------------------------------------------------------------------------------
 
 
@@ -90,9 +95,40 @@ RewriteRule ^.*$ web/index.php
 
 
 
+
+
+// **************************************************************************************
+// **************************************************************************************
+// **                                                                                  **
+// **                                                                                  **
+
+MANUAL (diffrent aspects)->
+
+
+
+
 ==============================================================================
 How turn Yii2 Basic to resistration/login via DB SQL:
 1. create migration(creats in /migrations/) ->  yii migrate/create create_user_table 
-3. go to /migration/m000000_000000_create_user_table.php and paste code from Advanced template migration or create your own.
+3. go to /migration/m000000_000000_create_user_table.php and paste code from Advanced template migration or create your own. Paste ONLY methods {up() down()}!!!!! DON"T TOUCH CLASS NAME.
 2. apply migration-> yii migrate
   
+  
+  
+  
+==============================================================================
+How to use ErrorHandler (i.e 404 NOT FOUND):
+1. In config/web.php set action for errors ->  'errorHandler' => ['errorAction' => 'site/error',],
+2. In controller->  public function actions() return [ 'error' => ['class' => 'yii\web\ErrorAction',]. 
+  It will use built vendor/yii\web\ErrorAction,if you want create your own, comment it and create in controller your actionError()
+3. In web/index.php -> define('YII_ENABLE_ERROR_HANDLER', true);//to show my personal error handler
+
+
+
+
+
+================================================
+Yii2 REST 
+http://developer.uz/blog/restful-api-in-yii2/
+
+http://localhost/yii2_REST/yii-basic-app-2.0.15/basic/web/index.php?r=rest

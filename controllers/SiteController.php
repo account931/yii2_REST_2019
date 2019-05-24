@@ -38,14 +38,18 @@ class SiteController extends Controller
         ];
     }
 
+	
+	
+	
     /**
      * {@inheritdoc}
      */
     public function actions()
     {
         return [
+		    //must be commented if want to use person actionError, otherwise errors will be handled with built vendor/yii\web\ErrorAction
             'error' => [
-                'class' => 'yii\web\ErrorAction',
+                'class' => 'yii\web\ErrorAction',  //predifined error handler, comment if want to use my personal
             ],
             'captcha' => [
                 'class' => 'yii\captcha\CaptchaAction',
@@ -54,6 +58,11 @@ class SiteController extends Controller
         ];
     }
 
+	
+	
+	
+	
+	
     /**
      * Displays homepage.
      *
@@ -64,6 +73,8 @@ class SiteController extends Controller
         return $this->render('index');
     }
 
+	
+	
     /**
      * Login action.
      *
@@ -86,6 +97,12 @@ class SiteController extends Controller
         ]);
     }
 
+	
+	
+	
+	
+	
+	
     /**
      * Logout action.
      *
@@ -125,4 +142,27 @@ class SiteController extends Controller
     {
         return $this->render('about');
     }
+	
+	
+	
+	
+	//My Error handler NOT USED, to use , should comment {'error' => ['class' => 'yii\web\ErrorAction',}
+	public function actionErrorNOTUSED()
+    {
+        $exception = Yii::$app->errorHandler->exception;
+        if ($exception !== null) {
+            if ($exception->statusCode == 404)
+                return $this->render('error404', ['exception' => $exception->getMessage()]); //$exception->getMessage() to get short mess, i.e "Page not found"
+            else
+                 return $this->render('error', ['exception' => $exception]);
+        }
+    }
+
+
+
+
+
+
+
+
 }

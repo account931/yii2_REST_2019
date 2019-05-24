@@ -1,5 +1,5 @@
 <?php
-
+//NOT USED
 /* @var $this yii\web\View */
 /* @var $name string */
 /* @var $message string */
@@ -14,11 +14,11 @@ $this->title = $name;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <div class="alert alert-danger">
-        <?= nl2br("We are deeply sorry. " .Html::encode($message)) ?>
+        <?= nl2br(Html::encode($exception)) ?> <!-- was $message-->
     </div>
 
     <p>
-        MY ERROR TEXT. <br> The above error occurred while the Web server was processing your request.
+        404-> Mine!!!  Something went wrong.
     </p>
     <p>
         Please contact us if you think this is a server error. Thank you.

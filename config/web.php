@@ -4,6 +4,18 @@ $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
 
 $config = [
+
+   
+    //my Module
+    'modules' => [
+        'admin' => [
+            'class' => 'app\modules\admin\Resttt',
+        ],
+    ],
+	
+	
+	
+	
     'id' => 'basic',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
@@ -11,11 +23,51 @@ $config = [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
     ],
+	
+	//Components
     'components' => [
+	
         'request' => [
-            // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
-            'cookieValidationKey' => 'fdgeggdfgb54654645',
+			
+              // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
+              'cookieValidationKey' => 'fdgeggdfgb54654645t',
+			  
+			  //mine
+		      /*'parsers' => [
+                'application/json' => 'yii\web\JsonParser',
+              ],*/
         ],
+		
+		
+		//mine JSON---------------------------------------------------------------
+		'response' => [
+           'format' => \yii\web\Response::FORMAT_JSON, //GIVES OUT JSON!!!!!!!!!!!!
+        ],
+	
+	    //mine JSON
+	
+	
+	    
+		
+		
+	/*	
+	'response' => [
+    // ...
+    'formatters' => [
+        \yii\web\Response::FORMAT_JSON => [
+            'class' => 'yii\web\JsonResponseFormatter',
+            'prettyPrint' => YII_DEBUG, // используем "pretty" в режиме отладки
+            'encodeOptions' => JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE,
+            // ...
+        ],
+    ],
+],
+*/		
+	
+	
+	
+	
+	
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
@@ -23,6 +75,8 @@ $config = [
             'identityClass' => 'app\models\User',
             'enableAutoLogin' => true,
         ],
+		
+		//setting error handler
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
@@ -43,14 +97,27 @@ $config = [
             ],
         ],
         'db' => $db,
-        /*
+		
+		
+        //PRETTY URL
         'urlManager' => [
             'enablePrettyUrl' => true,
-            'showScriptName' => false,
+            'showScriptName' => false,  // Hide index.php
+			//'class' => 'yii\web\UrlManager',
             'rules' => [
+			     'class' => 'yii\rest\UrlRule', 'controller' => 'rest', //for rest api
+				  '<controller:\w+>/<id:\d+>' => '<controller>/view',  //for others
+				  '<controller:\w+>/<action:\w+>/<id:\d+>' => '<controller>/<action>',
+                  '<controller:\w+>/<action:\w+>' => '<controller>/<action>',
             ],
-        ],
-        */
+        ], 
+        
+		
+		
+
+	
+		
+		
     ],
     'params' => $params,
 ];
