@@ -246,15 +246,34 @@ AJAX EXAMPLE TO Yii2 Rest (ajax request from non-REST file ):
 				  
 =========================================================
 8.Yii RBAC
-#Yii2 RBAC
-8.1 RBAC Saves user roles/rights to  auth_item DB(roleName) & auth_assignment DB(roleName + id of a user who has the right).
+#Yii2 RBAC http://developer.uz/blog/rbac-%D1%80%D0%BE%D0%BB%D0%B8-%D0%B8-%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D1%82%D0%B5%D0%BB%D0%B8-%D0%B2-yii2/
+#RBAC saves user roles/rights to  auth_item DB(holds names of all roles) & auth_assignment DB(holds roleName + id of a user who has the right).
+8.1 Add {authManager} to components in /config/web.php. If u have error "You should configure "authManager" alse add to /config/console.php (see 14.1)
+'components' => [
+  ...
+  'authManager' => ['class' => 'yii\rbac\DbManager',],
+8.2 Apply rbac migration to add rbac tables{auth_item, auth_assignment, etc}. (@yii is an alias for {vendor/yiisoft/yii2} )  =>    
+   php yii migrate --migrationPath=@yii/rbac/migrations/
+8.3 Create a new Rbac role=>
+  $role = Yii::$app->authManager->createRole('adminX');
+  $role->description = 'Админ';
+  Yii::$app->authManager->add($role);
+8.4 Before creation u may check if does not already exists:
+   in controller=> $rbac = AuthItem::find()->where(['name' => 'your roleName'])->one(); + if ($rbac){return false;}
+   or in model=>  self::find()->where(['name' => your roleName])->one(); + if ($rbac){return false;}
+8.5 Assign the rbac to certain user:
+  $userRole = Yii::$app->authManager->getRole('name_of_role');
+  Yii::$app->authManager->assign($userRole, Yii::$app->user->identity->id); //assign to current user
+8.6 Finally, check in controller/view if user has some role:
+   if(Yii::$app->user->can('adminX')){
 
 
 
 
 
-
-
+   
+   
+   
 
 
 
@@ -387,7 +406,8 @@ use yii\widgets\ListView;
 #Url name rule for actions like {actionAddAdmin} => {['/site/add-admin']]}
 #gets array with current user all roles rights=> $myRoles = Yii::$app->authManager->getRolesByUser(Yii::$app->user->identity->id); 
 #Image  echo Html::img(Yii::$app->getUrlManager()->getBaseUrl().'/images/addarrow.gif' , $options = ["id"=>"sx","margin-left"=>"3%","class"=>"sunimg","width"=>"12%","title"=>"click to add a  new  one"] ); ?>
- 
+
+#How to write Method inside model-> $rbac = self::find()->where(['name' => $roleName])->one(); To use in Controller=>  if(AuthItem::checkIfRoleExist('adminX'))
  
  
  

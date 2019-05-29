@@ -1,5 +1,5 @@
 <?php
-
+//Model of DB table {auth_item} that holds list of all RBAC roles. Table {auth_assignment} holds (roleName + id of a user who has the right).
 namespace app\models;
 
 use Yii;
