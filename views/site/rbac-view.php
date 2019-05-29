@@ -4,18 +4,18 @@
 
 use yii\helpers\Html;
 
-$this->title = 'About';
+$this->title = 'RBAC control';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="site-about">
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        This is the About page. You may modify the following file to customize its content:
+        Rbac access control page
     </p>
 
-    <code><?= __FILE__ ?></code>
-	<h4>This page is available for users with <b>adminX</b> access roles </h4><br>
+  
+	<h4>This page to modify user RBAC roles </h4><br>
 	
 	
 	<?php

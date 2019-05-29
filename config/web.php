@@ -32,6 +32,8 @@ $config = [
               // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
               'cookieValidationKey' => 'fdgeggdfgb54654645t',
 			  
+			  //'baseUrl'=> '',
+			  
 			  //mine
 		      /*'parsers' => [
                 'application/json' => 'yii\web\JsonParser',
@@ -64,7 +66,10 @@ $config = [
 ],
 */		
 	
-	
+        //my RBAC
+        'authManager' => [
+            'class' => 'yii\rbac\DbManager',
+        ],
 	
 	
 	
@@ -80,6 +85,7 @@ $config = [
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
+		
         'mailer' => [
             'class' => 'yii\swiftmailer\Mailer',
             // send all mails to a file by default. You have to set
@@ -105,10 +111,12 @@ $config = [
             'showScriptName' => false,  // Hide index.php
 			//'class' => 'yii\web\UrlManager',
             'rules' => [
-			     ['class' => 'yii\rest\UrlRule', 'controller' => 'rest'/*, 'extraPatterns' => ['GET /' => 'new'], 'pluralize' => false*/], //for rest api
-				  '<controller:\w+>/<id:\d+>' => '<controller>/view',  //for others
+			     'yout-text-from-config-web-php.rar' => 'site/about', //pretty url for 1 action(if Tii sees 'site/about' it turn it to custom text)
+			     ['class' => 'yii\rest\UrlRule', 'controller' => 'rest'/*, 'extraPatterns' => ['GET /' => 'new'], 'pluralize' => false*/], //rule for rest api, means if Yii sees any action of RestController, it uses yii\rest\UrlRule 
+				  '<controller:\w+>/<id:\d+>' => '<controller>/view',  //for others, turns {site/about?vies=14} to {}
 				  '<controller:\w+>/<action:\w+>/<id:\d+>' => '<controller>/<action>',
                   '<controller:\w+>/<action:\w+>' => '<controller>/<action>',
+				  'defaultRoute' => '/site/index',
             ],
         ], 
         
@@ -119,6 +127,9 @@ $config = [
 		
 		
     ],
+	//END COMPONENTS
+	
+	
     'params' => $params,
 ];
 

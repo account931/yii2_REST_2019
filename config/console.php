@@ -13,6 +13,12 @@ $config = [
         '@npm'   => '@vendor/npm-asset',
     ],
     'components' => [
+	    
+		//added here apart from config/web.php in order to be able to make RBAC migrations
+	    'authManager' => [
+            'class' => 'yii\rbac\DbManager',
+        ],
+		
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],

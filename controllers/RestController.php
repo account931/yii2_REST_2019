@@ -15,7 +15,7 @@ use yii\rest\ActiveController;
  */
 class RestController extends ActiveController
 {
-   
+  
    /*
    public function init()
     {
@@ -31,8 +31,60 @@ class RestController extends ActiveController
 	*/
 	
 
+   //public $enableCsrfValidation = false; //disable _csrf
    public $modelClass = 'app\models\User';
    
+   
+   
+   
+   
+   
+   
+  //TO ALLOW CORS cross-domian ajax requests-------------------------------- 
+   /**
+ * List of allowed domains.
+ * Note: Restriction works only for AJAX (using CORS, is not secure).
+ *
+ * @return array List of domains, that can access to this API
+ */
+public static function allowedDomains()
+{
+    return [
+         '*',                        // star allows all domains
+		'http: // localhost: 3000',
+        'http://test1.example.com',
+        'http://test2.example.com',
+    ];
+}
+
+/**
+ * @inheritdoc
+ */
+public function behaviors()
+{
+    return array_merge(parent::behaviors(), [
+
+        // For cross-domain AJAX request
+        'corsFilter'  => [
+            'class' => \yii\filters\Cors::className(),
+            'cors'  => [
+                // restrict access to domains:
+                'Origin'                           => static::allowedDomains(),
+                'Access-Control-Request-Method'    => ['POST'],
+                'Access-Control-Allow-Credentials' => true,
+                'Access-Control-Max-Age'           => 3600,                 // Cache (seconds)
+            ],
+        ],
+
+    ]);
+	
+//END TO ALLOW CORS cross-domian ajax requests-------------------------------- 	
+	
+	
+	
+	
+	
+}
    /*
    public function actionNew()
     {

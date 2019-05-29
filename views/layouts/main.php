@@ -17,6 +17,7 @@ AppAsset::register($this);
 <html lang="<?= Yii::$app->language ?>">
 <head>
     <meta charset="<?= Yii::$app->charset ?>">
+	<!--<meta charset="utf-8">-->
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <?= Html::csrfMetaTags() ?>
@@ -28,36 +29,55 @@ AppAsset::register($this);
 
 <div class="wrap">
     <?php
-    NavBar::begin([
-        'brandLabel' => Yii::$app->name,
-        'brandUrl' => Yii::$app->homeUrl,
-        'options' => [
-            'class' => 'navbar-inverse navbar-fixed-top',
-        ],
-    ]);
-    echo Nav::widget([
-        'options' => ['class' => 'navbar-nav navbar-right'],
-        'items' => [
-            ['label' => 'Home', 'url' => ['/site/index']],
-            ['label' => 'About', 'url' => ['/site/about']],
-            ['label' => 'Contact', 'url' => ['/site/contact']],
-			['label' => 'Rest Controler', 'url' => ['/rest/index']],        //rest controller
-			['label' => 'Rest Module', 'url' => ['/admin/default/index']], //separate module with it's own controller
-            Yii::$app->user->isGuest ? (
-                ['label' => 'Login', 'url' => ['/site/login']]
-            ) : (
-                '<li>'
-                . Html::beginForm(['/site/logout'], 'post')
-                . Html::submitButton(
-                    'Logout (' . Yii::$app->user->identity->username . ')',
-                    ['class' => 'btn btn-link logout']
-                )
-                . Html::endForm()
-                . '</li>'
-            )
-        ],
-    ]);
-    NavBar::end();
+	
+
+	
+	NavBar::begin([
+    'brandLabel' => 'My Company',
+    'brandUrl' => Yii::$app->homeUrl,
+    'options' => [
+        'class' => 'navbar-inverse navbar-fixed-top',
+    ],
+]);
+ 
+$menuItems = [
+    ['label' => 'Home', 'url' => ['/site/index']],
+    ['label' => 'About (*limit)', 'url' => ['/site/about']],
+    ['label' => 'Contact', 'url' => ['/site/contact']],
+	['label' => 'Rest Controler', 'url' => ['/rest/index']],        //rest controller
+	['label' => 'Rest Module', 'url' => ['/admin/default/index']], //separate module with it's own controller
+	['label' => 'Add admin', 'url' => ['/site/add-admin']],
+	['label' => 'Rbac', 'url' => ['/site/rbac']], 
+];
+ 
+if (Yii::$app->user->isGuest) {
+    $menuItems[] = ['label' => 'Signup', 'url' => ['/site/signup']];
+    $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];
+} else {
+    $menuItems[] = '<li>'
+        . Html::beginForm(['/site/logout'], 'post')
+        . Html::submitButton(
+            'Logout (' . Yii::$app->user->identity->username . ')',
+            ['class' => 'btn btn-link logout']
+        )
+        . Html::endForm()
+        . '</li>';
+}
+ 
+echo Nav::widget([
+    'options' => ['class' => 'navbar-nav navbar-right'],
+    'items' => $menuItems,
+]);
+ 
+NavBar::end();
+	
+	
+	
+	
+	
+	
+	
+	
     ?>
 
     <div class="container">
