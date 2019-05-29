@@ -1,4 +1,6 @@
-﻿ERASE-> It is a core file, all edits must be copies to yii_commands and then from there to Git
+﻿THIS FILE IS THE MASTER SOURCE for git-browserify-yii_commands_manuals/Yii2_General_Guidelines/yii2_commands.txt (which is a slave file)
+THIS FILE IS MASTER, ORIGINAL & CORE. ALL EDITS ARE TO BE DONE HERE IN THIS ORIGINAL FILE.
+ERASE-> It is a core file, all edits from here must be copies to yii_commands and then from there to Git
 
 
 Yii2 Rest Api. Basic template.
