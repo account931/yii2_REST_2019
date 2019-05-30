@@ -1,8 +1,19 @@
 ﻿THIS FILE IS THE MASTER SOURCE for git-browserify-yii_commands_manuals/Yii2_General_Guidelines/yii2_commands.txt (which is a slave file)
 THIS FILE IS MASTER, ORIGINAL & CORE. ALL EDITS ARE TO BE DONE HERE IN THIS ORIGINAL FILE.
 ERASE-> It is a core file, all edits from here must be copies to yii_commands and then from there to Git
+-----------------------------------
+
+#This YIi2 Basic uses DB registration/login, RESTful, RBAC roles
+#DB SL is =>yii2-rest
 
 
+
+
+
+
+---------------------------------------------
+COPY BELOW CODE ONLY!!!!!!!!!!!!!!!!!!!!!!!!
+---------------------------------------------
 Yii2 Rest Api. Basic template.
 IF use direct Yii download (not Composer), after folder unzip must create {cookieValidationKey} in config/web.php
 
@@ -410,10 +421,19 @@ use yii\widgets\ListView;
 #Image  echo Html::img(Yii::$app->getUrlManager()->getBaseUrl().'/images/addarrow.gif' , $options = ["id"=>"sx","margin-left"=>"3%","class"=>"sunimg","width"=>"12%","title"=>"click to add a  new  one"] ); ?>
 
 #How to write Method inside model-> $rbac = self::find()->where(['name' => $roleName])->one(); To use in Controller=>  if(AuthItem::checkIfRoleExist('adminX'))
-#Gii(prettyUrl):   yii-basic-app-2.0.15/basic/web/gii
+#Gii(prettyUrl):   yii-basic-app-2.0.15/basic/web/gii  Non-pretty:  yii-basic-app-2.0.15/basic/web/index.php?r=gii
 #Refresh(prevent from sending form on the reload of page)=> return $this->refresh();
  
 =======================================================
 14. Known Errors
 14.1 While trying to add RBAC migrations there is a Error "You should configure "authManager", while u have already added authManager to component in /config/web.php.
   Solution: add same config {  'authManager' => ['class' => 'yii\rbac\DbManager',],} to /config/console.php (for Basic template). For Advanced template, add it  to /console/config/main.php and not in the backend or frontend configuration files.
+  
+  
+  
+  
+  
+  
+  
+  
+  

@@ -308,7 +308,9 @@ class SiteController extends Controller
 
 
 
-//RBAC management table 
+//RBAC management table, displays RBAC management table(based on 3table INNERJOIN).
+//In table u can select and assign a specific RBAC role to a certain user. When u this, an ajax with userID & RBAC roleName are sent to site/AjaxRbacInsertUpdate. Ajax logic is in views/site/rbac-view
+
 // **************************************************************************************
 // **************************************************************************************
 // **                                                                                  **
@@ -365,6 +367,63 @@ class SiteController extends Controller
  
         
     }
+// **                                                                                  **
+// **                                                                                  **
+// **************************************************************************************
+// **************************************************************************************
+
+
+
+
+
+
+
+
+//Ajax function/action that is triggered from view/site/rbac-view.php(renedered by actionRbac())
+//This functions waits for request with userID & RbacRole from view/site/rbac-view.php, then UPDATES/INSERTS a specified user with specified Rbac role
+// **************************************************************************************
+// **************************************************************************************
+// **                                                                                  **
+// **                                                                                  **
+     public function actionAjaxRbacInsertUpdate()
+    {   
+	    //just a test if ajax is recognized
+        if (Yii::$app->request->isAjax) { 
+	        $test = "Ajax Worked, recognized!";
+	    } else {
+            $test = "Ajax  not recognized!";
+		}
+		
+		
+		
+		//assign new RBAC role to a specific user(the role to assign and userID came via ajax from view/site/rbac-view.php)=$_POST['selectValue'];$_POST['userID']
+		
+		//check if User has any role at all in auth_assignment DB, to decide to use DB INSERT or DB UPDATE
+		$userExist = AuthAssignment::find()->where(['user_id' => $_POST['userID']])->one();
+		if($userExist){
+			$status = "User has already a role in auth_assignment DB. Use UPDATE";
+			//UPDATE logic.....
+			
+		} else {
+			$status = "User is new to auth_assignment DB. Use INSERT";
+			//INSERT logic
+		}
+		//END assign new RBAC role to a specific user(the role to assign and userID came via ajax from view/site/rbac-view.php)=$_POST['selectValue'];$_POST['userID']
+		
+		
+		
+		
+		  //RETURN JSON DATA
+		  // Specify what data to echo with JSON, ajax usese this JSOn data to form the answer and html() it, it appears in JS consol.log(res)
+         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;  
+          return [
+             'result_status' => $test, // return ajx status
+             'code' => 100,	 
+             'selectedRBAC' => $_POST['selectValue'], //json echo rbac role, that came from /view/site/rbac-view.php
+             'userIDX' => 	   $_POST['userID'], //json echo rbac role, that came from /view/site/rbac-view.php		
+             'statusX' => $status,  //message wheather UserID exists in auth_assignment DB, if true use DB UPDATE, if false use DB INSERT		 
+          ]; 
+	}    
 // **                                                                                  **
 // **                                                                                  **
 // **************************************************************************************
