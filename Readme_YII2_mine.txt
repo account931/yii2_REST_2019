@@ -410,8 +410,8 @@ use yii\widgets\ListView;
 #Image  echo Html::img(Yii::$app->getUrlManager()->getBaseUrl().'/images/addarrow.gif' , $options = ["id"=>"sx","margin-left"=>"3%","class"=>"sunimg","width"=>"12%","title"=>"click to add a  new  one"] ); ?>
 
 #How to write Method inside model-> $rbac = self::find()->where(['name' => $roleName])->one(); To use in Controller=>  if(AuthItem::checkIfRoleExist('adminX'))
- 
- 
+#Gii(prettyUrl):   yii-basic-app-2.0.15/basic/web/gii
+#Refresh(prevent from sending form on the reload of page)=> return $this->refresh();
  
 =======================================================
 14. Known Errors

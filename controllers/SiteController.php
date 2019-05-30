@@ -12,6 +12,7 @@ use app\models\ContactForm;
 use app\models\User;
 use app\models\SignupForm;
 use app\models\AuthItem; //table with Rbac roles
+use app\models\AuthAssignment; //table with Rbac roles $ users' id assigned to that rbac role
 
 
 class SiteController extends Controller
@@ -248,7 +249,7 @@ class SiteController extends Controller
 		
 		//check role, if current user doesn't have it, we assign it to current user
 		if(Yii::$app->user->can('adminX')){
-            echo '<br><br>Роль <b>adminX</b> присвоена to current user';
+            echo '<br><br>Роль <b>adminX</b> уже присвоена to current user';
         } else {
 			echo "<br> You have no <b>adminX</b> role";
 			$userRole = Yii::$app->authManager->getRole('adminX');
@@ -307,18 +308,62 @@ class SiteController extends Controller
 
 
 
-//RBAC
+//RBAC management table 
 // **************************************************************************************
 // **************************************************************************************
 // **                                                                                  **
 // **                                                                                  **
      public function actionRbac()
     {
+		//check if user has Rbac role {adminX}. If user has, do next....
+		if(Yii::$app->user->can('adminX')){
+			
+			//Inner Join 3 tables---------------------
+            $query = new \yii\db\Query;  //must be {$query = new \yii\db\Query;} not{$query = new Query;}, adding {use yii\db\Query} won't help
+            $query  ->select(['item_name', 'user_id', /*users DB*/ 'id', 'username', /*auth_item DB*/'description'])  //columns list from all JOIN tables[/*auth_assignment DB*/,  /*users DB*/,/*auth_item DB*/ ]
+                ->from('auth_assignment')  //table1
+				
+				
+				//
+				 ->join( 'INNER JOIN',  
+                     'auth_item', //table2
+                     'auth_item.name=auth_assignment.item_name' //table2.column = table1.column
+                  )
+				//
+				
+                 ->join( 'RIGHT JOIN',  //INNER JOIN //use RIGHT JOIN to get all users regardless in their ids in auth_assignment
+                     'user', //table3
+                     'auth_assignment.user_id=user.id ' //table2.column = table1.column
+                  ); 
+            $command = $query->createCommand();
+            $query = $command->queryAll(); 
+		    // END Inner Join 3 tables-----------------
+			
+			
+			
+			
+			
+			
+			//Selects all RBAc roles from table auth_item(for <select><option>)
+			$rbacRoleList = AuthItem::find()->/*where(['username' => 'admin'])->one()*/all();
+			
+			
+			return $this->render('rbac-view', [
+                         //'model' => $model,
+						 'query' => $query, //Inner Join result (based on Buyres/Orders Sql)
+						 'rbacRoleList' => $rbacRoleList, //all RBAc roles from table auth_item(for <select><option>)
+                         ]);
+						 
+			
+		//if user does not have Rbac role {adminX}	
+		} else {
+			return $this->render('no-access', [
+            //'model' => $model,
+            ]);
+		}
         
  
-        return $this->render('rbac-view', [
-            //'model' => $model,
-        ]);
+        
     }
 // **                                                                                  **
 // **                                                                                  **
