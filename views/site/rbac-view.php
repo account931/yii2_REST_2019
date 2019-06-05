@@ -2,41 +2,103 @@
 //access to this page have only users with RBAC role {adminX}
 //access to this page is checked in site/rbac with => if(Yii::$app->user->can('adminX')){
 /* @var $this yii\web\View */
-//THIS page displays RBAC management table(based on 3table INNERJOIN). Rendered in site/actionRbac .In table u can select and assign a specific RBAC role to a certain user. When u this, an ajax with userID & RBAC roleName are sent to site/AjaxRbacInsertUpdate
+//THIS page displays RBAC management table(based on 3 table INNERJOIN). Rendered in site/actionRbac .In table u can select and assign a specific RBAC role to a certain user. When u this, an ajax with userID & RBAC roleName are sent to site/AjaxRbacInsertUpdate
 
 use yii\helpers\Html;
+use yii\widgets\ActiveForm;
+
 
 $this->title = 'RBAC control';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+
+
 <div class="site-about">
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <h4>RBAC access control page
-    </h4>
-
+   
+   
+    <!---- FLASH from site/actionRbac
   
-	<p>This page is designed to moderate user RBAC roles (InnerJoin) </p><br>
+   <?php if( Yii::$app->session->hasFlash('success') ): ?>
+    <div class="alert alert-success alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <?php echo Yii::$app->session->getFlash('success'); ?>
+    </div>
+    <?php endif;?>
+	
+ 
+  <!-------------------------------------------------------- START HEADER ------------------------------------------------------------------------------------------>
+  <div class="row my1">
+  
+   
+   
+  
+    <!-- START of Left Block -->
+    <div class="col-sm-8 col-xs-12 leftt">		
+        <h1><?= Html::encode($this->title) ?></h1>
+        <h4>RBAC access control page</h4>
+	    <p>This page is designed to moderate user RBAC roles (InnerJoin) </p><br> 
 	
 	
-	<?php
-	//check if user  has RBAC role adminX
-		
-     echo '<h5>You have role <b>adminX</b> and can view current page</h5>';
-	 echo Html::img(Yii::$app->getUrlManager()->getBaseUrl().'/images/unlocked.png' , $options = ["id"=>"un", "margin-left"=>"3%","class"=>"cl-mine","width"=>"14%","title"=>"access granted"] );
+	    <?php
+	    //check if user  has RBAC role adminX
+        echo '<h5>You have role <b>adminX</b> and can view current page</h5>';
+	    echo Html::img(Yii::$app->getUrlManager()->getBaseUrl().'/images/unlocked.png' , $options = ["id"=>"un", "margin-left"=>"3%","class"=>"cl-mine","width"=>"14%","title"=>"access granted"] );
+        ?>
+	</div><!-- END of class="leftt"--><!-- END of Left Block -->
+	
+	
+	
+	
+	
+	<!-- START of RIGHT Block, SECTION to add new RBAC role to auth_items-->
+    <div class="col-sm-4 col-xs-12 rightt">
+	   
+	   <button data-toggle="collapse" data-target="#rbacAdd">Add a new RBAC role to auth_items</button><p></p>
+	   <div id="rbacAdd" class="collapse"><br>
+	   
+          
+		   <!----------------- FORM to add RBAC role to table {auth_items} ---------------------->
+           <?php $form = ActiveForm::begin (/*[
+           'id' => 'login-form',
+           'layout' => 'horizontal',
+           'fieldConfig' => [
+            'template' => "{label}\n<div class=\"col-lg-3\">{input}</div>\n<div class=\"col-lg-8\">{error}</div>",
+            'labelOptions' => ['class' => 'col-lg-1 control-label'],
+            'enableAjaxValidation' => true, // my ajax
+           ],
+           ]*/); ?>
 
-	 
-	 
-	 
-	 
-	 //add new RBAC role to auth_items section
-	 echo "<p style='position:absolute; top:320px; right:50px;border:1px solid black;padding:3px;'> Add a new RBAC role to auth_items </p>";
-	 //END add new RBAC role to auth_items section
-	 
-	 
-	 
-	 
-	 
+
+           <?= $form->field($authItem_Model, 'name')->textInput(['maxlength' => true]) ?>
+           <?= $form->field($authItem_Model, 'description' /*,  ['enableAjaxValidation' => true]*/) ?>
+  
+           <div class="form-group">
+            <?= Html::submitButton('Add', ['class' => 'btn btn-primary']) ?>
+           </div>
+           <?php ActiveForm::end(); ?>	
+	       <!----------------- END FORM to add RBAC role to table {auth_items} ---------------------->
+		   
+			
+       </div>
+	</div><!-- END of class="right"--> <!-- END of RIGHT Block, SECTION to add new RBAC role to auth_items -->
+	
+  </div><!-- END class="row my1" -->
+  <!---------------------------------------------------------- END HEADER ------------------------------------------------------------------------------------------>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+  <!-------------------------------------------------------------- START RBAC TABLE ---------------------------------------------------------------------------->
+  <div class="col-sm-12 col-xs-12 rbac">
+	 <?php
 	 //BUILDING A TABLE WITH RBAC management
 	 //INNER JOIN RESULTS (3 tables) (user->rbac role)----------------------------
 
@@ -59,7 +121,7 @@ $this->params['breadcrumbs'][] = $this->title;
 		 }
 		
          //final part of <select> + <button id="userID">		
-		 $select1 = $select1 . '</select></p><p><input type="submit" value="Do" id="' .$innerj['id'].  '"></p></form>';
+		 $select1 = $select1 . '</select></p><p><input type="submit" value="Do" class="formzz" id="' .$innerj['id'].  '"></p></form>';
 		 //END Building <select><option>------------
 		 
 		 //assign user rbac role var. Ternary operator is used
@@ -72,6 +134,11 @@ $this->params['breadcrumbs'][] = $this->title;
 	 //END INNER JOIN-----------------------------------------------------------------
      //END BUILDING A TABLE WITH RBAC management  
 	?>
+	
+  </div><!-- END  class="col-sm-12 col-xs-12 rbac" -->
+  <!-------------------------------------------------------------- END  RBAC TABLE ---------------------------------------------------------------------------->
+
+  
 </div>
 
 
@@ -93,7 +160,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
 <?php 
-//START AJAX
+//START AJAX. On Click sends ajax to change user RBAC ROLE
     $URL = Yii::$app->request->baseUrl . "/site/ajax-rbac-insert-update";   //WORKING,  gets the url to send ajax, defining it in  $ajax causes routing to 404, Not found, as the url address does not render correctly
     //url: 'http://localhost/iShop_yii/yii-basic-app-2.0.15/basic/web/index.php?r=products/getajaxorderdata',  // the correct address sample for ajax
     $Controller = Yii::$app->controller->id; // to pass in ajax
@@ -106,15 +173,15 @@ $this->params['breadcrumbs'][] = $this->title;
 	// JS code here   //afterValidate
 	
 
-  
-   $(document).on("click", '#myForm', function() {   // this  click  is  used  to   react  to  newly generated cicles;
+   //when u click OK
+   $(document).on("click", '.formzz', function() {   // this  click  is  used  to   react  to  newly generated cicles; //#myForm
    //$("#myForm").on("beforeSubmit", function (event, messages) {
        // Now you can work with messages by accessing messages variable
        //var attributes = $(this).data().attributes; // to get the list of attributes that has been passed in attributes property
        //var settings = $(this).data().settings; // to get the settings
        //alert (attributes);
 	   
-	   //alert($(this).find("input[type=submit]").attr('id'));
+	   //alert($(this).closest("form").find(":selected").val()); return false;
  
        var form = $(this);
 	   if (form.find('.has-error').length ) {  //if validation failed
@@ -146,8 +213,8 @@ $this->params['breadcrumbs'][] = $this->title;
 				data: {
                     controller : '$Controller ',
 				    //_csrf : '<?= Yii::$app->request->csrfToken; ?>',
-				    selectValue : $(this).find(":selected").val(),  //value of nearest <select> toclicked button
-					userID: $(this).find("input[type=submit]").attr('id'),
+				    selectValue : $(this).closest("form").find(":selected").val(), // $(this).find(":selected").val(),  //value of nearest <select> to clicked button
+					userID: $(this).attr('id'), //$(this).find("input[type=submit]").attr('id'),  //user ID
 
                 },
 				

@@ -111,7 +111,8 @@ $config = [
             'showScriptName' => false,  // Hide index.php
 			//'class' => 'yii\web\UrlManager',
             'rules' => [
-			     'yout-text-from-config-web-php.rar' => 'site/about', //pretty url for 1 action(if Tii sees 'site/about' it turn it to custom text)
+			     'rbac-management-table' => 'site/rbac', //pretty url for 1 action(if Yii sees 'site/rbac' it turn it to custom text)
+			     'yout-text-from-config-web-php.rar' => 'site/about', //pretty url for 1 action(if Yii sees 'site/about' it turn it to custom text)
 			     ['class' => 'yii\rest\UrlRule', 'controller' => 'rest'/*, 'extraPatterns' => ['GET /' => 'new'], 'pluralize' => false*/], //rule for rest api, means if Yii sees any action of RestController, it uses yii\rest\UrlRule 
 				  '<controller:\w+>/<id:\d+>' => '<controller>/view',  //for others, turns {site/about?vies=14} to {}
 				  '<controller:\w+>/<action:\w+>/<id:\d+>' => '<controller>/<action>',

@@ -44,10 +44,11 @@ $menuItems = [
     ['label' => 'Home', 'url' => ['/site/index']],
     ['label' => 'About (*limit)', 'url' => ['/site/about']],
     ['label' => 'Contact', 'url' => ['/site/contact']],
-	['label' => 'Rest Controler', 'url' => ['/rest/index']],        //rest controller
-	['label' => 'Rest Module', 'url' => ['/admin/default/index']], //separate module with it's own controller
-	['label' => 'Add admin', 'url' => ['/site/add-admin']],
+	['label' => 'Rest Controler (core)', 'url' => ['/rest/index']],        //rest controller
+	['label' => 'Rest Module (minor)', 'url' => ['/admin/default/index']], //separate module with it's own controller
+	['label' => 'Be the admin', 'url' => ['/site/add-admin']],
 	['label' => 'Rbac', 'url' => ['/site/rbac']], 
+	['label' => 'Test form', 'url' => ['/site/test-form']], 
 ];
  
 if (Yii::$app->user->isGuest) {
