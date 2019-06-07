@@ -16,8 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="site-about">
    
    
-    <!---- FLASH from site/actionRbac
-  
+   <!---- FLASH from site/actionRbac
    <?php if( Yii::$app->session->hasFlash('success') ): ?>
     <div class="alert alert-success alert-dismissible" role="alert">
         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -128,7 +127,7 @@ $this->params['breadcrumbs'][] = $this->title;
 		 $userRole = $innerj['item_name']?$innerj['item_name']:"not set"; //if in foreach iteration {$innerj['item_name']} exists, take it. Otherwise use "not set"
 		 
 		 //echo finsl table row : username-> his current role-> select/option
-		 echo "<tr><td>" . $innerj['username'] . "</td><td>" . $userRole . "</td><td>" .   $innerj['description']   . "</td><td>" . $select1 ." </td></tr>";
+		 echo "<tr><td>" . $innerj['username'] . "</td><td>" . $userRole . "</td><td class='rdescr'>" .   $innerj['description']   . "</td><td>" . $select1 ." </td></tr>";
 	 }
 	 echo "</table>";
 	 //END INNER JOIN-----------------------------------------------------------------
@@ -160,7 +159,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
 <?php 
-//START AJAX. On Click sends ajax to change user RBAC ROLE
+//START AJAX. On Click sends ajax to change user RBAC ROLE. Sends to /site/ajax-rbac-insert-update
     $URL = Yii::$app->request->baseUrl . "/site/ajax-rbac-insert-update";   //WORKING,  gets the url to send ajax, defining it in  $ajax causes routing to 404, Not found, as the url address does not render correctly
     //url: 'http://localhost/iShop_yii/yii-basic-app-2.0.15/basic/web/index.php?r=products/getajaxorderdata',  // the correct address sample for ajax
     $Controller = Yii::$app->controller->id; // to pass in ajax
@@ -192,7 +191,7 @@ $this->params['breadcrumbs'][] = $this->title;
        //if validation is OK	   
 	   } else { 
 	   
-	        alert("Validate OK");  //alert(<?php echo Yii::$app->request->baseUrl?> +"/products/getajaxorderdata" );
+	        alert("Validate OK");  /*alert(<?php echo Yii::$app->request->baseUrl?> +"/products/getajaxorderdata" );*/
 		    // runs ajax here
 			//var userInput = $(this).serialize();  //user form input-FAILS
 			//alert("form " + userInput);
@@ -222,7 +221,18 @@ $this->params['breadcrumbs'][] = $this->title;
                 success: function(res){
                     console.log(res);
 				    alert(res.result_status);
-			        //modify the html of upadted user.....
+			        //modify the html of updated user in the rbac table.....
+					//changes the description in rbac table!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+					//$(this).prevAll(".rdescr").stop().fadeOut("slow",function(){ $(this).prevAll(".rdescr").html(res.descriptionNew)}).fadeIn(2000);
+					//console.log($("#" + res.userIDX).closest('td').prev('td').prev('td').text());
+					
+					//CHANGE dynamically text in User Role. {$(this)} or {$(this).prevAll(".rdescr")} does not work, so we get userID {res.userIDX} from ajax, which is the same as button-> <input type="submit" value="Do" class="formzz", and from that button we find prev <td> for description and prev-prev for role name
+					$("#" + res.userIDX).closest('td').prev('td').prev('td').stop().fadeOut("slow",function(){ $(this).html(res.roleNew)}).fadeIn(2000);
+					//CHANGE dynamically text in User Role Description
+					$("#" + res.userIDX).closest('td').prev('td').stop().fadeOut("slow",function(){ $(this).html(res.descriptionNew)}).fadeIn(2000);
+                  
+					
+					
                 },
                 error: function(errX){
                     alert('Error from view/rbac-view.php View!' + errX);

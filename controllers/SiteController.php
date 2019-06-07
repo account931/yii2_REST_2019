@@ -309,7 +309,7 @@ class SiteController extends Controller
 
 
 
-//RBAC management table, displays RBAC management table(based on 3table INNERJOIN).
+//RBAC management table, creats/displays RBAC management table(based on 3table INNERJOIN).
 //In table u can select and assign a specific RBAC role to a certain user. When u this, an ajax with userID & RBAC roleName are sent to site/AjaxRbacInsertUpdate. Ajax logic is in views/site/rbac-view
 
 // **************************************************************************************
@@ -318,8 +318,59 @@ class SiteController extends Controller
 // **                                                                                  **
      public function actionRbac()
     {
+			
+		
 		//check if user has Rbac role {adminX}. If user has, do next....
 		if(Yii::$app->user->can('adminX')){
+			
+			
+			
+				
+			
+			//Instance/model of DB table {auth_item} to pass it to view (to render yii form "Add new Rbac role ") + detect form submission here
+			$authItem_Model = new AuthItem();
+		
+			//**********************************************************************
+			//If the Form to add a new RBAC role to {auth_item} DB is trigered-----------------
+			
+            // validate any AJAX requests fired off by the form
+            /*if (Yii::$app->request->isAjax && $authItem_Model->load(Yii::$app->request->post())) {
+               Yii::$app->response->format = Response::FORMAT_JSON;
+               return ActiveForm::validate($authItem_Model);
+             }	*/		
+			
+			
+			
+			
+            if ($authItem_Model->load(Yii::$app->request->post()) /*&& $authItem_Model->save()*/) {  //&& $searchMine->validate()
+				//var_dump(\Yii::$app->request->post());
+				
+			
+                //	Section to create a new role (in Bootsrap dropdown collapse)		
+		        //create a new role, it is created if this role does not exist in table {auth_item}
+			    $is = AuthItem::find()->where(['name' => $authItem_Model->name])->one(); //find the role in table {auth_item} by suggested user input { $authItem_Model->name}
+	            if (!$is) {   //Checks if Rbac role already exists. Name of rbac role is passes as $authItem_Model->name
+                    $role = Yii::$app->authManager->createRole($authItem_Model->name);
+                    $role->description = $authItem_Model->description;
+                    Yii::$app->authManager->add($role);
+				    Yii::$app->getSession()->setFlash('success', "New role is created-> <b>$authItem_Model->name </b>");
+			    } else {
+				    Yii::$app->getSession()->setFlash('success', "The role <b>$authItem_Model->name </b> already exists");
+			}
+			
+              return $this->refresh(); //prevents from form resubmitting on reload & flash appearing  		
+			}
+			//END If the Form to add a new RBAC role to {auth_item} DB is trigered-----------------
+            //*************************************************************************
+		
+		
+		
+		
+		
+		
+		
+		
+		
 			
 			//Inner Join 3 tables---------------------
             $query = new \yii\db\Query;  //must be {$query = new \yii\db\Query;} not{$query = new Query;}, adding {use yii\db\Query} won't help
@@ -350,42 +401,11 @@ class SiteController extends Controller
 			//Selects all RBAc roles from table auth_item(for <select><option>)
 			$rbacRoleList = AuthItem::find()->/*where(['username' => 'admin'])->one()*/all();
 			
-			//Instance/model of DB table {auth_item} to pass to view (to render yii form "Add new Rbac role ")
-			$authItem_Model = new AuthItem();
-			
-			
-			
-			
-			
-			//**********************************************************************
-			//If the Form to add a new RBAC role to {auth_item} DB is trigered-----------------
-			
-            // validate any AJAX requests fired off by the form
-            /*if (Yii::$app->request->isAjax && $authItem_Model->load(Yii::$app->request->post())) {
-               Yii::$app->response->format = Response::FORMAT_JSON;
-               return ActiveForm::validate($authItem_Model);
-             }	*/		
-			
-            if ($authItem_Model->load(Yii::$app->request->post()) /*&& $authItem_Model->save()*/) {  //&& $searchMine->validate()
-				//var_dump(\Yii::$app->request->post());
-				
-			
-             //	Section to create a new role (in Bootsrap dropdown collapse)		
-		    //create a new role, it is created if this role does not exist in table {auth_item}
-			$is = AuthItem::find()->where(['name' => $authItem_Model->name])->one(); //find the role in table {auth_item} by suggested user input { $authItem_Model->name}
-	        if (!$is) {   //Checks if Rbac role already exists. Name of rbac role is passes as $authItem_Model->name
-                $role = Yii::$app->authManager->createRole($authItem_Model->name);
-                $role->description = $authItem_Model->description;
-                Yii::$app->authManager->add($role);
-				Yii::$app->getSession()->setFlash('success', "New role is created-> <b>$authItem_Model->name </b>");
-			} else {
-				Yii::$app->getSession()->setFlash('success', "The role <b>$authItem_Model->name </b> already exists");
-			}
-				
-			}
-			//END If the Form to add a new RBAC role to {auth_item} DB is trigered-----------------
-            //*************************************************************************
 		
+			
+			
+			
+			
 		
 			
 			
@@ -442,9 +462,11 @@ class SiteController extends Controller
 		//check if User has any role at all in {auth_assignment} DB, to decide to use DB INSERT or DB UPDATE
 		$userExist = AuthAssignment::find()->where(['user_id' => $_POST['userID']])->one(); //finding a single user in DB
 		
+		
+		
 		if($userExist){//IF user is already in {auth_assignment} DB
 		
-			if($userExist->item_name == $_POST['selectValue'] ){ //if user selects a rbac role that is already currently assigned 
+			if($userExist->item_name == $_POST['selectValue'] ){ //if user selects a rbac role that is already currently assigned, DO NOTHING
 				$status = "User is already assigned to this role. Do nothing";
 			} else {
 			    $status = "User has already a role in auth_assignment DB. Use UPDATE";
@@ -454,22 +476,30 @@ class SiteController extends Controller
                 /*$userExist->item_name = $_POST['selectValue'];
                 $customer->save();
 				$status = $status ." HAVE DONE";*/
-				//Can't edit , just use REVOKE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-				Yii::$app->authManager->revoke($userExist->item_name, (int)$_POST['userID']); //( $first_user_role, $this->id );
-				$status = $status ." HAVE DONE. Revoked";
+				//Can't edit , just use REVOKE for Rbac role & assign a new role !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+				$revokedRole = Yii::$app->authManager->getPermission($userExist->item_name);
+			if (Yii::$app->authManager->revokeAll((int)$_POST['userID'])){ //revoke all user's rbac roles. to revoke one role-> revoke( $current_user_role, $this->id );
+			    //after revoking all assign a new rbac role
+				$userRole = Yii::$app->authManager->getRole($_POST['selectValue']); //gets the role that was selected in form, role is (from auth_assignment DB)
+                Yii::$app->authManager->assign($userRole, $_POST['userID']);// assign a DB role to user ID
+				$status = $status ." HAVE DONE. Rbac Revoked & assigned new";
+			} else {$status = $status ." Revoke failed";}
 			
 			}
 			
-		} else { //IF user is not in {auth_assignment} DB- get role and assign it to him
+		} else { //IF user is not in {auth_assignment} DB - get role and assign it to him
 			$status = "User is new to auth_assignment DB. Use INSERT";
 			//INSERT logic
-			$userRole = Yii::$app->authManager->getRole($_POST['selectValue']); //gets the role (from auth_assignment DB)
+			$userRole = Yii::$app->authManager->getRole($_POST['selectValue']); //gets the role that was selected in form, role is (from auth_assignment DB)
             Yii::$app->authManager->assign($userRole, $_POST['userID']);// assign a DB role to user ID
 			$status = $status ." HAVE DONE. Created New";
 		}
 		//END assign new RBAC role to a specific user(the role to assign and userID came via ajax from view/site/rbac-view.php)=$_POST['selectValue'];$_POST['userID']
 		
 		
+		//getting  new role decription the user was assigned(to html with ajax)
+		//$descriptionNewX = AuthItem::find()->where(['name' => $userRole])->one();
+		//$desc = $descriptionNewX->description;
 		
 		
 		  //RETURN JSON DATA
@@ -480,7 +510,9 @@ class SiteController extends Controller
              'code' => 100,	 
              'selectedRBAC' => $_POST['selectValue'], //json echo rbac role, that came from /view/site/rbac-view.php
              'userIDX' => 	   $_POST['userID'], //json echo rbac role, that came from /view/site/rbac-view.php		
-             'statusX' => $status,  //message wheather UserID exists in auth_assignment DB, if true use DB UPDATE, if false use DB INSERT		 
+             'statusX' => $status,  //message wheather UserID exists in auth_assignment DB, if true use DB UPDATE, if false use DB INSERT	
+             'roleNew' => $userRole->name, // new role the user was assigned(to html with ajax)	
+             'descriptionNew' => $userRole->description, // new role decription the user was assigned(to html with ajax)				 
           ]; 
 	}    
 // **                                                                                  **
@@ -500,7 +532,7 @@ class SiteController extends Controller
 
 
 
-//Test form
+//Just to Test form, saves the form data without assigning attributes
 // **************************************************************************************
 // **************************************************************************************
 // **                                                                                  **
@@ -509,7 +541,8 @@ class SiteController extends Controller
     {
        $model = new TestForm();
 	   
-	    if ($model->load(Yii::$app->request->post()) && $model->save()) {  
+	   //saves the form data without assigning attributes
+	   if ($model->load(Yii::$app->request->post()) && $model->save()) {  
 		     Yii::$app->getSession()->setFlash('success2', "Has been saved");
 		}
  
