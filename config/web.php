@@ -113,14 +113,17 @@ $config = [
             'rules' => [
 			     'rbac-management-table' => 'site/rbac', //pretty url for 1 action(if Yii sees 'site/rbac' it turn it to custom text)
 			     'yout-text-from-config-web-php.rar' => 'site/about', //pretty url for 1 action(if Yii sees 'site/about' it turn it to custom text)
-			     ['class' => 'yii\rest\UrlRule', 'controller' => 'rest'/*, 'extraPatterns' => ['GET /' => 'new'], 'pluralize' => false*/], //rule for rest api, means if Yii sees any action of RestController, it uses yii\rest\UrlRule 
-				  '<controller:\w+>/<id:\d+>' => '<controller>/view',  //for others, turns {site/about?vies=14} to {}
+				 //Rules for REST API
+			     ['class' => 'yii\rest\UrlRule', 'controller' => ['rest'],  ], //rule for rest api, means if Yii sees any action of RestController, it uses yii\rest\UrlRule 
+				     //['extraPatterns' => ['GET /' => 'new'], /*'pluralize' => false*/ ], 
+				 //Rules for pretty URL with regExp
+				 '<controller:\w+>/<id:\d+>' => '<controller>/view',  //for others, turns {site/about?vies=14} to {}
 				  '<controller:\w+>/<action:\w+>/<id:\d+>' => '<controller>/<action>',
                   '<controller:\w+>/<action:\w+>' => '<controller>/<action>',
 				  'defaultRoute' => '/site/index',
             ],
         ], 
-        
+        //END PRETTY URL
 		
 		
 

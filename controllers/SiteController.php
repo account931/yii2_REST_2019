@@ -26,10 +26,17 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['logout'],
+				
+				//To show message to unlogged users. Without this unlogged users will be just redirected to login page
+				'denyCallback' => function ($rule, $action) {
+                    throw new \yii\web\NotFoundHttpException("Only logged users are permitted!!!");
+                 },
+				 //END To show message to unlogged users. Without this unlogged users will be just redirected to login page
+				 
+                'only' => ['logout', 'add-admin'],
                 'rules' => [
                     [
-                        'actions' => ['logout'],
+                        'actions' => ['logout', 'add-admin'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -44,6 +51,7 @@ class SiteController extends Controller
 					
                 ],
             ],
+			
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -198,15 +206,16 @@ class SiteController extends Controller
 // **                                                                                  **
 	 public function actionAddAdmin() {
 		 
-	 echo "<h3>Currently, any logged user who visits this page, will obtain the access Rbac role {adminX}</h3>";
-		 
-	  //$rbac = AuthItem::find()->where(['name' => 'admin'])->one();
+	     $text = "";
+	     $text .= "<h3>Currently, any logged user who visits this page, will obtain the access Rbac role {adminX}</h3>";
+		 echo "<h3>Currently, any logged user who visits this page, will obtain the access Rbac role {adminX}</h3>";
+	     //$rbac = AuthItem::find()->where(['name' => 'admin'])->one();
 	  
 	 
 	 
-	 //$rbac_RolesList = Yii::$app->authManager->getRoles();//gets all existing roles from auth_item DB. Format is ARRAY, not object
-     //echo '<pre>' , var_dump($rbac_RolesList) , '</pre>'; //pretty var-dump of array
-     //echo "Role Item-> ". $rbac_RolesList['admin']->name; //gets the name of existing role
+	     //$rbac_RolesList = Yii::$app->authManager->getRoles();//gets all existing roles from auth_item DB. Format is ARRAY, not object
+         //echo '<pre>' , var_dump($rbac_RolesList) , '</pre>'; //pretty var-dump of array
+         //echo "Role Item-> ". $rbac_RolesList['admin']->name; //gets the name of existing role
 	 
      	
 
@@ -263,6 +272,12 @@ class SiteController extends Controller
 			echo $key . "<br>";
 		}
 	}
+	
+	/*
+	return $this->render('become-admin', [
+            'text' => $text,
+        ]);
+	   */
 }
 // **                                                                                  **
 // **                                                                                  **
@@ -532,13 +547,15 @@ class SiteController extends Controller
 
 
 
-//Just to Test form, saves the form data without assigning attributes
+//Action Just to Test form, saves the form data without assigning attributes
 // **************************************************************************************
 // **************************************************************************************
 // **                                                                                  **
 // **                                                                                  **
      public function actionTestForm()
     {
+	   //throw new \yii\web\NotFoundHttpException("This exception is hand made."); //test exception
+		
        $model = new TestForm();
 	   
 	   //saves the form data without assigning attributes

@@ -30,8 +30,9 @@ Table of contents:
 10.Pagination, PageLinker, AR
 11.Flash message
 12.DataProvider(can be used both in GridViw and ListView) + GridView + ListView.
-13.V.A(ActRec,create URL, redirect, get $_POST[''], etc)
-14. Known Errors
+13.Yii Access Filter (ACF)
+14.V.A(ActRec,create URL, redirect, get $_POST[''], etc)
+15. Known Errors
 
 Yii ajax(shop)
 crsf
@@ -147,13 +148,19 @@ https://xn--d1acnqm.xn--j1amh/%D0%B7%D0%B0%D0%BF%D0%B8%D1%81%D0%B8/yii2-basic-%D
   
   
 ==============================================================
-6.Yii Error Handler.
-#Yii Error Handler
-How to use ErrorHandler (i.e 404 NOT FOUND):
-1. In config/web.php set action for errors ->  'errorHandler' => ['errorAction' => 'site/error',],
+6.Yii Error Handler (how to handle Exceptions).
+#You can throw your custom Yii exception with following code ->   throw new \yii\web\NotFoundHttpException("Your text");
+#If Yii2 encounters your exception or any internal error, it will use built-in ErrorHandler.
+
+How to use built-in ErrorHandler, i.e when Yii2 encounters your custom Exception or some error (i.e 404 NOT FOUND):
+By default, the following code is already deployed in Yii2 application. Just make sure, this code exists, otherwise add it manually:
+1. In config/web.php set action for errors (inside {'components' => []}) ->  'errorHandler' => ['errorAction' => 'site/error',],  //Note that by default SiteController does not have ActionError(), but the handler will work, as it uses Class \vendor\yii\web\ErrorAction. For rendering view it  uses views/site/error.php
 2. In controller->  public function actions() return [ 'error' => ['class' => 'yii\web\ErrorAction',]. 
-  It will use built vendor/yii\web\ErrorAction,if you want create your own, comment it and create in controller your actionError()
-3. In web/index.php -> define('YII_ENABLE_ERROR_HANDLER', true);//to show my personal error handler
+In above case, Yii2 will use template from views/site/error.php to display Error page (i.e NOT FOUND PAGE or your custom Exception).
+To pass and show an Exception message to view, use in views/site/error.php {$message}. I.e can use in <title>, or pass to flash/alert div.
+
+This built-in  error Handler will use built \vendor\yii\web\ErrorAction,if you want create your own, comment it and create in controller your actionError()
+3. If you created your own {actionError()} and it does not work, try in web/index.php ->  define('YII_ENABLE_ERROR_HANDLER', true);//to show my personal error handler
 
 
 
@@ -397,8 +404,49 @@ use yii\widgets\ListView;
  
  
  
+ 
+ 
+ 
+===================================================== 
+13.Yii Access Filter (ACF).
+It filters users access based if they are logged/unlogged.
+How to:
+ #In Controller, adds to  {public function behaviors()}:
+ use yii\filters\AccessControl;
+ public function behaviors()
+    {
+        return [
+            'access' => [
+                'class' => AccessControl::className(),
+				
+				//To show message to unlogged users. Without this unlogged users will be just redirected to login page
+				'denyCallback' => function ($rule, $action) {
+                    throw new \yii\web\NotFoundHttpException("Only logged users are permitted!!!");
+                 },
+				 //END To show message to unlogged users. Without this unlogged users will be just redirected to login page
+				 
+                'only' => ['logout', 'add-admin'],
+                'rules' => [
+                    [
+                        'actions' => ['logout', 'add-admin'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
 =====================================================
-13.V.A(ActRec,create URL, redirect, get $_POST[''], etc)
+14.V.A(ActRec,create URL, redirect, get $_POST[''], etc)
 
 #Create URL =>$infoLink= Html::a( "more  info", ["/site/about", "period" => "",   ] /* $url = null*/, $options = ["title" => "more  info",] ); 
 #Create URL2 =>  use yii\helpers\Url; $url = Url::to(['message/view', 'id' => 100]);
@@ -423,10 +471,11 @@ use yii\widgets\ListView;
 #How to write Method inside model-> $rbac = self::find()->where(['name' => $roleName])->one(); To use in Controller=>  if(AuthItem::checkIfRoleExist('adminX'))
 #Gii(prettyUrl):   yii-basic-app-2.0.15/basic/web/gii  Non-pretty:  yii-basic-app-2.0.15/basic/web/index.php?r=gii
 #Refresh(prevent from sending form on the reload of page)=> return $this->refresh();
- 
+
+#Throw yii exception -> throw new \yii\web\NotFoundHttpException("This exception is hand made.");
 =======================================================
-14. Known Errors
-14.1 While trying to add RBAC migrations there is a Error "You should configure "authManager", while u have already added authManager to component in /config/web.php.
+15. Known Errors
+15.1 While trying to add RBAC migrations there is a Error "You should configure "authManager", while u have already added authManager to component in /config/web.php.
   Solution: add same config {  'authManager' => ['class' => 'yii\rbac\DbManager',],} to /config/console.php (for Basic template). For Advanced template, add it  to /console/config/main.php and not in the backend or frontend configuration files.
   
   

@@ -3,19 +3,26 @@
 namespace app\controllers;
 
 use Yii;
-//use app\models\User;
+use app\models\User;//just for my custom Rest actionNew()
 
 use yii\rest\ActiveController;
 //use yii\web\NotFoundHttpException;
 //use yii\web\Response;
 
 
-/**
- * RestController implements the CRUD actions for User model.
- */
+
+
+//RestController implements the CRUD actions for User model.
 class RestController extends ActiveController
 {
-  
+   
+   //Define the model table for RestFul Api to work with
+   public $modelClass = 'app\models\User';
+   
+   
+   
+   
+   
    /*
    public function init()
     {
@@ -23,16 +30,10 @@ class RestController extends ActiveController
         Yii::$app->response->format = Response::FORMAT_JSON;
     }*/
 
-    /*
-	  public function actionTest(){
-        $items = ['one', 'two', 'three' => ['a', 'b', 'c']];
-        return $items;
-    }
-	*/
-	
-
    //public $enableCsrfValidation = false; //disable _csrf
-   public $modelClass = 'app\models\User';
+   
+   
+ 
    
    
    
@@ -40,13 +41,14 @@ class RestController extends ActiveController
    
    
    
-  //TO ALLOW CORS cross-domian ajax requests-------------------------------- 
-   /**
- * List of allowed domains.
- * Note: Restriction works only for AJAX (using CORS, is not secure).
- *
- * @return array List of domains, that can access to this API
- */
+//TO ALLOW CORS cross-domian ajax requests, used in behaviors() 
+//List of allowed domains.
+//Note: Restriction works only for AJAX (using CORS, is not secure).
+//@return array List of domains, that can access to this API
+// **************************************************************************************
+// **************************************************************************************
+// **                                                                                  **
+// **                                                                                  **
 public static function allowedDomains()
 {
     return [
@@ -56,15 +58,25 @@ public static function allowedDomains()
         'http://test2.example.com',
     ];
 }
+// **                                                                                  **
+// **                                                                                  **
+// **************************************************************************************
+// **************************************************************************************
+//END TO ALLOW CORS cross-domian ajax requests, used in behaviors()
 
-/**
- * @inheritdoc
- */
+
+
+
+
+
+
+
+
 public function behaviors()
 {
     return array_merge(parent::behaviors(), [
 
-        // For cross-domain AJAX request
+        //To allow cross-domain AJAX request for Rest API
         'corsFilter'  => [
             'class' => \yii\filters\Cors::className(),
             'cors'  => [
@@ -75,23 +87,44 @@ public function behaviors()
                 'Access-Control-Max-Age'           => 3600,                 // Cache (seconds)
             ],
         ],
+		//END to allow cross-domain AJAX request for Rest API
 
-    ]);
-	
-//END TO ALLOW CORS cross-domian ajax requests-------------------------------- 	
-	
-	
-	
-	
-	
+    ]);	
+		
 }
-   /*
+   
+   
+   
+   
+   
+   
+   
+//my RESTFUL custom action, does not need any additional setting in config. 
+//Called by http://localhost/yii2_REST/yii-basic-app-2.0.15/basic/web/rest/new
+// **************************************************************************************
+// **************************************************************************************
+// **                                                                                  **
+// **                                                                                  **
    public function actionNew()
     {
-		$result = $modelClass::find()
-        //->where(['>', 'population', 70000000])
-        ->all();
+		$result = User::find()
+            //->where(['>', 'population', 70000000])
+			//->where(['email' => Yii::$app->user->identity->username])
+            ->all();
         return $result;
-	}*/
-   
+		
+		/*$items = ['one1', 'two2', 'three' => ['a_sub', 'b_sub', 'c_sub']];
+        return $items;*/
+	}
+// **                                                                                  **
+// **                                                                                  **
+// **************************************************************************************
+// **************************************************************************************
+//END my RESTFUL custom action, does not need any additional setting in config.
+
+
+
+
+
+
 }

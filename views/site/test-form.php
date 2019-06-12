@@ -20,7 +20,9 @@ $this->params['breadcrumbs'][] = $this->title;
 	
 
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <h1><?= Html::encode($this->title) ?> <span class='glyphicon glyphicon-cloud-download' style='font-size:42px;color:green;margin-left:2%;'></span> </h1>
+	
+	
     <p>Please fill out the following fields to test:</p>
     <div class="row">
         <div class="col-lg-5">
@@ -33,7 +35,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <?= Html::submitButton('Signup', ['class' => 'btn btn-primary', 'name' => 'signup-button']) ?>
                 </div>
             <?php ActiveForm::end(); ?>
- 
+            
         </div>
     </div>
 </div>
