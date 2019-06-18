@@ -1,6 +1,6 @@
 ﻿#RestFul API and RBAC Yii2 application.
-#This YIi2 Basic template uses DB registration/login, RESTful, RBAC roles
-#Yii2 SQL database is =>yii2-rest
+#This YIi2 Basic template uses stack: RESTful API, RBAC roles, SLQ DB registration/login, 
+#Yii2 uses SQL database  => yii2-rest
 
 To get necessary DB table for this project, apply migration:
  #for Users(see Readme_YII2_mine_Common_Comands.txt ->5.Yii2 basic. Registration, login via db.)

@@ -67,7 +67,7 @@
 				
                           },  //end success
 			              error: function (error) {
-				              $("#result").stop().fadeOut("slow",function(){ $(this).html("<h4 style='color:red;padding:3em;'>ERROR!!! <br> Rest API crashed <br>" + error + "</h4>")}).fadeIn(2000);
+				              $("#result").stop().fadeOut("slow",function(){ $(this).html("<h4 style='color:red;padding:3em;'>ERROR!!! <br> Rest API crashed <br><br>" + error.responseJSON.name + "<br>" + error.responseJSON.message + "</h4>")}).fadeIn(2000);
                               console.log(error);
 						  }	  
                      });                             

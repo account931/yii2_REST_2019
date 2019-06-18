@@ -9,6 +9,10 @@ use yii\rest\ActiveController;
 //use yii\web\NotFoundHttpException;
 //use yii\web\Response;
 
+use yii\filters\auth\HttpBasicAuth;  //For using REST API Authorized access only (with token only)
+use yii\filters\auth\CompositeAuth;  //For using REST API Authorized access only
+use yii\filters\auth\HttpBearerAuth; //For using REST API Authorized access only
+use yii\filters\auth\QueryParamAuth; //For using REST API Authorized access only
 
 
 
@@ -19,8 +23,7 @@ class RestController extends ActiveController
    //Define the model table for RestFul Api to work with
    public $modelClass = 'app\models\User';
    
-   
-   
+
    
    
    /*
@@ -74,6 +77,9 @@ public static function allowedDomains()
 
 public function behaviors()
 {
+	 
+	 
+	//array_merge accepts as args arrays and merge them in one  
     return array_merge(parent::behaviors(), [
 
         //To allow cross-domain AJAX request for Rest API
@@ -89,8 +95,30 @@ public function behaviors()
         ],
 		//END to allow cross-domain AJAX request for Rest API
 
-    ]);	
 		
+		
+		//USE REST API Authorized access only (with token only). Comment it and Rest Api will work without access-token
+		'authenticator' => [
+            'class' => CompositeAuth::className(),
+            'authMethods' => [
+                HttpBasicAuth::className(),
+                HttpBearerAuth::className(),
+                QueryParamAuth::className(),
+            ],
+        ], 
+		//END USE REST API Authorized access only (with token only). Comment it and Rest Api will work without access-token
+		
+		
+		//may list here other behaviour settings........
+    ]
+	
+	
+	
+	);	//end array_merge
+	
+	
+	
+
 }
    
    

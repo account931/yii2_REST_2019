@@ -172,7 +172,7 @@ $this->params['breadcrumbs'][] = $this->title;
 	// JS code here   //afterValidate
 	
 
-   //when u click OK
+   //when u click OK in table
    $(document).on("click", '.formzz', function() {   // this  click  is  used  to   react  to  newly generated cicles; //#myForm
    //$("#myForm").on("beforeSubmit", function (event, messages) {
        // Now you can work with messages by accessing messages variable
@@ -182,6 +182,15 @@ $this->params['breadcrumbs'][] = $this->title;
 	   
 	   //alert($(this).closest("form").find(":selected").val()); return false;
  
+ 
+       //Checking if dropdown is "Select" (i.e a user didn't select a role), then stop anything further
+	   if($(this).closest("form").find(":selected").val() == "Select"){
+		   alert("Please, select a valid role");
+		   return false;
+	   }
+	   
+	   
+       //Checking validation
        var form = $(this);
 	   if (form.find('.has-error').length ) {  //if validation failed
 	   
@@ -226,7 +235,8 @@ $this->params['breadcrumbs'][] = $this->title;
 					//$(this).prevAll(".rdescr").stop().fadeOut("slow",function(){ $(this).prevAll(".rdescr").html(res.descriptionNew)}).fadeIn(2000);
 					//console.log($("#" + res.userIDX).closest('td').prev('td').prev('td').text());
 					
-					//CHANGE dynamically text in User Role. {$(this)} or {$(this).prevAll(".rdescr")} does not work, so we get userID {res.userIDX} from ajax, which is the same as button-> <input type="submit" value="Do" class="formzz", and from that button we find prev <td> for description and prev-prev for role name
+					//CHANGE dynamically text in User Role table filed. 
+					//$(this) or $(this).prevAll(".rdescr")} does not work, so we get userID {res.userIDX} from ajax, which is the same as button-> <input type="submit" value="Do" class="formzz", and from that button we find prev <td> for description and prev-prev for role name
 					$("#" + res.userIDX).closest('td').prev('td').prev('td').stop().fadeOut("slow",function(){ $(this).html(res.roleNew)}).fadeIn(2000);
 					//CHANGE dynamically text in User Role Description
 					$("#" + res.userIDX).closest('td').prev('td').stop().fadeOut("slow",function(){ $(this).html(res.descriptionNew)}).fadeIn(2000);

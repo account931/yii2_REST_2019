@@ -25,15 +25,19 @@ Table of contents:
 5.Yii2 basic. Registration, login via db.
 6.Yii Error Handler.
 7.Yii Restful API
+7.1 Yii Restful API(control token authorization)
 8.Yii RBAC
 9.Error deep_copy.php
 10.Pagination, PageLinker, AR
 11.Flash message
 12.DataProvider(can be used both in GridViw and ListView) + GridView + ListView.
 13.Yii Access Filter (ACF)
-14.V.A(ActRec,create URL, redirect, get $_POST[''], etc)
-15. Known Errors
+14.Register custom assets (js, css)
 
+98.V.A(ActRec,create URL, redirect, get $_POST[''], etc)
+99. Known Errors
+
+Codexception
 Yii ajax(shop)
 crsf
 Widget
@@ -49,9 +53,10 @@ Access Control filter
 1.Yii2 CLI Composer install & init.
 CLI:
 (if CLI commands dont work, add {php} before-> i.e {php migrate}). 
-#init  -> to init index.php in folder "web" (or {php init})
-#yii migrate -> apply migration to DB(if migration is available, from start migration is available in advanced, not in basic)
-#composer update/composer install  -> update dependencies
+#Browse to go to needed folder: cmd -> cd[blankspace]folder. U can hint folders by TAB.(i.e  C:\Users\Dima\Downloads\domains\....)
+#CLI->init        => to init Yii2 index.php in folder "web" (or {php init})
+#CLI->yii migrate => apply migration to DB(if migration is available, from start migration is available in advanced, not in basic)
+#CLI->composer update/composer install     => update dependencies in file {composer.json}
 
 
 
@@ -261,6 +266,13 @@ AJAX EXAMPLE TO Yii2 Rest (ajax request from non-REST file ):
 
 
 
+================================================
+7.1 Yii Restful API(control token authorization)
+http://localhost/yii2_REST_and_Rbac_2019/yii-basic-app-2.0.15/basic/web/rests?access-token=1111
+
+
+
+
 				  
 				  
 				  
@@ -442,11 +454,24 @@ How to:
  
  
  
+ =====================================================
+ 14.Register custom assets (js, css)
+ How to:
+  1. Create in /assets folder new file, i.e {IshopAssetOnly.php}, class of this file should have the same name { IshopAssetOnly}
+  2. In View u want to register this css/js Asset Bundle put:
+       use app\assets\IshopAssetOnly;   // use your custom asset
+       IshopAssetOnly::register($this); // register your custom asset to use this js/css bundle in this View only(1st name-> is the name of Class)
+ 
+ 
+ 
+ 
+ 
+ 
  
  
  
 =====================================================
-14.V.A(ActRec,create URL, redirect, get $_POST[''], etc)
+98.V.A(ActRec,create URL, redirect, get $_POST[''], etc)
 
 #Create URL =>$infoLink= Html::a( "more  info", ["/site/about", "period" => "",   ] /* $url = null*/, $options = ["title" => "more  info",] ); 
 #Create URL2 =>  use yii\helpers\Url; $url = Url::to(['message/view', 'id' => 100]);
@@ -473,9 +498,11 @@ How to:
 #Refresh(prevent from sending form on the reload of page)=> return $this->refresh();
 
 #Throw yii exception -> throw new \yii\web\NotFoundHttpException("This exception is hand made.");
+
+
 =======================================================
-15. Known Errors
-15.1 While trying to add RBAC migrations there is a Error "You should configure "authManager", while u have already added authManager to component in /config/web.php.
+99. Known Errors
+99.1 While trying to add RBAC migrations there is a Error "You should configure "authManager", while u have already added authManager to component in /config/web.php.
   Solution: add same config {  'authManager' => ['class' => 'yii\rbac\DbManager',],} to /config/console.php (for Basic template). For Advanced template, add it  to /console/config/main.php and not in the backend or frontend configuration files.
   
   
