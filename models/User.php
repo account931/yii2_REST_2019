@@ -6,6 +6,8 @@ use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
+
+//use app\models\RestAccessTokens; //table with access_tokens (to retrieve in findIdentityByAccessToken )
  
 /**
  * User model
@@ -68,14 +70,22 @@ class User extends ActiveRecord implements IdentityInterface
         return static::findOne(['id' => $id, 'status' => self::STATUS_ACTIVE]);
     }
  
+ 
+ 
     /**
      * @inheritdoc
      */
     public static function findIdentityByAccessToken($token, $type = null)
     {
-		return static::findOne(['access_token' => $token]); //MINE //FOR USE API Auth token
+		 return \app\models\RestAccessTokens::findOne(['rest_tokens' => $token]); //MINE //to use API Auth token, now it uses tokens stored in models/RestAccessTokens -> DB {rest_access_tokens}
+
+		//return static::findOne(['access_token' => $token]); //MINE //FOR USE API Auth token
         //throw new NotSupportedException('"findIdentityByAccessToken" is not implemented.');
     }
+ 
+ 
+ 
+ 
  
     /**
      * Finds user by username

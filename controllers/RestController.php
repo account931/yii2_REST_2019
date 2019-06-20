@@ -77,7 +77,7 @@ public static function allowedDomains()
 
 public function behaviors()
 {
-	 
+	
 	 
 	//array_merge accepts as args arrays and merge them in one  
     return array_merge(parent::behaviors(), [
@@ -97,7 +97,9 @@ public function behaviors()
 
 		
 		
-		//USE REST API Authorized access only (with token only). Comment it and Rest Api will work without access-token
+		
+		//This enables REST API Authorized access only (with token only). Token is stored in DB, field "access-token" Comment it and Rest Api will work without access-token.
+		//test url with token=> http://localhost/yii2_REST_and_Rbac_2019/yii-basic-app-2.0.15/basic/web/rests?access-token=1111
 		'authenticator' => [
             'class' => CompositeAuth::className(),
             'authMethods' => [
@@ -106,7 +108,8 @@ public function behaviors()
                 QueryParamAuth::className(),
             ],
         ], 
-		//END USE REST API Authorized access only (with token only). Comment it and Rest Api will work without access-token
+		//END This enables REST API Authorized access only (with token only). Token is stored in DB, field "access-token" Comment it and Rest Api will work without access-token.
+
 		
 		
 		//may list here other behaviour settings........
@@ -118,6 +121,14 @@ public function behaviors()
 	
 	
 	
+	
+	//Behavior array may be also rewritten in this variant
+	/*$behaviors = parent::behaviors();
+    $behaviors['authenticator'] = [
+        'class' => HttpBasicAuth::className(),
+    ];
+    return $behaviors;*/
+	//END Behavior array may be also rewritten in this variant 
 
 }
    

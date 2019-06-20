@@ -13,6 +13,7 @@ class SignupForm extends Model
     public $username;
     public $email;
     public $password;
+	public $password_confirm;
  
     /**
      * @inheritdoc
@@ -31,6 +32,10 @@ class SignupForm extends Model
             ['email', 'unique', 'targetClass' => '\app\models\User', 'message' => 'This email address has already been taken.'],
             ['password', 'required'],
             ['password', 'string', 'min' => 6],
+			
+			['password_confirm','required'],
+            //my compare passwords  & confirm
+            ['password_confirm', 'compare', 'compareAttribute'=>'password', 'message'=>"Passwords don't match", /*'on' => 'update' */   ],
         ];
     }
  

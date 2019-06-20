@@ -25,7 +25,7 @@ Table of contents:
 5.Yii2 basic. Registration, login via db.
 6.Yii Error Handler.
 7.Yii Restful API
-7.1 Yii Restful API(control token authorization)
+7.1 Yii Restful API(control token authorization(access available with token only))
 8.Yii RBAC
 9.Error deep_copy.php
 10.Pagination, PageLinker, AR
@@ -182,10 +182,11 @@ This built-in  error Handler will use built \vendor\yii\web\ErrorAction,if you w
 #Yii Rest
 Yii2 REST  -> http://developer.uz/blog/restful-api-in-yii2/
 
-test URL(if prettyUrl off) -> http://localhost/yii2_REST/yii-basic-app-2.0.15/basic/web/index.php?r=rest
-test URL, Pretty URL, retuns  only ID and email with $_GET specified like this: http://localhost/yii2_REST/yii-basic-app-2.0.15/basic/web/rests?fields=id,email
-test URL(ControllerRest/actionView)(view 1 record)-> http://localhost/yii2_REST/yii-basic-app-2.0.15/basic/web/rest/view/4
+test URL from Yii2 (if prettyUrl off) -> http://localhost/yii2_REST/yii-basic-app-2.0.15/basic/web/index.php?r=rest
+test URL from Yii2 , Pretty URL, retuns  only ID and email with $_GET specified like this: http://localhost/yii2_REST/yii-basic-app-2.0.15/basic/web/rests?fields=id,email
+test URL from Yii2 (ControllerRest/actionView)(view 1 record)-> http://localhost/yii2_REST/yii-basic-app-2.0.15/basic/web/rest/view/4
 
+How to test Yii2 Rest Api from from non-Yii2 file, see more at =>  Readme_YII2_mine_This_Project_itself.txt -> 1.HOW TO TEST REST API from non-Yii2 file. 
 
 1.Main core Rest Controller in /controllers/RestController.php. File in /modules/admin/DefaultController is just a test of module building, it is minor.(See core minor -> /Files/Yii2_basic/controller/RestController.php)
 2.This code line turns response to JSON (config/web.php) -> 'response' => ['format' => \yii\web\Response::FORMAT_JSON],
@@ -217,7 +218,7 @@ public function behaviors(){
             ], ], ]);
 
 
-8.
+
 
 			
 			
@@ -266,15 +267,55 @@ AJAX EXAMPLE TO Yii2 Rest (ajax request from non-REST file ):
 
 
 
+				  
 ================================================
-7.1 Yii Restful API(control token authorization)
-http://localhost/yii2_REST_and_Rbac_2019/yii-basic-app-2.0.15/basic/web/rests?access-token=1111
+7.1 Yii Restful API(control token authorization(access available with token only))
+#test url with token=>  http://localhost/yii2_REST_and_Rbac_2019/yii-basic-app-2.0.15/basic/web/rests?access-token=1111
+#Tokens are stored in SQL {rest_access_tokens}, fields {rest_tokens, r_user} = (token, userID)
 
+How to implement access to Yii2 Rest Api with access token only:
+  a.)set property {enableSession} to {false} in User component. It is not mandatoty, so we don't use it here
+  b.)set public function behaviors() in Rest controller:
+     use yii\filters\auth\HttpBasicAuth;
+	 $behaviors = parent::behaviors();
+     $behaviors['authenticator'] = [
+        'class' => HttpBasicAuth::className(),
+     ];
+      return $behaviors;
+     }
+	 
+  c.)set method {public static function findIdentityByAccessToken}:
+    c1.)IN CASE YOU STORE TOKENS in SQL DB {USER} in field {access_token}), set this method in models/User:
+     
+      use yii\web\IdentityInterface;
+	  public static function findIdentityByAccessToken($token, $type = null)
+      {
+        return static::findOne(['access_token' => $token]);
+      }
 
+   c2.)IN CASE YOU STORE TOKENS in a special own created SQL database(created for storing tokens only)-> {rest_access_tokens} in field {rest_tokens}) , 
+     c2_step1:set this method in models/User:
+	 
+	     public static function findIdentityByAccessToken($token, $type = null){
+		     return \app\models\RestAccessTokens::findOne(['rest_tokens' => $token]); //MINE //to use API Auth token, now it uses tokens stored in models/RestAccessTokens -> DB {rest_access_tokens}
+         }
+		
+    c2_step2:set in in models/RestAccessTokens:
+	  #add to class declaration ->  {implements \yii\web\IdentityInterface} //have to implements \yii\web\IdentityInterface to be used in models/Users/findIdentityByAcces
+      #copy 5 methods from model/User to comply with implementation of IdentityInterface Interface
+	  #change function findIdentityByAccessToken to:
+	     public static function findIdentityByAccessToken($token, $type = null){
+		    return static::findOne(['rest_tokens' => $token]); }
 
 
 				  
-				  
+		
+
+
+
+
+
+		
 				  
 =========================================================
 8.Yii RBAC
@@ -498,7 +539,7 @@ How to:
 #Refresh(prevent from sending form on the reload of page)=> return $this->refresh();
 
 #Throw yii exception -> throw new \yii\web\NotFoundHttpException("This exception is hand made.");
-
+#Gii (prettyUrl)-> http://localhost/yii2_REST_and_Rbac_2019/yii-basic-app-2.0.15/basic/web/gii
 
 =======================================================
 99. Known Errors

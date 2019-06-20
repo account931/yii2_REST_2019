@@ -45,7 +45,7 @@
 					  //this file must be run on localhost(i.e must have .php extension not .html)
 					  //By default Yii2 rest returns xml, but it must not bother,just specify in ajax {contentType: "application/json; charset=utf-8",} and it will return json
 				      $.ajax({
-                          url: '../yii-basic-app-2.0.15/basic/web/rest',
+                          url: '../web/rest',
                           type: 'GET', //must be GET, as it is REST /GET method
 						  crossDomain: true,
 						  contentType: "application/json; charset=utf-8",

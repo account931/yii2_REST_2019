@@ -13,8 +13,8 @@ use app\models\User;
 use app\models\SignupForm;
 use app\models\AuthItem; //table with Rbac roles
 use app\models\AuthAssignment; //table with Rbac roles $ users' id assigned to that rbac role
-use app\models\TestForm; //table for testing form
-
+use app\models\TestForm; //model for sql table for testing form CRUD
+use app\models\RestAccessTokens; //model for table storing users tokens for Rest API 
 
 class SiteController extends Controller
 {
@@ -33,10 +33,11 @@ class SiteController extends Controller
                  },
 				 //END To show message to unlogged users. Without this unlogged users will be just redirected to login page
 				 
-                'only' => ['logout', 'add-admin'],
+				//following actions are available to logged users only 
+                'only' => ['logout', 'add-admin', 'get-token'], //actionGetToken
                 'rules' => [
                     [
-                        'actions' => ['logout', 'add-admin'],
+                        'actions' => ['logout', 'add-admin', 'get-token'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -571,6 +572,60 @@ class SiteController extends Controller
 // **                                                                                  **
 // **************************************************************************************
 // **************************************************************************************
+
+
+
+
+
+
+
+
+
+
+
+//Action that gives acces token for making request in Yii2 Rest API and saves them to DB rest_access_tokens (saves userID and token)
+
+// **************************************************************************************
+// **************************************************************************************
+// **                                                                                  **
+// **                                                                                  **
+     public function actionGetToken()
+    {
+        
+		
+		//get all token of current user
+		$allTokens = RestAccessTokens::find()->where(['r_user' => Yii::$app->user->identity->id])->all();
+		
+		
+		$modelToken = new RestAccessTokens();//model for form
+		
+		 //if the button is clicked
+	    if ($modelToken->load(Yii::$app->request->post())  /*&& $modelToken->save()*/ ) {
+		    //generates random token
+		   $key = Yii::$app->getSecurity()->generateRandomString();
+	       $modelToken->rest_tokens = $key; //assign token to DB field {rest_tokens}
+		   $modelToken->r_user = Yii::$app->user->identity->id;
+			
+           if ($modelToken->save()){			
+		       Yii::$app->getSession()->setFlash('token', "New token " . $key );
+		   }
+	   } 
+	
+		 
+	  
+		
+		
+		
+        return $this->render('get-token', [
+            'modelToken' => $modelToken, //model
+			'allTokens' => $allTokens //all token of current user
+        ]);
+    }
+// **                                                                                  **
+// **                                                                                  **
+// **************************************************************************************
+// **************************************************************************************
+
 
 
 

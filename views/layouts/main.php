@@ -44,13 +44,34 @@ $menuItems = [
     ['label' => 'Home', 'url' => ['/site/index']],
     ['label' => 'About (*limit)', 'url' => ['/site/about']],
     ['label' => 'Contact', 'url' => ['/site/contact']],
-	['label' => 'Rest Controler (core)', 'url' => ['/rest/index']],        //rest controller
-	['label' => 'Rest Module (minor)', 'url' => ['/admin/default/index']], //separate module with it's own controller
+	//['label' => 'Rest Controler (core)', 'url' => ['/rest/index']],        //rest controller
+	//['label' => 'Rest Module (minor)', 'url' => ['/admin/default/index']], //separate module with it's own controller
 	['label' => 'Be the admin', 'url' => ['/site/add-admin']],
 	['label' => 'Rbac', 'url' => ['/site/rbac']], 
-	['label' => 'Test form', 'url' => ['/site/test-form']], 
+	['label' => 'Test form', 'url' => ['/site/test-form']],  //actionTestForm()
+	['label' => 'Get token', 'url' => ['/site/get-token']],  //actionGetToken()
+	
+	
+	
+	//Start submenu
+    ['label' => 'Rest',  
+        'url' => ['#'],
+        'template' => '<a href="{url}" >{label}<i class="fa fa-angle-left pull-right"></i></a>',
+        'items' => [
+            
+            ['label' => 'Rest Controler (core)', 'url' => ['/rest/index']],        //rest controller
+            ['label' => 'Rest Module (minor, no use)', 'url' => ['/admin/default/index']], //separate module with it's own controller
+            //submenu with image,(won't  work  without  {encodeLabels' => false,}  ,  it  is  inserted  below)   /*/yii/basic_download/web*/
+            ['label' => Html::img(Yii::$app->request->baseUrl.'/images/system_key.jpg' , $options = ["id"=>"sx","margin-left"=>"","class"=>"s","width"=>"16%","title"=>"my title"]) . ' My login(no use)',  'url' => ['/site/login'],     ],  
+        ],         
+    ],
+   // END  Submenu 
+   
+	
 ];
  
+
+//menu Items which change depending if (Yii::$app->user->isGuest)  
 if (Yii::$app->user->isGuest) {
     $menuItems[] = ['label' => 'Signup', 'url' => ['/site/signup']];
     $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];
@@ -64,10 +85,12 @@ if (Yii::$app->user->isGuest) {
         . Html::endForm()
         . '</li>';
 }
- 
+
+//render the $menuItems to Nav widget 
 echo Nav::widget([
     'options' => ['class' => 'navbar-nav navbar-right'],
     'items' => $menuItems,
+    'encodeLabels' => false, 	// added  to  let  img  in menu
 ]);
  
 NavBar::end();
