@@ -273,6 +273,11 @@ AJAX EXAMPLE TO Yii2 Rest (ajax request from non-REST file ):
 #test url with token=>  http://localhost/yii2_REST_and_Rbac_2019/yii-basic-app-2.0.15/basic/web/rests?access-token=1111
 #Tokens are stored in SQL {rest_access_tokens}, fields {rest_tokens, r_user} = (token, userID)
 
+#If 'authenticator' => is Enabled in controllers/RestController (meaning user token is required), ajax(from non-Yii) or Yii2 URL must contain user token (from SQL rest_access_tokens)  
+  i.e => url: '../web/rest?access-token=57Wpa-dlg-EonG6kB3myfsEjpo7v8R5b
+  Otherwise, it will fire "Unauthorized".
+  
+  
 How to implement access to Yii2 Rest Api with access token only:
   a.)set property {enableSession} to {false} in User component. It is not mandatoty, so we don't use it here
   b.)set public function behaviors() in Rest controller:

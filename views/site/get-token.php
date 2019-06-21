@@ -9,7 +9,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="site-signup">
 
 
-   <!---- FLASH from site/actionRbac -->
+   <!---- FLASH from site/actionGetToken() -->
    <?php if( Yii::$app->session->hasFlash('token') ): ?>
     <div class="alert alert-success alert-dismissible" role="alert">
         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -51,12 +51,13 @@ $this->params['breadcrumbs'][] = $this->title;
 		
 	<!----------------- displays all token of current user ------------------------>
 	<div class="row tg1">
-        <div class="col-lg-5">
+        <div class="col-sm-8 col-xs-12">
 		<h3>List of your tokens</h3>
 		<?php
 		    
+			
 		    foreach ($allTokens as $y){
-				echo "<p class='alert alert-success alert'>" . $y->rest_tokens . "</p>";
+				echo "<p class='alert alert-success alert'>" . $y->rest_tokens .   "<button type='button' style='float:right; color:red;' class='btn btn-default btn-sm'><span class='glyphicon glyphicon-remove'></span> </button></p>";
 			}
 		?>
 	

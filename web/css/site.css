@@ -113,3 +113,23 @@ a.desc:after {
 .nav > li > form > button.logout:focus {
     outline: none;
 }
+
+
+
+
+
+
+/* ---------------------------------------- MINE CSS ----------------------------- */
+
+
+/*yii logo on home page */
+.yii-logo {width:32%;}
+
+
+/* ---------------------------------------- Mobile */
+@media screen and (max-width: 480px) { 
+   .yii-logo {width:76%;}
+}
+/* ---------------------------------------- Mobile */
+
+

@@ -583,41 +583,41 @@ class SiteController extends Controller
 
 
 
-//Action that gives acces token for making request in Yii2 Rest API and saves them to DB rest_access_tokens (saves userID and token)
-
+//Action that generates acces token for making request in Yii2 Rest API and saves them to DB rest_access_tokens (saves userID and token)
+//+ display the list of all token of current user
 // **************************************************************************************
 // **************************************************************************************
 // **                                                                                  **
 // **                                                                                  **
      public function actionGetToken()
     {
-        
-		
-		//get all token of current user
-		$allTokens = RestAccessTokens::find()->where(['r_user' => Yii::$app->user->identity->id])->all();
-		
-		
+			
 		$modelToken = new RestAccessTokens();//model for form
 		
-		 //if the button is clicked
+		//if the button "Get new token" is clicked
 	    if ($modelToken->load(Yii::$app->request->post())  /*&& $modelToken->save()*/ ) {
-		    //generates random token
+		   //generates random token
 		   $key = Yii::$app->getSecurity()->generateRandomString();
 	       $modelToken->rest_tokens = $key; //assign token to DB field {rest_tokens}
-		   $modelToken->r_user = Yii::$app->user->identity->id;
+		   $modelToken->r_user = Yii::$app->user->identity->id; //assign current user ID to DB field {r_user}
 			
-           if ($modelToken->save()){			
+			
+           //if ($modelToken->save()){	
+           try {
+               $modelToken->save();		   
 		       Yii::$app->getSession()->setFlash('token', "New token " . $key );
+		   } catch(\Exception $e) {
+			   throw new \yii\web\NotFoundHttpException("Failed creating new token"); //test exception
 		   }
 	   } 
-	
+	   //END if the button "Get new token" is clicked
 		 
-	  
-		
-		
+	  //get all token of current user
+		$allTokens = RestAccessTokens::find()->where(['r_user' => Yii::$app->user->identity->id])->all();
+			
 		
         return $this->render('get-token', [
-            'modelToken' => $modelToken, //model
+            'modelToken' => $modelToken, //model for form to generate token
 			'allTokens' => $allTokens //all token of current user
         ]);
     }

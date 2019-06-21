@@ -38,14 +38,20 @@
 		   
 		   
 		      <div class="col-sm-12 col-xs-12 text-center" style="background-color:lavender;">  
-                  <h1>Test Yii2 Rest XML<?php echo 22; ?></h1>
+                  <h1>Test Yii2 Rest API XML</h1>
+				  <p>If 'authenticator' => is Enabled in controllers/RestController,<br> ajax URL must contain user token (from SQL rest_access_tokens) <br> i.e => url: '../web/rest?access-token=57Wpa-dlg-EonG6kB3myfsEjpo7v8R5b</p>
+				  <hr  style="width: 90%; color: black; height: 2px; background-color:black;">
+				  <p><b>Yii2 Restful Api response:</b></p>
 				  <p id="result"></p><!-- rest api results go here -->
+				  
+				  
 				  <script>
 				      //below script makes a test request to Yii2 Rest Api
 					  //this file must be run on localhost(i.e must have .php extension not .html)
 					  //By default Yii2 rest returns xml, but it must not bother,just specify in ajax {contentType: "application/json; charset=utf-8",} and it will return json
 				      $.ajax({
-                          url: '../web/rest',
+						  //url: '../web/rest', //url if 'authenticator' => is disabled in controllers/RestController
+                          url: '../web/rest?access-token=57Wpa-dlg-EonG6kB3myfsEjpo7v8R5b',
                           type: 'GET', //must be GET, as it is REST /GET method
 						  crossDomain: true,
 						  contentType: "application/json; charset=utf-8",
