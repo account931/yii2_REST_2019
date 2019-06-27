@@ -29,12 +29,10 @@ $this->title = $message; //$name;
 		
 		<!----- Right column ----->
 	    <div class="col-sm-6 col-xs-12" id="">
-            <p>
-                Error happened as <b><?=$message;?></b>. <br> The above error occurred while the Web server was processing your request.
-            </p>
-            <p>
-                Please contact us if you think this is a server error. Thank you <span class='glyphicon glyphicon-phone-alt' style='font-size:12px;margin-left:1%;'></span>
-            </p>
+            <p>Error happened as <b><?=$message;?></b>. <br></p>
+			<p>This is common error page, it is triggered with <br><b>{ throw new \yii\web\NotFoundHttpException("your text"); }</b></p>
+			
+            <p>The above error occurred while the Web server was processing your request.Please contact us if you think this is a server error. Thank you <span class='glyphicon glyphicon-phone-alt' style='font-size:12px;margin-left:1%;'></span></p>
 	    </div>
 	</div><!-- end class="row x" -->
 

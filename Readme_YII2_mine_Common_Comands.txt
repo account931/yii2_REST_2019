@@ -33,6 +33,7 @@ Table of contents:
 12.DataProvider(can be used both in GridViw and ListView) + GridView + ListView.
 13.Yii Access Filter (ACF)
 14.Register custom assets (js, css)
+15.Multilanguages
 
 98.V.A(ActRec,create URL, redirect, get $_POST[''], etc)
 99. Known Errors
@@ -280,7 +281,7 @@ AJAX EXAMPLE TO Yii2 Rest (ajax request from non-REST file ):
   
 How to implement access to Yii2 Rest Api with access token only:
   a.)set property {enableSession} to {false} in User component. It is not mandatoty, so we don't use it here
-  b.)set public function behaviors() in Rest controller:
+  b.)set public function behaviors() in Rest controller (different variant see in RestController):
      use yii\filters\auth\HttpBasicAuth;
 	 $behaviors = parent::behaviors();
      $behaviors['authenticator'] = [
@@ -509,6 +510,49 @@ How to:
        IshopAssetOnly::register($this); // register your custom asset to use this js/css bundle in this View only(1st name-> is the name of Class)
  
  
+ 
+ 
+=====================================================
+15.Multilanguages
+How to add multilanguages:
+  1. Add to main config (for basic it is /config/web.php)=>
+        return [
+	      //....
+          // set target language to be Russian
+             'language' => 'ru-RU',
+
+          // set source language to be English
+          'sourceLanguage' => 'en-US',
+          //......
+        ];
+		
+  2.Create new file /messages/ru-RU/app.php (for implementing translation for ru-RU language. 
+	            If you target language will be my-Lang, so, that will be /messages/my-Lang/app.php.
+	
+  3.Implement translation of your strings (in /messages/ru-Ru/app.php):
+	    return [
+           'welcome' => 'Добро пожаловать',
+           'This is a string to translate!' => 'Это строка для перевода'
+           //...
+         ];
+		 
+  4.Configure i18n component in your main config file like this (for basic it is in /config/web.php):
+	   'components' =>  
+       // ...
+       'i18n' => [
+          'translations' => [
+              'app*' => [
+                  'class' => 'yii\i18n\PhpMessageSource',
+                  //'basePath' => '@app/messages',
+                  //'sourceLanguage' => 'en-US',
+                  'fileMap' => [
+                      'app' => 'app.php',
+                      'app/error' => 'error.php',
+                  ],
+              ],
+          ],
+       ],
+],
  
  
  

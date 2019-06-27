@@ -100,19 +100,28 @@ public function behaviors()
 		
 		//This enables REST API Authorized access only (with token only). Token is stored in DB, field "access-token" Comment it and Rest Api will work without access-token.
 		//test url with token=> http://localhost/yii2_REST_and_Rbac_2019/yii-basic-app-2.0.15/basic/web/rests?access-token=1111
-		/*'authenticator' => [
+		'authenticator' => [
             'class' => CompositeAuth::className(),
             'authMethods' => [
                 HttpBasicAuth::className(),
                 HttpBearerAuth::className(),
                 QueryParamAuth::className(),
             ],
-        ], */
+        ], 
 		//END This enables REST API Authorized access only (with token only). Token is stored in DB, field "access-token" Comment it and Rest Api will work without access-token.
 
 		
 		
-		//may list here other behaviour settings........
+		//u may list here other behaviour settings........
+		
+		//RateLimeter
+		'rateLimiter' => [
+		   'class' => \yii\filters\RateLimiter::className(),
+		   'enableRateLimitHeaders' => false,
+		],
+		//END RateLimeter
+		
+		 //u may list here other behaviour settings........
     ]
 	
 	

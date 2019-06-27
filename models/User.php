@@ -23,7 +23,7 @@ use yii\web\IdentityInterface;
  * @property integer $updated_at
  * @property string $password write-only password
  */
-class User extends ActiveRecord implements IdentityInterface
+class User extends ActiveRecord implements IdentityInterface, \yii\filters\RateLimitInterface
 {
     const STATUS_DELETED = 0;
     const STATUS_ACTIVE = 10;
@@ -72,16 +72,21 @@ class User extends ActiveRecord implements IdentityInterface
  
  
  
+ 
+ 
     /**
      * @inheritdoc
+	 //MINE //to use API Auth token, now it uses tokens stored in models/RestAccessTokens -> DB {rest_access_tokens}
      */
     public static function findIdentityByAccessToken($token, $type = null)
     {
-		 return \app\models\RestAccessTokens::findOne(['rest_tokens' => $token]); //MINE //to use API Auth token, now it uses tokens stored in models/RestAccessTokens -> DB {rest_access_tokens}
+		 return \app\models\RestAccessTokens::findOne(['rest_tokens' => $token]); 
 
 		//return static::findOne(['access_token' => $token]); //MINE //FOR USE API Auth token
         //throw new NotSupportedException('"findIdentityByAccessToken" is not implemented.');
     }
+ 
+ 
  
  
  
@@ -164,5 +169,51 @@ class User extends ActiveRecord implements IdentityInterface
         unset($fields['auth_key'], $fields['password_hash'], $fields['password_reset_token']);
         return $fields;
    }
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+    public $rateLimit = 1;
+    public $allowance;
+    public $allowance_updated_at;
+
+   
+   
+   //START yii\filters\RateLimitInterface
+   public function getRateLimit($request, $action)
+   {
+       return [$this->rateLimit/*1*/, 20]; // $rateLimit-> quantity of request per 20 sec
+   }
+
+   public function loadAllowance($request, $action)
+   {
+       return [$this->allowance, $this->allowance_updated_at];
+   }
+
+   public function saveAllowance($request, $action, $allowance, $timestamp)
+  {
+      $this->allowance = $allowance;
+      $this->allowance_updated_at = $timestamp;
+      $this->save();
+  }
+   //END yii\filters\RateLimitInterface
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
  
 }

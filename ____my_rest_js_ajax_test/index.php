@@ -50,8 +50,8 @@
 					  //this file must be run on localhost(i.e must have .php extension not .html)
 					  //By default Yii2 rest returns xml, but it must not bother,just specify in ajax {contentType: "application/json; charset=utf-8",} and it will return json
 				      $.ajax({
-						  //url: '../web/rest', //url if 'authenticator' => is disabled in controllers/RestController
-                          url: '../web/rest?access-token=57Wpa-dlg-EonG6kB3myfsEjpo7v8R5b',
+						  //url: '../web/rest',  //url if 'authenticator' => is disabled in controllers/RestController
+                          url: '../web/rest?access-token=57Wpa-dlg-EonG6kB3myfsEjpo7v8R5b', //we use here url with this user access-token(from DB), it is universal, if authenticator' => is disabled, the script just won't pay attaention to this $_GET['access-token']
                           type: 'GET', //must be GET, as it is REST /GET method
 						  crossDomain: true,
 						  contentType: "application/json; charset=utf-8",

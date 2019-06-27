@@ -66,12 +66,10 @@ $config = [
 ],
 */		
 	
-        //my RBAC
+        //Set my RBAC-----------------
         'authManager' => [
             'class' => 'yii\rbac\DbManager',
         ],
-	
-	
 	
         'cache' => [
             'class' => 'yii\caching\FileCache',
@@ -80,11 +78,51 @@ $config = [
             'identityClass' => 'app\models\User',
             'enableAutoLogin' => true,
         ],
+		//END Set my RBAC---------------
+		
+		
 		
 		//setting error handler
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
+		
+		
+		//Set multilanguages---------------
+		// set target language to be Russian
+        'language' => 'ru-RU', //looks like not obligatory, I added new 'my-Lang', withuot adding it to config
+        // set source language to be English
+        'sourceLanguage' => 'en-US',
+		
+		
+		'i18n' => [
+        'translations' => [
+            'app*' => [
+                'class' => 'yii\i18n\PhpMessageSource',
+                //'basePath' => '@app/messages',
+                //'sourceLanguage' => 'en-US',
+                'fileMap' => [
+                    'app' => 'app.php',
+                    'app/error' => 'error.php',
+                ],
+              ],
+          ],
+        ],
+		//END Set multilanguages------------
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		
         'mailer' => [
             'class' => 'yii\swiftmailer\Mailer',
