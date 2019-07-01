@@ -54,16 +54,27 @@ class MultilanguageController extends Controller
 	
 	
 	
-    //--------------------------------------------------------
-	//Action renders basic view with language dropdown and string translations if any language is enabled
+//Action that renders basic view with language dropdown and string translations if any language is enabled
+//now available: 'ru-RU', 'en-US', 'my-Lang', 'dk-DK'
+// **************************************************************************************
+// **************************************************************************************
+// **                                                                                  **
+// **                                                                                  **
+	
     public function actionIndex()
     {
-		$modelX =  new MultuLang();
 		
-		if ($modelX->load(Yii::$app->request->post()) && $modelX->validate() /*&& $modelToken->save()*/ ) {
+		$modelX =  new MultuLang();
+		/*
+		if ($modelX->load(Yii::$app->request->post()) && $modelX->validate()  ) { //&& $modelToken->save()
 			 $modelX->q = "fddfd"; 
 			 throw new \yii\web\NotFoundHttpException("works");
 		 }
+		 */
+		
+		$lang = Yii::$app->getRequest()->getQueryParam('l');
+		\Yii::$app->language = $lang; 
+		
 		
         return $this->render('index', [
             'modelX' => $modelX,
@@ -75,18 +86,37 @@ class MultilanguageController extends Controller
 	
 	
 	
-	
-	//Action that response to changing languages in actionIndex()
+//NOT USED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// **************************************************************************************
+// **************************************************************************************
+// **                                                                                  **
+// **                                                                                  **
+
+	//Action that response to changing languages in actionIndex() //now available: 'ru-RU', 'en-US', 'my-Lang', 'dk-DK'
 	public function actionSetlanguage()
 	{
+		/*
 		$model =  new MultuLang();
-		
 		throw new \yii\web\NotFoundHttpException("works");
 		
-		if ($model->load(Yii::$app->request->post())  /*&& $modelToken->save()*/ ) {
+		if ($model->load(Yii::$app->request->post())  ) {    //&& $modelToken->save()
 			throw new \yii\web\NotFoundHttpException("works");
         }
-	
+	    */
+		
+		$lang = Yii::$app->getRequest()->getQueryParam('l');
+		\Yii::$app->language = $lang; 
+		return $this->redirect(Yii::$app->request->referrer);
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 }

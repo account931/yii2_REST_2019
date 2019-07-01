@@ -58,14 +58,16 @@ $menuItems = [
 	
 	
 	//Start submenu
-    ['label' => 'Rest',  
+    ['label' => 'Rest & other',  
         'url' => ['#'],
         'template' => '<a href="{url}" >{label}<i class="fa fa-angle-left pull-right"></i></a>',
         'items' => [
             
             ['label' => 'Rest Controller (core)', 'url' => ['/rest/index', "access-token" => "57Wpa-dlg-EonG6kB3myfsEjpo7v8R5b", ]],   //rest controller //we use here url with this user access-token(from DB), it is universal, if authenticator' => is disabled, the script just won't pay attaention to this $_GET['access-token']
-            ['label' => 'Rest Module (minor, no use)', 'url' => ['/admin/default/index']], //separate module with it's own controller
-			['label' => 'MultiLanguage', 'url' => ['/multilanguage/index']],
+            ['label' => 'Rest Controller (my custom action)', 'url' => ['/rest/new', "access-token" => "57Wpa-dlg-EonG6kB3myfsEjpo7v8R5b", ]], //my custom rest action with WHERE statement
+			['label' => 'Rest Module (minor, no use)', 'url' => ['/admin/default/index']], //separate module with it's own controller
+			['label' => 'MultiLanguage', 'url' => ['/multilanguage/index']], //page with different language translation
+			['label' => 'Booking CPH', 'url' => ['/booking-cph/index']], //BookingCphController
 			['label' => 'Codexception', 'url' => ['/site/codexcept']],
 			
             //submenu with image,(won't  work  without  {encodeLabels' => false,}  ,  it  is  inserted  below)   /*/yii/basic_download/web*/

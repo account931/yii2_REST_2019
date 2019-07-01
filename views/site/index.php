@@ -20,8 +20,9 @@ $this->title = 'My Yii REST';
     <div class="body-content">
 
         <div class="row">
-            <div class="col-lg-4">
-                <h2>Rest & RBAC</h2>
+            <div class="col-lg-6">
+                <h2>Rest & RBAC <span class="glyphicon glyphicon-fire" style="font-size:1.2em"></span></h2>
+				
 
                 <p>
 				    This Yii2 application includes Restful API and RBAC management table. RBAC management table displays RBAC management table(based on 3table InnerJoin).<br><br>
@@ -35,7 +36,7 @@ $this->title = 'My Yii REST';
                 <br><p><a class="btn btn-default" href="http://www.yiiframework.com/doc/">Yii Documentation &raquo;</a></p>
             </div>
 			
-            <div class="col-lg-4">
+            <!--<div class="col-lg-4">
                 <h2>Info</h2>
                 <p>
 				     To get necessary DB table for this project, apply migrations:<br>
@@ -44,11 +45,11 @@ $this->title = 'My Yii REST';
 				</p>
 
                 <p><a class="btn btn-default" href="http://www.yiiframework.com/forum/">Yii Forum &raquo;</a></p>
-            </div>
+            </div>-->
 			
 			
-            <div class="col-lg-4">
-                <h2>RBAC</h2>
+            <div class="col-lg-6">
+                <h2>RBAC <span class="glyphicon glyphicon-fire" style="font-size:1.2em"></span></h2>
 
                 <p>
 				 1. Rbac works using 2 tables: {auth_items} DB (keeps all rbac roles & descriptions) and {auth_assignment} DB (keeps pairs: rbac role - userID, who has this role).<br>

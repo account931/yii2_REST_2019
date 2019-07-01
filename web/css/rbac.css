@@ -23,3 +23,14 @@
   color: white;
 }
 /* END Rbac table */
+
+
+
+/* ---------------------------------------- Mobile */
+@media screen and (max-width: 480px) { 
+   #unlck {width:74%;} /* No access img in site/rbac (views/no-access.php)
+}
+/* ---------------------------------------- Mobile */
+
+
+

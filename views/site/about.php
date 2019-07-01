@@ -17,7 +17,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <!--<code><?= __FILE__ ?></code>-->
 	
 	 <div class="alert alert-danger">
-        <?= nl2br("<h4><span class='glyphicon glyphicon-flag' style='font-size:38px;'></span> This page is available for users with <b>adminX</b> access roles only </h4><br>"); ?>
+        <?= nl2br("<h4><span class='glyphicon glyphicon-flag' style='font-size:38px;'></span> This page is available for users with <b>adminX</b> access roles only. Your role will be checked, see status below... </h4><br>"); ?>
     </div>
 	
 	

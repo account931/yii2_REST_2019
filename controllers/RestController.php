@@ -157,7 +157,7 @@ public function behaviors()
     {
 		$result = User::find()
             //->where(['>', 'population', 70000000])
-			//->where(['email' => Yii::$app->user->identity->username])
+			->where(['email' => 'dima@ukr.net' /*Yii::$app->user->identity->username*/])
             ->all();
         return $result;
 		

@@ -580,6 +580,8 @@ How to add multilanguages:
 #Safe Echo text in view=>  <?= HtmlPurifier::process($model->mydb_g_am ." geo  per  ") ;  ?>
 
 #Url name rule for actions like {actionAddAdmin} => {['/site/add-admin']]}
+#Url name rule for Controllers like {BookingCphController}  => {['/booking-cph/index']]}. Views/booking-cph/index.php
+
 #gets array with current user all roles rights=> $myRoles = Yii::$app->authManager->getRolesByUser(Yii::$app->user->identity->id); 
 #Image  echo Html::img(Yii::$app->getUrlManager()->getBaseUrl().'/images/addarrow.gif' , $options = ["id"=>"sx","margin-left"=>"3%","class"=>"sunimg","width"=>"12%","title"=>"click to add a  new  one"] ); ?>
 

@@ -19,11 +19,15 @@ class AppAsset extends AssetBundle
 {
     public $basePath = '@webroot';
     public $baseUrl = '@web';
+	
     public $css = [
         'css/site.css',
 		'css/rbac.css', //rbac css
+		'css/bookingcph.css', //booking CPH css
     ];
+	
     public $js = [
+	    'js/booking_cph.js', //booking CPH JS
     ];
     public $depends = [
         'yii\web\YiiAsset',

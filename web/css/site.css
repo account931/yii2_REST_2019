@@ -132,4 +132,7 @@ a.desc:after {
 }
 /* ---------------------------------------- Mobile */
 
-
+/*small flags in dropdown in multilanguage/index */
+.small-flag img {
+	width: 6%;
+}
