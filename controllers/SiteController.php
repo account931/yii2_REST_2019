@@ -16,6 +16,8 @@ use app\models\AuthAssignment; //table with Rbac roles $ users' id assigned to t
 use app\models\TestForm; //model for sql table for testing form CRUD
 use app\models\RestAccessTokens; //model for table storing users tokens for Rest API 
 
+use app\models\ChangePasswordForm;
+
 class SiteController extends Controller
 {
     /**
@@ -34,10 +36,10 @@ class SiteController extends Controller
 				 //END To show message to unlogged users. Without this unlogged users will be just redirected to login page
 				 
 				//following actions are available to logged users only 
-                'only' => ['logout', 'add-admin', 'get-token'], //actionGetToken
+                'only' => ['logout', 'add-admin', 'get-token', 'change-password'], //actionGetToken, actionChangePassword
                 'rules' => [
                     [
-                        'actions' => ['logout', 'add-admin', 'get-token'],
+                        'actions' => ['logout', 'add-admin', 'get-token', 'change-password'], //actionGetToken, actionChangePassword
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -625,6 +627,43 @@ class SiteController extends Controller
 // **                                                                                  **
 // **************************************************************************************
 // **************************************************************************************
+
+
+
+
+
+    
+	
+	
+	
+//action to change a password
+// **************************************************************************************
+// **************************************************************************************
+// **                                                                                  **
+// **                                                                                  **
+	
+	public function actionChangePassword()
+    {
+        $id = \Yii::$app->user->id;
+ 
+        try {
+           $model = new ChangePasswordForm($id);
+        } catch (InvalidParamException $e) {
+            throw new \yii\web\BadRequestHttpException($e->getMessage());
+        }
+ 
+        if ($model->load(\Yii::$app->request->post()) && $model->validate() && $model->changePassword()) {
+           \Yii::$app->session->setFlash('success', 'Password Changed!');
+        }
+ 
+       return $this->render('changePassword', [
+           'model' => $model,
+       ]);
+   }
+
+
+
+
 
 
 

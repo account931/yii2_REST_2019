@@ -25,7 +25,7 @@ $this->title = 'My Yii REST';
 				
 
                 <p>
-				    This Yii2 application includes Restful API and RBAC management table. RBAC management table displays RBAC management table(based on 3table InnerJoin).<br><br>
+				   <b>This Yii2 application includes Restful API and RBAC management table.</b><br> RBAC management table displays RBAC management table(based on 3table InnerJoin).<br><br>
 				    Table of content:<br>
 					1.How to test REST API from non-Yii2 file.<br>
                     2.Rbac access management table + collapsed form to add a new Rbac to all rbac roles, i.e to auth_items DB.<br>
@@ -52,6 +52,8 @@ $this->title = 'My Yii REST';
                 <h2>RBAC <span class="glyphicon glyphicon-fire" style="font-size:1.2em"></span></h2>
 
                 <p>
+				 <b>This YIi2 Basic uses stack:</b> <br>  #RESTful API, custom REST action (with WHERE statement),<br> #RBAC roles (if(Yii::$app->user->can('adminX')), <br>  #SLQ DB registration/login, <br> #multilanguage, token generator, booking.
+				 <br><br>
 				 1. Rbac works using 2 tables: {auth_items} DB (keeps all rbac roles & descriptions) and {auth_assignment} DB (keeps pairs: rbac role - userID, who has this role).<br>
                  Rbac managements table is created via php, updated via ajax.A collapsed form to add a new role uses php only.<br>
                  2. Rbac management table (created in siteController/actionRbac) displays all users from DB {users}, even those who are not in {auth_assignment } due to InnerRight. <br>

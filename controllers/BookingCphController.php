@@ -8,7 +8,7 @@ use yii\web\Controller;
 use yii\web\Response;
 use yii\filters\VerbFilter;
 
-//use app\models\AuthItem; //table Booking dates
+use app\models\BookingCph; //table BookingCph, SQL table{booking_cph}
 
 
 class BookingCphController extends Controller
@@ -84,7 +84,21 @@ class BookingCphController extends Controller
  // **                                                                                  **
  // **                                                                                  **
     {
+	 date_default_timezone_set('UTC');  //use ('UTC') to avoid -1 day result    //('europe/kiev')	('UTC')
 		
+	 $model = new BookingCph(); //model of SQL table{booking_cph},  models/BookingCph. Used pass to view to create a form.
+	 
+	 //just for test, gets all record from SQL table{booking_cph}
+	 $all_records = BookingCph::find()->where(['book_user' => Yii::$app->user->identity->username])->all();
+	 
+	 //if u filled in the form to book a new date range for a new guest
+	 if ($model->load(\Yii::$app->request->post()) && $model->save()) {
+           \Yii::$app->session->setFlash('successX', 'Successfully Booked');
+     }
+	 
+	 
+	 
+	 //gets current month/year
 	 $current = date('M', strtotime(date('Y-m'))) . " " . date('Y', strtotime(date('Y-m')));
 		
 	 // FIND SQL DATA for ALL Future MONTHS IN FOR LOOP
@@ -100,7 +114,7 @@ class BookingCphController extends Controller
         //END DATE for Previous month  ONLY-------------------------------
 		
      } // END FOR(++)
-//END  FIND SQL DATA for ALL PREVIOUS MONTHS IN FOR LOOP
+    //END  FIND SQL DATA for ALL PREVIOUS MONTHS IN FOR LOOP
 
 
 
@@ -108,17 +122,22 @@ class BookingCphController extends Controller
 
         
         return $this->render('index' , [
-            //'model' => $model,
+            'model' => $model,  //form model of models/BookingCph
 			'current' => $current, // Act Record only- for current month summary
             'current1' => $current1, // Act Record only- for Previous month summary-> created dynamiclyy in for loop
             'current2' => $current2, // Act Record only- for Previous month summary
             'current3' => $current3, // Act Record only- for Previous month summary
             'current4' => $current4, 
             'current5' => $current5, 
-            //'current6' => $current6, 
+           //'current6' => $current6, 
+		    'all_records' => $all_records //just for test, gets all record from SQL table{booking_cph}
+			
         ]);
     }
-
+    
+	// **                                                                                  **
+    // **************************************************************************************
+    // **************************************************************************************
 	
 	
 	
