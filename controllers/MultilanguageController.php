@@ -63,8 +63,9 @@ class MultilanguageController extends Controller
 	
     public function actionIndex()
     {
+		$session = Yii::$app->session;//opens session
 		
-		$modelX =  new MultuLang();
+		$modelX =  new MultuLang(); //new model object
 		/*
 		if ($modelX->load(Yii::$app->request->post()) && $modelX->validate()  ) { //&& $modelToken->save()
 			 $modelX->q = "fddfd"; 
@@ -72,12 +73,31 @@ class MultilanguageController extends Controller
 		 }
 		 */
 		
-		$lang = Yii::$app->getRequest()->getQueryParam('l');
-		\Yii::$app->language = $lang; 
+		//check if $_GET['l'] is NOT set
+		if (!$lang = Yii::$app->getRequest()->getQueryParam('l')){ //gets $_GET['l'] param), we check if $_GET['l'] is NOT set
+		
+		    if(!$languageX =  $session->get('language')){ //check if language is NOT set in Session
+		        //if no language is set,set it to "en-US" by default/ Otherwise, it display no lanaguage status during the 1st visit
+                if(!\Yii::$app->language) {
+	               \Yii::$app->language = 'en-US';
+	            }
+		    } else { //if language is set in Session use it
+                \Yii::$app->language = $session->get('language');		
+		    }
+		
+        //if $_GET['l'] is set, then use it
+		} else {
+		
+		    $lang = Yii::$app->getRequest()->getQueryParam('l'); //gets $_GET['l'] param
+		    \Yii::$app->language = $lang; //set the Yii language
+		    $session->set('language', $lang); //saves the Yii2 language to Session
+		}
+		
 		
 		
         return $this->render('index', [
             'modelX' => $modelX,
+			'lang' => \Yii::$app->language,//passing the language
         ]);
     }
 

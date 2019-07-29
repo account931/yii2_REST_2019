@@ -18,9 +18,11 @@ $this->params['breadcrumbs'][] = $this->title;
 
  <?php
    //if no language is set,set it to "en-US" by default/ Otherwise, it display no lanaguage status during the 1st visit
-   if(!\Yii::$app->language) {
-	   \Yii::$app->language = 'en-US';
-	}
+   //if(!\Yii::$app->language) {
+	   \Yii::$app->language = $lang; //set the language; $lang is from controller //\Yii::$app->language = 'en-US';
+   //}
+	
+	
 	
 	
  /*
@@ -94,7 +96,7 @@ $this->params['breadcrumbs'][] = $this->title;
   echo \Yii::t('app', 'This is a string to translate!'); //echo engl or russ string according to settings
   
   
-  
+  //echo "<br>we passed " . $lang . "<br>";
 ?> 
 
 </div>

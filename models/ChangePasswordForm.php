@@ -96,7 +96,7 @@ class ChangePasswordForm extends Model
 		//we don't need to encrypt a password entered by a user to hash to compare, Yii::$app->getSecurity()->validatePassword() does it by itself
 		if (!Yii::$app->getSecurity()->validatePassword($this->old_password, $password_hash_from_DB)){ //check if old password in DB===password just enetered by user now
 		//if($password!=\Yii::$app->security->generatePasswordHash($this->old_password)){
-                $this->addError($attribute,'Old password is incorrect');
+                //$this->addError($attribute,'Old password is incorrect');
 				Yii::$app->getSession()->setFlash('failed', "Old Password is incorrect-> ");
 				return false;
         }

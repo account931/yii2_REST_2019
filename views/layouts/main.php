@@ -69,6 +69,7 @@ $menuItems = [
 			['label' => 'MultiLanguage', 'url' => ['/multilanguage/index']], //page with different language translation
 			['label' => 'Booking CPH', 'url' => ['/booking-cph/index']], //BookingCphController
 			['label' => 'Change password', 'url' => ['/site/change-password']], //edit password
+			['label' => 'HasMany::relation', 'url' => ['/site/has-many']],
 			['label' => 'Codexception', 'url' => ['/site/codexcept']],
 			
             //submenu with image,(won't  work  without  {encodeLabels' => false,}  ,  it  is  inserted  below)   /*/yii/basic_download/web*/

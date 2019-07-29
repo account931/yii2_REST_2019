@@ -636,7 +636,7 @@ class SiteController extends Controller
 	
 	
 	
-//action to change a password
+//action to change a password. Contains extra specific logic in models/ChangePasswordForm.php -> function changePassword()
 // **************************************************************************************
 // **************************************************************************************
 // **                                                                                  **
@@ -665,6 +665,30 @@ class SiteController extends Controller
 
 
 
+   
+   
+   
+   
+//hasMany relations, see more info at /Readme_YII2_mine_Common_Comands.txt => 16. Has Many relation 
+// **************************************************************************************
+// **************************************************************************************
+// **                                                                                  **
+// **                                                                                  **
+	
+	public function actionHasMany()
+    {
+       
+       $model = new AuthItem(); //Not used???
+	   
+	   $currentUser = User::findOne(Yii::$app->user->identity->id); //just find current user
+	   $orders = $currentUser->tokens; //call hasMany action //Token is a function getTokens
+	   
+       return $this->render('has-many', [
+           'model' => $model,
+		   'currentUser' => $currentUser, //current user
+		   'orders'=> $orders //hasMany result
+       ]);
+   }
 
 
 

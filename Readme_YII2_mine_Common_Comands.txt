@@ -34,6 +34,7 @@ Table of contents:
 13.Yii Access Filter (ACF)
 14.Register custom assets (js, css)
 15.Multilanguages
+16. Has Many relation
 
 98.V.A(ActRec,create URL, redirect, get $_POST[''], etc)
 99. Known Errors
@@ -514,6 +515,8 @@ How to:
  
 =====================================================
 15.Multilanguages
+(see live example at MultilanguageController/public function actionIndex())
+NB: setting is reset to null on reload, u should save selected language to Session)
 How to add multilanguages:
   1. Add to main config (for basic it is /config/web.php)=>
         return [
@@ -554,6 +557,34 @@ How to add multilanguages:
        ],
 ],
  
+ 
+ 5. You can change/set current language with the below code. 
+            \Yii::$app->language = $lang;
+ 
+ NB: language setting is reset to null on reload, u should save selected language to Session) 
+      $session = Yii::$app->session;//opens session
+	  $session->set('language', $someValue);
+ 
+ 
+ 
+ 
+ 
+ 
+=====================================================
+16. Has Many relation 
+(see live example at SiteController/public function actionHasMany())
+ How to connect 2 SQL DB with relations ():
+ 1. Create a getter in model which will have realtion hasMany {this model(DB) iq can have many connections in other DBs}.
+    Getter name must start with get:
+	
+	  public function getTokens(){
+       return $this->hasMany(RestAccessTokens/*AuthAssignment*/::className(), ['r_user' => 'id']); //args=> (model/db name to connect, this model/DB column name => second model/db name id// Db fields which cooherent each other(from 2 DBs)
+      }
+  2. Then u can use this Getter in Controller:
+     $currentUser = User::findOne(Yii::$app->user->identity->id); //just find current user
+	 $orders = $currentUser->tokens; //call hasMany action //Token is a function getTokens
+  
+   
  
  
  

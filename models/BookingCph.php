@@ -45,8 +45,8 @@ class BookingCph extends \yii\db\ActiveRecord
     {
         return [
             'book_id' => 'Book ID',
-            'book_user' => 'Book User',
-            'book_guest' => 'Book Guest',
+            'book_user' => 'User/Owner (You)',
+            'book_guest' => 'Guest name u want to settle',
             'book_from' => 'Book From',
             'book_to' => 'Book To',
             'book_from_unix' => 'Book From Unix',
@@ -61,12 +61,12 @@ class BookingCph extends \yii\db\ActiveRecord
 	
 	
 	
-//beforeSave();
+//beforeSave(); //convert date to unixTime & assign to SQL db field
 // **************************************************************************************
 // **************************************************************************************
 //                                                                                     **
-//------------------------
-//does not  work  at all-> WORKS!!!!!!!!!!!!!!!!!!!! (wasn't  working  beacause  used $_POST['Mydbstart']['mydb_v_am'] instead of  $this->mydb_v_am )
+
+//WORKS!!!!!!!!!!!!!!!!!!!! (wasn't  working  because  used $_POST['Mydbstart']['mydb_v_am'] instead of  $this->mydb_v_am )
 public function beforeSave($insert)  //$insert
 {
     if (parent::beforeSave(false)) {
@@ -79,7 +79,7 @@ public function beforeSave($insert)  //$insert
         //END NEW
 		
              if (!empty($this->book_from) && !empty($this->book_to )){ 
-                 $this->book_from_unix = strtotime($this->book_from);  //convert date to unix & assign to SQL db field
+                 $this->book_from_unix = strtotime($this->book_from);  //convert date to unixTime & assign to SQL db field
 				 $this->book_to_unix = strtotime($this->book_to);  //convert date to unix & assign to SQL db field
              }// END if(!empty($this->mydb_v_am)) 
                  

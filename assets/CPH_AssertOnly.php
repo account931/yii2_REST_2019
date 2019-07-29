@@ -15,19 +15,19 @@ use yii\web\AssetBundle;
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @since 2.0
  */
-class AppAsset extends AssetBundle
+class CPH_AssertOnly extends AssetBundle
 {
     public $basePath = '@webroot';
     public $baseUrl = '@web';
 	
     public $css = [
-        'css/site.css',
-		'css/rbac.css', //rbac css
-		//'css/bookingcph.css', //booking CPH css-> moved to a separate assert CPH_AssertOnly.php
+        //'css/site.css',
+		//'css/rbac.css', //rbac css
+		'css/bookingcph.css', //booking CPH css
     ];
 	
     public $js = [
-	    //'js/booking_cph.js', //booking CPH JS -> moved to a separate assert CPH_AssertOnly.php
+	    'js/booking_cph.js', //booking CPH JS
     ];
     public $depends = [
         'yii\web\YiiAsset',

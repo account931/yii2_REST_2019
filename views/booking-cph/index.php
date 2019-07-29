@@ -1,4 +1,7 @@
 <?php
+//View for Booking CPH
+//USES ajax, ALL JS IS IN -> web/js/booking_cph.js!!!!
+
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Url;
@@ -6,6 +9,10 @@ use yii\helpers\Url;
 //use yii\helpers\BaseHtml;
 /* @var $this yii\web\View */
 
+
+ use app\assets\CPH_AssertOnly;   // use your custom asset
+ CPH_AssertOnly::register($this); // register your custom asset to use this js/css bundle in this View only(1st name-> is the name of Class)
+	   
 $this->title = 'Booking';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -69,8 +76,8 @@ $this->params['breadcrumbs'][] = $this->title;
 		   $model->book_user = Yii::$app->user->identity->username; //set default value for username ?>
            <?= $form->field($model, 'book_user')->textInput(['maxlength' => true, /*'value'=> $d*/ ]); ?>
            <?= $form->field($model, 'book_guest' /*,  ['enableAjaxValidation' => true]*/)->textInput() ?>
-		   <?//= $form->field($model, 'book_from') ?>
-		   <?//= $form->field($model, 'book_to') ?>
+		   <?/*= $form->field($model, 'book_from')*/ ?>
+		   <?/*= $form->field($model, 'book_to')*/ ?>
 		   <!--<lable> from &nbsp;</lable><input type="date" value="" id="calendarPick_from"/> 
 		   <lable>&nbsp;&nbsp;&nbsp;to </lable><input type="date" value="" id="calendarPick_to"/><hr>-->
 		   
@@ -100,20 +107,24 @@ $this->params['breadcrumbs'][] = $this->title;
  
  
  
- 
- 
+  <!------------ Div that will hold all 6 month (htmled with ajax) js/booking_cph.js/function get_6_month()--------> 
+  <div class="row all-6-month">
     <?php
-	 //START dislaying all future 6 month--------
+	 //START dislaying all future 6 month, was used just for test--------
 	 //displays current month ($current is from Controller)
-	 echo '<div class="col-sm-3 col-xs-5 my-month badge badge1" id="0"><span class="v">' . $current  . '</div>'; 
+	 /*echo '<div class="col-sm-3 col-xs-5 my-month badge badge1" id="0"><span class="v">' . $current  . '</div>'; 
 	
 	 //echo 5 future months ($current is from Controller)
 	 for ($i = 1; $i < 6; $i++){    //($i=1; $i<4; $i++) // for 5 future months
 	     echo '<div class="col-sm-3 col-xs-5 my-month badge badge1" id='. $i . '> <span class="v">' . ${'current'.$i}  . '</span></div>';
-	 }
-	 //START dislaying all future 6 month-------
+	 }*/
+	 //END dislaying all future 6 month-------
 	?>
-
+  </div><!-- END  class="row all-6-month"-->
+  <!------------ END Div that will hold all 6 month (htmled with ajax) js/booking_cph.js/function get_6_month()-------->
+  
+  
+  
 	
     <!-- Div that will dispaly 1 single selected month -->
     <div class="col-sm-12 col-xs-12 single-clicked-month">
