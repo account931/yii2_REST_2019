@@ -6,10 +6,12 @@ To get necessary DB table for this project, apply migration:
  #for Users(see Readme_YII2_mine_Common_Comands.txt ->5.Yii2 basic. Registration, login via db.)
  #for Rbac (see Readme_YII2_mine_Common_Comands.txt -> 8.Yii RBAC)
 
+TABLE OF CONTENT:
 1.HOW TO TEST REST API from non-Yii2 file.
 2.Rbac access management table + collapsed form to add a new Rbac to all rbac roles, i.e to auth_items DB.
 3.Automatically become an {adminX} (i.e gets adminX role) by going to link (actionAddAdmin).
 4.RestFul Api.
+5.Booking CPH
 
 
 
@@ -84,6 +86,20 @@ Currently, any user, who visits this page wil get adminX rbac role.
 
 
 
-
+//============================================================================
 4.RestFul Api.
 RestFull Api-> see {Readme_YII2_mine_Common_Comands.txt}
+
+
+
+
+
+//===========================================================================
+5.Booking CPH
+How Booking CPH works (booking a flat for any day in further 6 month)
+
+
+
+
+
+

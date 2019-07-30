@@ -128,6 +128,7 @@ class BookingCphController extends Controller
 	
 	
 	//function that works with ajax sent from js/booking_cph.js -> function get_6_month()
+	//gets data for all 6 months
     public function actionAjax_get_6_month() //ajax
     // **************************************************************************************
     // **************************************************************************************
@@ -261,6 +262,89 @@ class BookingCphController extends Controller
     // **************************************************************************************
 
 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	//function that works with ajax sent from js/booking_cph.js -> function get_1_single_month(thisX)
+	//gets data from SQL for 1 single clicked month
+    // **************************************************************************************
+    // **************************************************************************************
+    // **                                                                                  **
+    // **                                                                                  **
+	 public function actionAjax_get_1_month() //ajax
+     {
+		 
+		 //Since Yii 2.0.14 you cannot echo in controller. Response must be returned:
+		 
+		 $array_1_Month_days = array();//will store 1 month data days, ie [5,6,7,8]
+		
+		 
+		 $start = 1561939200; //$_POST['serverFirstDayUnix']; //var is from ajax 
+		 $end = 1564531200; //$_POST['serverLastDayUnix']; //var is from ajax 
+		 
+		 //find all this 1 single month data
+		 $thisMonthData = BookingCph::find() ->orderBy ('book_id DESC')  /*->limit('5')*/ ->where([ 'book_user' => Yii::$app->user->identity->username, /* 'mydb_id'=>1*/   ])  ->andWhere(['between', 'book_from_unix', $start, $end  ])   /*->andFilterWhere(['like', 'supp_date', $PrevMonth])  ->andFilterWhere(['like', 'supp_date', $PrevYear])*/    ->all(); 
+	     $text ="<table>";
+		 $text.= "<tr><td>Mon</td><td>Tues</td><td>Wed</td><td>Thur</td><td>Fri</td><td>Sat</td><td>Sun</td></tr>";
+		 
+		 
+		 foreach ($thisMonthData as $a)
+		 {
+			$startDate = explode("-", $a->book_from); //i.e 2019-07-04 split to [2019, 07, 04]  
+			$diff = ( $a->book_to_unix - $a->book_from_unix)/60/60/24; // . "<br>";  //$diff = number of days, i.e 17 (end - start)
+			
+			for($i = 0; $i < $diff+1; $i++){
+			   $d = (int)$startDate[2]++; //int to remove 0 if any
+			   array_push($array_1_Month_days, $d ); //adds to array booked days
+		    }
+			 
+		 }
+		 
+		 $dayofweek = "first day is " . date('w', $start); //return the day of week, i.e 1. 1 means Monday
+		 array_push($array_1_Month_days, $dayofweek ); 
+		 
+		 //just form $text to output, as we cane return array
+		 foreach($array_1_Month_days as $x){
+			 //$text.= $x . "<br>";
+		 }
+		 
+		 
+		 for($i = 1; $i < count($array_1_Month_days); $i++){
+			 
+			 if($i%7 == 0){$text.= "<tr>";}
+			 $text.= "<td>$i</td>";
+		 }
+		 
+		 
+		 $text.= "</table>";
+		 
+		 return $text;
+		 //return "OK <br>";
+	 }
+		
+	// **                                                                                  **
+    // **************************************************************************************
+    // **************************************************************************************	
+		
+		
+		
+	
+	
+	
+	
 	
 
 

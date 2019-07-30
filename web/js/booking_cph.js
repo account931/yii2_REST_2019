@@ -17,7 +17,10 @@ $(document).ready(function(){
 	
 	
 	
-	 //clicking on any month
+	
+	
+	
+	 //clicking on any 1 one single  month (any of 6 month)
 	// **************************************************************************************
     // **************************************************************************************
     //                                                                                     ** 
@@ -31,8 +34,12 @@ $(document).ready(function(){
 		  
 		  
 	      //alert(this.id);
-		  var idX = this.id;
+		  /*var idX = this.id;
 		  $(".single-clicked-month").stop().fadeOut("slow",function(){  $(this).html( idX ) }).fadeIn(2000);
+		  */
+		  
+
+		  get_1_single_month(this); //pass this to get this attributes
 	 });
 	
 	
@@ -96,7 +103,7 @@ $(document).ready(function(){
     // **************************************************************************************
     //                                                                                     ** 
 	
-	function getAjaxAnswer_andBuild_6_month(dataX){
+	function getAjaxAnswer_andBuild_6_month(dataX){ //dataX is an ajax result from a BookingCphControler/public function actionAjax_get_6_month() //ajax
 		//alert(dataX.array_All_CountDays);
 		
 		//HTML This 1 current month
@@ -104,7 +111,10 @@ $(document).ready(function(){
 		
 		//HTML other 
 		for(var i = 0; i < dataX.array_All_CountDays.length; i++){
-			finalText+= '<div class="col-sm-3 col-xs-5 my-month badge badge1" data-badge="' + dataX.array_All_CountDays[i] + '" id='+ i + '> <span class="v">' + dataX.allMonths[i]  + '</span></div>';
+			finalText+= '<div class="col-sm-3 col-xs-5 my-month badge badge1"' + 
+			            'data-badge="' + dataX.array_All_CountDays[i] +  //data badge (amount of booked days in month (round red circle))
+						'" data-myUnix=' + dataX.array_All_Unix[i][0] + '/' + dataX.array_All_Unix[i][1] + //additional "data-myUnix" to keep Unix time of the 1st and last days of the formed month, i.e = 43643483/3647634
+						' id=' + i + '> <span class="v">' + dataX.allMonths[i]  + '</span></div>';
 		}
 		
 
@@ -127,6 +137,54 @@ $(document).ready(function(){
 	
 	
 	
+	
+	
+	
+	
+	
+	//Function to draw one single month
+	// **************************************************************************************
+    // **************************************************************************************
+    //                                                                                     ** 
+	
+	 function get_1_single_month(thisX){
+		 var Unix = thisX.getAttribute("data-myUnix");
+		 var firstDayUnix = Unix.split("/")[0];
+		 var lastDayUnix = Unix.split("/")[1];
+		 //alert(firstDayUnix);
+		 
+		 //getting the path to current folder with JS to form url for ajax, i.e /yii2_REST_and_Rbac_2019/yii-basic-app-2.0.15/basic/web/booking-cph/ajax_get_6_month
+		 var loc = window.location.pathname;
+         var dir = loc.substring(0, loc.lastIndexOf('/'));
+		 var urlX = dir + '/ajax_get_1_month';
+		  //alert(urlX);
+		
+		 // send  data  to  PHP handler  ************ 
+         $.ajax({
+            url: urlX,
+            type: 'POST',
+			dataType: 'text' ,//'JSON', // without this it returned string(that can be alerted), now it returns object
+			//passing the city
+            data: { 
+			    serverFirstDayUnix:firstDayUnix,
+				serverLastDayUnix: lastDayUnix,
+			},
+            success: function(data) {
+                // do something;
+                $(".single-clicked-month").stop().fadeOut("slow",function(){ $(this).html(data)}).fadeIn(2000);
+				//getAjaxAnswer_andBuild_1_month(data);
+            },  //end success
+			error: function (error) {
+				$(".single-clicked-month").stop().fadeOut("slow",function(){ $(this).html("Failed")}).fadeIn(2000);
+            }	
+        });
+	 }
+	
+	
+	
+	// **                                                                                  **
+    // **************************************************************************************
+    // **************************************************************************************
 	
 	
 	

@@ -621,8 +621,10 @@ How to add multilanguages:
 #Refresh(prevent from sending form on the reload of page)=> return $this->refresh();
 
 #Throw yii exception -> throw new \yii\web\NotFoundHttpException("This exception is hand made.");
-#Gii (prettyUrl)-> http://localhost/yii2_REST_and_Rbac_2019/yii-basic-app-2.0.15/basic/web/gii
+#Gii (access Gii with prettyUrl)-> http://localhost/yii2_REST_and_Rbac_2019/yii-basic-app-2.0.15/basic/web/gii
 
+#Form url with JS for ajax: var loc = window.location.pathname; var dir = loc.substring(0, loc.lastIndexOf('/'));  var urlX = dir + '/ajax_get_6_month';
+#Form url with Php for ajax: $URL = Yii::$app->request->baseUrl . "/site/ajax-rbac-insert-update";
 =======================================================
 99. Known Errors
 99.1 While trying to add RBAC migrations there is a Error "You should configure "authManager", while u have already added authManager to component in /config/web.php.
