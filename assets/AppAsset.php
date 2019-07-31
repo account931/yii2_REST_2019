@@ -23,6 +23,8 @@ class AppAsset extends AssetBundle
     public $css = [
         'css/site.css',
 		'css/rbac.css', //rbac css
+		'css/loader.css', //loader css
+		
 		//'css/bookingcph.css', //booking CPH css-> moved to a separate assert CPH_AssertOnly.php
     ];
 	

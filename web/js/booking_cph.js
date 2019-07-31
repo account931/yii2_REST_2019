@@ -27,19 +27,14 @@ $(document).ready(function(){
 	
 	 $(document).on("click", '.my-month', function() {      //for newly generated 
 	 
-	     //Scroll to results in Mobile only
+	 
+		  get_1_single_month(this); //pass this to get this attributes
+		  
+		  //Scroll to results in Mobile only
 		  if(screen.width <= 640){ 
 	           scrollResults(".single-clicked-month"); //scroll to div
 		  }
 		  
-		  
-	      //alert(this.id);
-		  /*var idX = this.id;
-		  $(".single-clicked-month").stop().fadeOut("slow",function(){  $(this).html( idX ) }).fadeIn(2000);
-		  */
-		  
-
-		  get_1_single_month(this); //pass this to get this attributes
 	 });
 	
 	
@@ -58,6 +53,7 @@ $(document).ready(function(){
     // **************************************************************************************
     //                                                                                     ** 
 	function get_6_month(){
+		$(".loader").show(200); //show the loader
 		
 		//getting the path to current folder with JS to form url for ajax, i.e /yii2_REST_and_Rbac_2019/yii-basic-app-2.0.15/basic/web/booking-cph/ajax_get_6_month
 		var loc = window.location.pathname;
@@ -78,6 +74,7 @@ $(document).ready(function(){
                 // do something;
                 //$(".all-6-month").stop().fadeOut("slow",function(){ $(this).html("OK")}).fadeIn(2000);
 				getAjaxAnswer_andBuild_6_month(data);
+				$(".loader").hide(3000); //hide the loader
             },  //end success
 			error: function (error) {
 				$(".all-6-month").stop().fadeOut("slow",function(){ $(this).html("Failed")}).fadeIn(2000);
@@ -148,6 +145,8 @@ $(document).ready(function(){
     //                                                                                     ** 
 	
 	 function get_1_single_month(thisX){
+		 $(".loader").show(200); //show the loader
+		 
 		 var Unix = thisX.getAttribute("data-myUnix");
 		 var firstDayUnix = Unix.split("/")[0];
 		 var lastDayUnix = Unix.split("/")[1];
@@ -173,6 +172,7 @@ $(document).ready(function(){
                 // do something;
                 $(".single-clicked-month").stop().fadeOut("slow",function(){ $(this).html(data)}).fadeIn(2000);
 				//getAjaxAnswer_andBuild_1_month(data);
+				$(".loader").hide(5000); //hide the loader
             },  //end success
 			error: function (error) {
 				$(".single-clicked-month").stop().fadeOut("slow",function(){ $(this).html("Failed")}).fadeIn(2000);
@@ -195,7 +195,24 @@ $(document).ready(function(){
 	
 	
 	
+	//Click on a booked date
+	 $(document).on("click", '.taken', function() {//this click is used to react to newly generated cicles;
+	    alert("Sorry, this date is already booked");
+	});
 	
+	
+	
+//========================================================================================================================
+
+
+
+
+
+
+
+
+
+
 	
 	
 	// Advanced Scroll the page to results  #resultFinal

@@ -138,3 +138,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
     </div><!-- END class="col-sm-12 col-xs-12" -->
   </div> <!-- END class="row" -->
+  
+  
+  <div class="loader" id="loader"></div>

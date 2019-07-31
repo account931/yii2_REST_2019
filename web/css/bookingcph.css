@@ -44,3 +44,31 @@
 .single-clicked-month{
 	font-size: 1em;
 }
+
+
+.free{
+	background:green;
+	
+}
+
+.taken{
+	background:red;
+}
+
+/*----Hover over free seats---*/	
+.free:hover{
+	background:yellow;
+	cursor:pointer;
+}
+
+/*----Hover over taken seats-*/	
+.taken:hover{
+	background:pink;
+	cursor:not-allowed;
+}
+
+.example-taken{
+	background:red;
+	padding:0.1em 0.5em; /* h,w */
+	margin-right:0.5em;
+}

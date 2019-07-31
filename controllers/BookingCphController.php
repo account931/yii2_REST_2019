@@ -292,13 +292,14 @@ class BookingCphController extends Controller
 		 $array_1_Month_days = array();//will store 1 month data days, ie [5,6,7,8]
 		
 		 
-		 $start = 1561939200; //$_POST['serverFirstDayUnix']; //var is from ajax 
-		 $end = 1564531200; //$_POST['serverLastDayUnix']; //var is from ajax 
+		 $start = (int)$_POST['serverFirstDayUnix']; //1561939200 - 1st July;  //var is from ajax, 1st day of the month
+		 $end = (int)$_POST['serverLastDayUnix']; //1564531200 - 31 July; //var is from ajax, the last day in this month, i.e amount of days in this month, i.e 31
 		 
 		 //find all this 1 single month data
 		 $thisMonthData = BookingCph::find() ->orderBy ('book_id DESC')  /*->limit('5')*/ ->where([ 'book_user' => Yii::$app->user->identity->username, /* 'mydb_id'=>1*/   ])  ->andWhere(['between', 'book_from_unix', $start, $end  ])   /*->andFilterWhere(['like', 'supp_date', $PrevMonth])  ->andFilterWhere(['like', 'supp_date', $PrevYear])*/    ->all(); 
-	     $text ="<table>";
-		 $text.= "<tr><td>Mon</td><td>Tues</td><td>Wed</td><td>Thur</td><td>Fri</td><td>Sat</td><td>Sun</td></tr>";
+	     $text = "<h2>" .date("F-Y", $start) . "</h2> <p><span class='example-taken'></span> - means booked dates</p><br>"; //returns July 2019
+		 $text.="<table class='table table-bordered'>";
+		 $text.= "<tr><td> Mon </td><td> Tues </td><td> Wed </td><td> Thur </td><td> Fri </td><td> Sat </td><td> Sun </td></tr>";
 		 
 		 
 		 foreach ($thisMonthData as $a)
@@ -306,30 +307,65 @@ class BookingCphController extends Controller
 			$startDate = explode("-", $a->book_from); //i.e 2019-07-04 split to [2019, 07, 04]  
 			$diff = ( $a->book_to_unix - $a->book_from_unix)/60/60/24; // . "<br>";  //$diff = number of days, i.e 17 (end - start)
 			
+			//complete $array_1_Month_days with booked days in this month, i,e [7,8,9,12,13]
 			for($i = 0; $i < $diff+1; $i++){
-			   $d = (int)$startDate[2]++; //int to remove 0 if any
+			   $d = (int)$startDate[2]++; //(int) is used to remove 0 if any, then do ++
 			   array_push($array_1_Month_days, $d ); //adds to array booked days
 		    }
 			 
 		 }
 		 
-		 $dayofweek = "first day is " . date('w', $start); //return the day of week, i.e 1. 1 means Monday
-		 array_push($array_1_Month_days, $dayofweek ); 
+		 $dayofweek = /*"first day is " .*/ (int)date('w', $start); //return the digit of 1st week day of the month, i.e 1. 1 means Monday
+		 //array_push($array_1_Month_days, $dayofweek ); 
 		 
 		 //just form $text to output, as we cane return array
-		 foreach($array_1_Month_days as $x){
-			 //$text.= $x . "<br>";
+		 /*foreach($array_1_Month_days as $x){
+			 $text.= $x . "<br>";
+		 }*/
+		 
+		 
+		 //START BUILDING A CALENDAR----------------------
+		 $breakCount = 0; //to detect when use new line in table, i.e <td>
+		 
+		 //building blanks days, it is engaged only in case the 1st day of month(1) is not the first day of the week, i.e not Monday
+		 for($i = 1; $i < $dayofweek; $i++){  //$dayofweek is the 1st week day of the month, i.e 1. 1 means Monday
+			 $text.= "<td class='free'> Y </td>";
+			 $breakCount++;
 		 }
 		 
+		 //building the calendar with free/taken days
+		  $lastDayNormal = date("F-Y-d", $end);// gets the last day in normal format fromUnix, ie Jule-2019-31
+		  $lastDay = explode("-", $lastDayNormal);//gets the last day in this month, i.e 31
 		 
-		 for($i = 1; $i < count($array_1_Month_days); $i++){
+		 for($j = $dayofweek; $j < (int)$lastDay[2]+1 /*count($array_1_Month_days)*/; $j++){  //$array_1_Month_days-> is an array with booked days in this month, i,e [7,8,9,12,13]
 			 
-			 if($i%7 == 0){$text.= "<tr>";}
-			 $text.= "<td>$i</td>";
+			 if($breakCount%7 == 0){$text.= "<tr>";}
+			 $breakCount++;
+			 
+			 if (in_array($j, $array_1_Month_days)){ //if iterator in array $array_1_Month_days, i.e this day is booked
+			   $text.= "<td class='taken' title='already booked'>" . $j . "</td>";  
+			 } else {
+				 $text.= "<td class='free'>" . $j . "</td>";
+			 } 
 		 }
 		 
+		 //building the calendar with dates, from last booked day till the last day of the month
+		 /*
+		 $lastDayNormal = date("F-Y-d", $end);// gets the last day in normal format fromUnix, ie Jule-2019-31
+		 $lastDay = explode("-", $lastDayNormal);//gets the last day in this month, i.e 31
 		 
-		 $text.= "</table>";
+		 $iter1 =  end($array_1_Month_days);  $iter1 = (int)$iter1;
+		 $iter2 =  $iter1 + ((int)$lastDay[2] - $iter1);
+		 
+		 for($z = $iter1; $z < $iter2 ; $z++){ //end($array_1_Month_days) => last array el
+		     if($breakCount%7 == 0){$text.= "<tr>";}
+			 $breakCount++;
+			 $text.= "<td class='free'>$z A</td>"; 
+		 }
+		 */
+		 //END BUILDING A CALENDAR--------------------------
+		 
+		 $text.= "</table><h2>" . implode("-", $array_1_Month_days) ."</h2>";
 		 
 		 return $text;
 		 //return "OK <br>";
