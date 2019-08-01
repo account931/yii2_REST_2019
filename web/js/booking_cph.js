@@ -31,9 +31,9 @@ $(document).ready(function(){
 		  get_1_single_month(this); //pass this to get this attributes
 		  
 		  //Scroll to results in Mobile only
-		  if(screen.width <= 640){ 
+		  /*if(screen.width <= 640){ 
 	           scrollResults(".single-clicked-month"); //scroll to div
-		  }
+		  }*/
 		  
 	 });
 	
@@ -173,6 +173,7 @@ $(document).ready(function(){
                 $(".single-clicked-month").stop().fadeOut("slow",function(){ $(this).html(data)}).fadeIn(2000);
 				//getAjaxAnswer_andBuild_1_month(data);
 				$(".loader").hide(5000); //hide the loader
+				scrollResults(".single-clicked-month"/*, ".parent()."*/); /*.single-clicked-month*///scroll to div. Put it here to ensure, that the div has been html-es, so it scroll directly to it, + make sure loader will visible
             },  //end success
 			error: function (error) {
 				$(".single-clicked-month").stop().fadeOut("slow",function(){ $(this).html("Failed")}).fadeIn(2000);

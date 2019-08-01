@@ -192,7 +192,7 @@ class BookingCphController extends Controller
 		 
 		
 	     // FIND SQL DATA for ALL Future MONTHS IN FOR LOOP
-         for ($i = 1; $i < 6; $i++){  //($i=1; $i<4; $i++)  // for 5 future month
+         for ($i = 1; $i < 9; $i++){  //($i=1; $i<4; $i++)  // $i < 6 means for 5 future month //YOU CAN CHANGE THE AMOUNT OF FUTURE MONTH TO DISPLAY HERE
             //Start DATE for Previous month  ONLY----------------------------
             $PrevMonth = date('M', strtotime(date('Y-m'). " + " .$i. " month")); //i.e Jul  //$PrevMonth=date('M', strtotime(date('Y-m')." -1 month"));         
             $PrevYear =  date('Y', strtotime(date('Y-m')." + " .$i. " month"));  //i.e 2019 // $PrevYear=date('Y', strtotime(date('Y-m')." -1 month"));// getting previous  month  and  year;
@@ -279,7 +279,7 @@ class BookingCphController extends Controller
 	
 	
 	//function that works with ajax sent from js/booking_cph.js -> function get_1_single_month(thisX)
-	//gets data from SQL for 1 single clicked month
+	//gets data from SQL for 1 single clicked month and build a calendar
     // **************************************************************************************
     // **************************************************************************************
     // **                                                                                  **
@@ -290,18 +290,23 @@ class BookingCphController extends Controller
 		 //Since Yii 2.0.14 you cannot echo in controller. Response must be returned:
 		 
 		 $array_1_Month_days = array();//will store 1 month data days, ie [5,6,7,8]
-		
+		 $guestList = "<div class='row border'><div class='col-sm-3 col-xs-3 bg-primary'>Guest</div><div class='col-sm-3 col-xs-3 bg-primary'>From</div><div class='col-sm-3 col-xs-3 bg-primary'>To</div><div class='col-sm-3 col-xs-3 bg-primary'>Duration</div>"; //guest list for $generalBookingInfo
+		 $overallBookedDays; //all amount of days booked in this month
+		 $text;
 		 
 		 $start = (int)$_POST['serverFirstDayUnix']; //1561939200 - 1st July;  //var is from ajax, 1st day of the month
 		 $end = (int)$_POST['serverLastDayUnix']; //1564531200 - 31 July; //var is from ajax, the last day in this month, i.e amount of days in this month, i.e 31
 		 
 		 //find all this 1 single month data
 		 $thisMonthData = BookingCph::find() ->orderBy ('book_id DESC')  /*->limit('5')*/ ->where([ 'book_user' => Yii::$app->user->identity->username, /* 'mydb_id'=>1*/   ])  ->andWhere(['between', 'book_from_unix', $start, $end  ])   /*->andFilterWhere(['like', 'supp_date', $PrevMonth])  ->andFilterWhere(['like', 'supp_date', $PrevYear])*/    ->all(); 
-	     $text = "<h2>" .date("F-Y", $start) . "</h2> <p><span class='example-taken'></span> - means booked dates</p><br>"; //returns July 2019
+	     
+		 $text = "<div><h2>" .date("F-Y", $start) . "</h2> <p><span class='example-taken'></span> - means booked dates</p></div><br>"; //header: month-year //returns July 2019 + color sample
 		 $text.="<table class='table table-bordered'>";
-		 $text.= "<tr><td> Mon </td><td> Tues </td><td> Wed </td><td> Thur </td><td> Fri </td><td> Sat </td><td> Sun </td></tr>";
+		 $text.= "<tr><th> Mon </th><th> Tue </th><th> Wed </th><th> Thu </th><th> Fri </th><th> Sat </th><th> Sun </th></tr>";
 		 
+		
 		 
+		 //complete $array_1_Month_days with booked days in this month, i,e [7,8,9,12,13]
 		 foreach ($thisMonthData as $a)
 		 {
 			$startDate = explode("-", $a->book_from); //i.e 2019-07-04 split to [2019, 07, 04]  
@@ -311,11 +316,25 @@ class BookingCphController extends Controller
 			for($i = 0; $i < $diff+1; $i++){
 			   $d = (int)$startDate[2]++; //(int) is used to remove 0 if any, then do ++
 			   array_push($array_1_Month_days, $d ); //adds to array booked days
-		    }
-			 
+		    } 
+			
+			//generating guest list var $guestList  for $generalBookingInfo
+			$singleGuestDuration = (( $a->book_to_unix - $a->book_from_unix)/60/60/24) + 1; //amount of booked days for every guest
+			$guestList.= "<div class='col-sm-3 col-xs-3'>" . $a->book_guest . "</div>" . //guest
+        			     "<div class='col-sm-3 col-xs-3'>" . $a->book_from  .  "</div>" . //from
+						 "<div class='col-sm-3 col-xs-3'>" . $a->book_to    . "</div>"  . //to
+						 "<div class='col-sm-3 col-xs-3'>" . $singleGuestDuration . "</div>";
+			$overallBookedDays+= (( $a->book_to_unix - $a->book_from_unix)/60/60/24) + 1; //all amount of days booked in this month
+			
 		 }
 		 
-		 $dayofweek = /*"first day is " .*/ (int)date('w', $start); //return the digit of 1st week day of the month, i.e 1. 1 means Monday
+		 
+		 
+		 
+		 $guestList.= "</div>";
+		 
+		 $dayofweek = /*"first day is " .*/ (int)date('w', $start); //returns the numeric equivalent of weekday of the 1st day of the month, i.e 1. 1 means Monday
+		 $dayofweek = (($dayofweek + 6) % 7) + 1; //Mega Fix
 		 //array_push($array_1_Month_days, $dayofweek ); 
 		 
 		 //just form $text to output, as we cane return array
@@ -324,8 +343,16 @@ class BookingCphController extends Controller
 		 }*/
 		 
 		 
-		 //START BUILDING A CALENDAR----------------------
-		 $breakCount = 0; //to detect when use new line in table, i.e <td>
+		 //Var with general info, ie "In June u have 2 guests. Overal amount of days are 22."
+		 $generalBookingInfo = "<br><h3>In <b>" . date("F", $start)/*i.e June*/ . "</b> the amount of guests you have: <b>" . count($thisMonthData) . "</b>. Overall amount of booked days are:" . $overallBookedDays;
+		 $generalBookingInfo.= "<hr><p><b>Guest list:</b></p>" . $guestList;
+		 
+		 
+		 
+		 //START BUILDING A CALENDAR-------------------------------------------------
+		 $breakCount = 0; //var to detect when to use a new line in table, i.e add <td>
+		 $lastDayNormal = date("F-Y-d", $end);// gets the last day in normal format fromUnix, ie Jule-2019-31
+		 $lastDay = explode("-", $lastDayNormal);//gets the last day in this month, i.e 31
 		 
 		 //building blanks days, it is engaged only in case the 1st day of month(1) is not the first day of the week, i.e not Monday
 		 for($i = 1; $i < $dayofweek; $i++){  //$dayofweek is the 1st week day of the month, i.e 1. 1 means Monday
@@ -334,10 +361,7 @@ class BookingCphController extends Controller
 		 }
 		 
 		 //building the calendar with free/taken days
-		  $lastDayNormal = date("F-Y-d", $end);// gets the last day in normal format fromUnix, ie Jule-2019-31
-		  $lastDay = explode("-", $lastDayNormal);//gets the last day in this month, i.e 31
-		 
-		 for($j = $dayofweek; $j < (int)$lastDay[2]+1 /*count($array_1_Month_days)*/; $j++){  //$array_1_Month_days-> is an array with booked days in this month, i,e [7,8,9,12,13]
+		 for($j = 1 /*$dayofweek*/; $j < (int)$lastDay[2]+1 /*count($array_1_Month_days)*/; $j++){  //$array_1_Month_days-> is an array with booked days in this month, i,e [7,8,9,12,13]
 			 
 			 if($breakCount%7 == 0){$text.= "<tr>";}
 			 $breakCount++;
@@ -363,9 +387,9 @@ class BookingCphController extends Controller
 			 $text.= "<td class='free'>$z A</td>"; 
 		 }
 		 */
-		 //END BUILDING A CALENDAR--------------------------
+		 //END BUILDING A CALENDAR-------------------------------------------
 		 
-		 $text.= "</table><h2>" . implode("-", $array_1_Month_days) ."</h2>";
+		 $text.= "</table>" . $generalBookingInfo . "<h4>Booked days array=>" . implode("-", $array_1_Month_days) ."</h4>"; //implode("-", $array_1_Month_days)-> just to display array with booked days, i.e [4,5,6,18,19]
 		 
 		 return $text;
 		 //return "OK <br>";

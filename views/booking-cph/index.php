@@ -76,8 +76,8 @@ $this->params['breadcrumbs'][] = $this->title;
 		   $model->book_user = Yii::$app->user->identity->username; //set default value for username ?>
            <?= $form->field($model, 'book_user')->textInput(['maxlength' => true, /*'value'=> $d*/ ]); ?>
            <?= $form->field($model, 'book_guest' /*,  ['enableAjaxValidation' => true]*/)->textInput() ?>
-		   <?/*= $form->field($model, 'book_from')*/ ?>
-		   <?/*= $form->field($model, 'book_to')*/ ?>
+		   <?php /*= $form->field($model, 'book_from')*/ ?>
+		   <?php /*= $form->field($model, 'book_to')*/ ?>
 		   <!--<lable> from &nbsp;</lable><input type="date" value="" id="calendarPick_from"/> 
 		   <lable>&nbsp;&nbsp;&nbsp;to </lable><input type="date" value="" id="calendarPick_to"/><hr>-->
 		   
@@ -129,9 +129,9 @@ $this->params['breadcrumbs'][] = $this->title;
     <!-- Div that will dispaly 1 single selected month -->
     <div class="col-sm-12 col-xs-12 single-clicked-month">
 	    <?php
-		    foreach($all_records as $i){
-				echo "<p style='font-size:0.14em;'>" . $i->book_user . " -> " . $i->book_guest . " from:" . $i->book_from . " to: " . $i->book_to.  " Unix:" . $i->book_from_unix . "/" . $i->book_to_unix ."</p>";
-			}
+		    /*foreach($all_records as $i){
+				echo "<p style='font-size:1.14em;'>" . $i->book_user . " -> " . $i->book_guest . " from:" . $i->book_from . " to: " . $i->book_to.  " Unix:" . $i->book_from_unix . "/" . $i->book_to_unix ."</p>";
+			}*/
 		?>
 	</div><!-- class "single-clicked-month" -->
 

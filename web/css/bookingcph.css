@@ -72,3 +72,19 @@
 	padding:0.1em 0.5em; /* h,w */
 	margin-right:0.5em;
 }
+
+
+
+/*----Calendar table colors-*/
+table{color:white;}
+
+table th{
+	background:purple;
+	color:white;
+}
+
+
+.border div {
+    border: 1px solid #000000;
+	font-size:0.7em;
+}
