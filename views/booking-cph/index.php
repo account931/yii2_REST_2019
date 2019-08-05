@@ -36,17 +36,25 @@ $this->params['breadcrumbs'][] = $this->title;
  
     
 	
-  <!------ FLASH from BookingCpg/actionIndex() ----->
+  <!------ FLASH Success from BookingCpg/actionIndex() ----->
    <?php if( Yii::$app->session->hasFlash('successX') ): ?>
     <div class="alert alert-success alert-dismissible" role="alert">
         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <?php echo Yii::$app->session->getFlash('successX'); ?>
     </div>
     <?php endif;?>
-  <!------ END FLASH from BookingCpg/actionIndex() ----->
+  <!------ END FLASH Successfrom BookingCpg/actionIndex() ----->
 	
 	
 	
+	<!------ FLASH FAIL from BookingCpg/actionIndex() ----->
+   <?php if( Yii::$app->session->hasFlash('failedX') ): ?>
+    <div class="alert alert-danger alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <?php echo Yii::$app->session->getFlash('failedX'); ?>
+    </div>
+    <?php endif;?>
+  <!------ END FAIL Successfrom BookingCpg/actionIndex() ----->
 	
 	
 	
@@ -61,6 +69,7 @@ $this->params['breadcrumbs'][] = $this->title;
 		   <!----------------- FORM to add new booking to table {} ---------------------->
            <?php 
 		    
+			echo "<p class='alert-danger'>You are logged as <i class='fa fa-address-book-o' style='font-size:1.3em;'></i> <b>" . Yii::$app->user->identity->username . "</b></p>";
 			
 		    $form = ActiveForm::begin (/*[
            'id' => 'login-form',
@@ -73,11 +82,11 @@ $this->params['breadcrumbs'][] = $this->title;
            ]*/); ?>
 
            <?php 
-		   $model->book_user = Yii::$app->user->identity->username; //set default value for username ?>
-           <?= $form->field($model, 'book_user')->textInput(['maxlength' => true, /*'value'=> $d*/ ]); ?>
-           <?= $form->field($model, 'book_guest' /*,  ['enableAjaxValidation' => true]*/)->textInput() ?>
-		   <?php /*= $form->field($model, 'book_from')*/ ?>
-		   <?php /*= $form->field($model, 'book_to')*/ ?>
+		    $model->book_user = Yii::$app->user->identity->username; //set default value for $model->book_user with current username 
+            echo $form->field($model, 'book_user')->textInput(['maxlength' => true, /*'value'=> $d*/ ]); //Current logged user
+            echo $form->field($model, 'book_guest' /*,  ['enableAjaxValidation' => true]*/)->textInput();
+		   /* echo $form->field($model, 'book_from'); */ 
+		   /* echo $form->field($model, 'book_to');  */ ?>
 		   <!--<lable> from &nbsp;</lable><input type="date" value="" id="calendarPick_from"/> 
 		   <lable>&nbsp;&nbsp;&nbsp;to </lable><input type="date" value="" id="calendarPick_to"/><hr>-->
 		   

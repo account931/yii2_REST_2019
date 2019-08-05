@@ -11,6 +11,7 @@ use yii\filters\VerbFilter;
 use app\models\BookingCph; //table BookingCph, SQL table{booking_cph}
 
 
+
 class BookingCphController extends Controller
 {
     /**
@@ -92,10 +93,16 @@ class BookingCphController extends Controller
 	 $all_records = BookingCph::find()->where(['book_user' => Yii::$app->user->identity->username])->all();
 	 
 	 //if u filled in the form to book a new date range for a new guest
-	 if ($model->load(\Yii::$app->request->post()) && $model->save()) {
-           \Yii::$app->session->setFlash('successX', 'Successfully Booked');
-     }
-	 
+	 //if ($model->load(\Yii::$app->request->post()) && $model->save()) {
+	 if ($model->load(\Yii::$app->request->post())) {
+		 if($model->save()){
+             \Yii::$app->session->setFlash("successX", "Successfully booked with guest <i class='fa fa-address-book-o' style='font-size:1.2em;'></i> <b> $model->book_guest</b>");
+			 return $this->refresh(); //prevent  F5  resending	
+         } else {
+		    \Yii::$app->session->setFlash('failedX', 'Booking Failed, please click  <button data-target="#rbacAdd" data-toggle="collapse">NEW BOOKING</button> button to see details');
+	     } 
+         	 
+	 }
 	 
 	 
 	 
@@ -135,6 +142,9 @@ class BookingCphController extends Controller
     // **                                                                                  **
     // **                                                                                  **
     {
+		
+
+
 		date_default_timezone_set('UTC');  //use ('UTC') to avoid -1 day result    //('europe/kiev')	('UTC')
 		
 		$array_All_Month = array();//will store all 6 month data
@@ -188,8 +198,8 @@ class BookingCphController extends Controller
 		 
 		 
 		 
-		 
-		 
+		 //must be declared out of for loop, to save its value for further iteration, in case if($may == 1 )
+		 $yearX = date("Y"); //gets the current year, i.e 2019
 		
 	     // FIND SQL DATA for ALL Future MONTHS IN FOR LOOP
          for ($i = 1; $i < 9; $i++){  //($i=1; $i<4; $i++)  // $i < 6 means for 5 future month //YOU CAN CHANGE THE AMOUNT OF FUTURE MONTH TO DISPLAY HERE
@@ -201,13 +211,23 @@ class BookingCphController extends Controller
 			array_push($array_All_Month, ${'current'.$i}); //adds prev months to array in a loop
 			
 			//!!!!!!!
-			$may =  array_search($PrevMonth , $MonthList); //search the index of $PrevMonth  in array, i.e index of Jul
+			$may =  array_search($PrevMonth , $MonthList); //search the index of $PrevMonth  in array, i.e index of Jul = 6
 			$may = $may + 1;
-			$first1 = date("Y-m-d", mktime(0, 0, 0, $may  ,1 ,date("Y"))); //returns "2019-05-01"
-		    $last1 = date("Y-m-d", mktime(0, 0, 0, $may+1,0,date("Y"))); //returns "2019-05-31"
+			
+			//if current month in loop is 1 (i.e January), for next month we use the next year. As it is loop, January here could NOT BE EVER here the current month, if($may == 1 ) it can only be the next or next+1, etc, so the current is always the past year & January is the next
+			
+			if($may == 1 ){
+				//$yearX must be declared out of for loop, to save its value for further iteration, in case if($may == 1 )
+				$yearX = (int)date("Y") + 1; // gets the current year & adds +1 to get the next year, ie. 2019 + 1 = 2020
+			    //$yearX = (string)$yearX;
+			} 
+			
+			
+			$first1 = date("Y-m-d", mktime(0, 0, 0, $may , 1 ,$yearX)); //returns "2019-05-01"
+		    $last1 = date("Y-m-d",  mktime(0, 0, 0, $may+1, 0, $yearX)); //returns "2019-05-31"
 			
 			//gets Unix Start Time & Unix End Time of the current month (i.e Unix of the 1st & last day)
-		    $array_tempo = array(strtotime($first1), strtotime($last1)); //push current month unix start/stop Unix time to subarray // returns [1556654400,1559246400]
+		    $array_tempo = array(strtotime($first1), strtotime($last1)); //push current month unix stamp start/stop Unix time to subarray // returns [1556654400,1559246400]
 		    array_push($array_All_Unix, $array_tempo); //push subarray to array in order to have structure [[35, 57], [35, 57], [35, 57],]
 		
 		
@@ -280,6 +300,7 @@ class BookingCphController extends Controller
 	
 	//function that works with ajax sent from js/booking_cph.js -> function get_1_single_month(thisX)
 	//gets data from SQL for 1 single clicked month and build a calendar
+	//DOESNOT RETURN JSON, IT OUTPUTS THE WHOLE READY CALENDAR
     // **************************************************************************************
     // **************************************************************************************
     // **                                                                                  **
@@ -289,8 +310,21 @@ class BookingCphController extends Controller
 		 
 		 //Since Yii 2.0.14 you cannot echo in controller. Response must be returned:
 		 
+		 //ini_set('display_errors', 1);
+         //ini_set('display_startup_errors', 1);
+         //error_reporting(E_ALL);
+		 error_reporting(E_ALL & ~E_NOTICE); //JUST TO FIX 000wen HOSTING!!!!!!!!!!!!!!!
+		 
 		 $array_1_Month_days = array();//will store 1 month data days, ie [5,6,7,8]
-		 $guestList = "<div class='row border'><div class='col-sm-3 col-xs-3 bg-primary'>Guest</div><div class='col-sm-3 col-xs-3 bg-primary'>From</div><div class='col-sm-3 col-xs-3 bg-primary'>To</div><div class='col-sm-3 col-xs-3 bg-primary'>Duration</div>"; //guest list for $generalBookingInfo
+		 
+		 //guest list for $generalBookingInfo
+		 //Forminh here column names(like <TH>) for $guestList
+		 $guestList = "<div class='row border guestList'>" .  //div wrapper
+		                "<div class='col-sm-3 col-xs-3 bg-primary'>Guest</div>" . 
+		                "<div class='col-sm-3 col-xs-3 bg-primary'>From</div>" . 
+					    "<div class='col-sm-3 col-xs-3 bg-primary'>To</div>" . 
+					    "<div class='col-sm-2 col-xs-2 bg-primary'>Duration</div>" .
+					    "<div class='col-sm-1 col-xs-1 bg-primary'>Delete</div>";
 		 $overallBookedDays; //all amount of days booked in this month
 		 $text;
 		 
@@ -300,41 +334,43 @@ class BookingCphController extends Controller
 		 //find all this 1 single month data
 		 $thisMonthData = BookingCph::find() ->orderBy ('book_id DESC')  /*->limit('5')*/ ->where([ 'book_user' => Yii::$app->user->identity->username, /* 'mydb_id'=>1*/   ])  ->andWhere(['between', 'book_from_unix', $start, $end  ])   /*->andFilterWhere(['like', 'supp_date', $PrevMonth])  ->andFilterWhere(['like', 'supp_date', $PrevYear])*/    ->all(); 
 	     
-		 $text = "<div><h2>" .date("F-Y", $start) . "</h2> <p><span class='example-taken'></span> - means booked dates</p></div><br>"; //header: month-year //returns July 2019 + color sample
+		 $text = "<div><h2>" .date("F-Y", $start) . "</h2> <p><span class='example-taken'></span> - means booked dates</p></div><br>"; //header: month-year //returns July 2019 + color sample explain
 		 $text.="<table class='table table-bordered'>";
 		 $text.= "<tr><th> Mon </th><th> Tue </th><th> Wed </th><th> Thu </th><th> Fri </th><th> Sat </th><th> Sun </th></tr>";
 		 
 		
 		 
 		 //complete $array_1_Month_days with booked days in this month, i,e [7,8,9,12,13]
-		 foreach ($thisMonthData as $a)
-		 {
-			$startDate = explode("-", $a->book_from); //i.e 2019-07-04 split to [2019, 07, 04]  
-			$diff = ( $a->book_to_unix - $a->book_from_unix)/60/60/24; // . "<br>";  //$diff = number of days, i.e 17 (end - start)
+		 if($thisMonthData){
+		     foreach ($thisMonthData as $a)
+		     {
+			    $startDate = explode("-", $a->book_from); //i.e 2019-07-04 split to [2019, 07, 04]  
+			    $diff = ( $a->book_to_unix - $a->book_from_unix)/60/60/24; // . "<br>";  //$diff = number of days, i.e 17 (end - start)
 			
-			//complete $array_1_Month_days with booked days in this month, i,e [7,8,9,12,13]
-			for($i = 0; $i < $diff+1; $i++){
-			   $d = (int)$startDate[2]++; //(int) is used to remove 0 if any, then do ++
-			   array_push($array_1_Month_days, $d ); //adds to array booked days
-		    } 
+			    //complete $array_1_Month_days with booked days in this month, i,e [7,8,9,12,13]
+			    for($i = 0; $i < $diff+1; $i++){
+			       $d = (int)$startDate[2]++; //(int) is used to remove 0 if any, then do ++
+			       array_push($array_1_Month_days, $d ); //adds to array booked days
+		        } 
 			
-			//generating guest list var $guestList  for $generalBookingInfo
-			$singleGuestDuration = (( $a->book_to_unix - $a->book_from_unix)/60/60/24) + 1; //amount of booked days for every guest
-			$guestList.= "<div class='col-sm-3 col-xs-3'>" . $a->book_guest . "</div>" . //guest
+			    //generating guest list var $guestList  for $generalBookingInfo
+			    $singleGuestDuration = (( $a->book_to_unix - $a->book_from_unix)/60/60/24) + 1; //amount of booked days for every guest
+			    $guestList.= "<div class='col-sm-3 col-xs-3'><i class='fa fa-calendar-check-o'></i>" . $a->book_guest . "</div>" . //guest
         			     "<div class='col-sm-3 col-xs-3'>" . $a->book_from  .  "</div>" . //from
 						 "<div class='col-sm-3 col-xs-3'>" . $a->book_to    . "</div>"  . //to
-						 "<div class='col-sm-3 col-xs-3'>" . $singleGuestDuration . "</div>";
-			$overallBookedDays+= (( $a->book_to_unix - $a->book_from_unix)/60/60/24) + 1; //all amount of days booked in this month
+						 "<div class='col-sm-2 col-xs-2'>" . $singleGuestDuration . "</div>" . //duration
+						 "<div class='col-sm-1 col-xs-1 deleteBooking'> <i class='fa fa-cut' style='color:red;'></i></div>";  //Delete icon
+			    $overallBookedDays+= (( $a->book_to_unix - $a->book_from_unix)/60/60/24) + 1; //all amount of days booked in this month
 			
-		 }
+		     }
+		 
+		  }
 		 
 		 
+		 $guestList.= "</div>";//close div wrapper
 		 
-		 
-		 $guestList.= "</div>";
-		 
-		 $dayofweek = /*"first day is " .*/ (int)date('w', $start); //returns the numeric equivalent of weekday of the 1st day of the month, i.e 1. 1 means Monday
-		 $dayofweek = (($dayofweek + 6) % 7) + 1; //Mega Fix
+		 $dayofweek = /*"first day is " .*/ (int)date('w', $start); //returns the numeric equivalent of weekday of the 1st day of the month, i.e 1. 1 means Monday (first days of Loop month is Monday)
+		 $dayofweek = (($dayofweek + 6) % 7) + 1; //Mega Fix of Sundays, as Sundays in php are represented as {0}, and with this fix Sundays will be {7}
 		 //array_push($array_1_Month_days, $dayofweek ); 
 		 
 		 //just form $text to output, as we cane return array
@@ -344,7 +380,7 @@ class BookingCphController extends Controller
 		 
 		 
 		 //Var with general info, ie "In June u have 2 guests. Overal amount of days are 22."
-		 $generalBookingInfo = "<br><h3>In <b>" . date("F", $start)/*i.e June*/ . "</b> the amount of guests you have: <b>" . count($thisMonthData) . "</b>. Overall amount of booked days are:" . $overallBookedDays;
+		 $generalBookingInfo = "<br><h3>In <b>" . date("F", $start)/*i.e June*/ . "</b> the amount of guests you have: <i class='fa fa-calendar-check-o'></i><b>" . count($thisMonthData) . "</b>. <br><br>Overall amount of booked days are:" . $overallBookedDays;
 		 $generalBookingInfo.= "<hr><p><b>Guest list:</b></p>" . $guestList;
 		 
 		 
@@ -389,7 +425,7 @@ class BookingCphController extends Controller
 		 */
 		 //END BUILDING A CALENDAR-------------------------------------------
 		 
-		 $text.= "</table>" . $generalBookingInfo . "<h4>Booked days array=>" . implode("-", $array_1_Month_days) ."</h4>"; //implode("-", $array_1_Month_days)-> just to display array with booked days, i.e [4,5,6,18,19]
+		 $text.= "</table><hr><hr>" . $generalBookingInfo . "<h4>Booked days array=>" . implode("-", $array_1_Month_days) ."</h4>"; //implode("-", $array_1_Month_days)-> just to display array with booked days, i.e [4,5,6,18,19]
 		 
 		 return $text;
 		 //return "OK <br>";

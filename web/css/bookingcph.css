@@ -88,3 +88,13 @@ table th{
     border: 1px solid #000000;
 	font-size:0.7em;
 }
+
+/*----Padding inside div with Guest, from, to, duration, delete-*/
+.guestList div{
+	padding:2em;
+}
+
+
+.deleteBooking{
+	cursor:pointer;
+}

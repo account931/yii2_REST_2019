@@ -12,6 +12,7 @@ TABLE OF CONTENT:
 3.Automatically become an {adminX} (i.e gets adminX role) by going to link (actionAddAdmin).
 4.RestFul Api.
 5.Booking CPH
+5.1 How to validate dates input in form in Booking CPH
 
 
 
@@ -103,3 +104,16 @@ How Booking CPH works (booking a flat for any day in further 6 month)
 
 
 
+
+
+=========================================================================
+5.1 How to validate dates input in form in Booking CPH 
+SEE DETAILS at {Readme_YII2_mine_Common_Comands.tx-> 17. Yii2 my custom validation}
+https://www.yiiframework.com/doc/guide/2.0/ru/tutorial-core-validators
+
+#To make sure that user selects a date that in not a past date, or make sure that start date is not bigger that end date we apply validation:
+ #We could use JS validation like this=>   $("#myForm").on("beforeSubmit", function (event, messages) { 
+ , but we use here Yii2 my custom validation. SEE DETAILS at {Readme_YII2_mine_Common_Comands.tx-> 17. Yii2 my custom validation}
+ 
+ 
+ 

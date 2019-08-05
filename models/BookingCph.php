@@ -31,13 +31,20 @@ class BookingCph extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['book_user', 'book_guest', 'book_from', 'book_to'], 'required'], //, 'book_from_unix', 'book_to_unix'
+            [[/*'book_user',*/ 'book_guest', 'book_from', 'book_to'], 'required'], //, 'book_from_unix', 'book_to_unix'
             [['book_from_unix', 'book_to_unix'], 'integer'],
             [['book_user', 'book_guest'], 'string', 'max' => 77],
             [['book_from', 'book_to'], 'string', 'max' => 33],
+			
+			// проверяет, что возраст больше или равен 30
+            //['book_from', 'compare', 'compareValue' => date("U")/*30*/, 'operator' => '>=', 'type' => 'number'],    //date("U")
+			
+			['book_from','validateDatesX'], //my custom validation function. ['fromDate', 'compare', 'compareAttribute'=> 'toDate', 'operator' => '<', 
         ];
     }
 
+	
+	
     /**
      * @inheritdoc
      */
@@ -56,9 +63,32 @@ class BookingCph extends \yii\db\ActiveRecord
 	
 	
 	
+//your custom validation rule, checks if start/end time is not PAST, and if Start in Unix in smaller than End in Unix 
+// **************************************************************************************
+// **************************************************************************************
+//                                                                                     **	
+	public function validateDatesX(){
+        if(strtotime($this->book_from) <= date("U")){//if start date is Past //  date("U") is a today in UnixTime
+            $this->addError('book_from','Can"t be past!!! Please give correct Start Day');
+        }
+		
+		 if(strtotime($this->book_to) <= date("U")){//if End date is Past 
+            $this->addError('book_to','Can"t be past!!! Please give correct End Day');
+        }
+		
+		 if(strtotime($this->book_to) <= strtotime($this->book_from)){ //if Start Unix Time bigger then End
+            $this->addError('book_from','Dates range is reversed!!!!! Check start/end dates.');
+			$this->addError('book_to',  'Dates range is reversed!!!!! Check start/end dates.');
+        }
+    }
 	
-	
-	
+// **                                                                                  **
+// **************************************************************************************
+// **************************************************************************************
+
+
+
+
 	
 	
 //beforeSave(); //convert date to unixTime & assign to SQL db field
@@ -66,9 +96,9 @@ class BookingCph extends \yii\db\ActiveRecord
 // **************************************************************************************
 //                                                                                     **
 
-//WORKS!!!!!!!!!!!!!!!!!!!! (wasn't  working  because  used $_POST['Mydbstart']['mydb_v_am'] instead of  $this->mydb_v_am )
-public function beforeSave($insert)  //$insert
-{
+  //WORKS!!!!!!!!!!!!!!!!!!!! (wasn't  working  because  used $_POST['Mydbstart']['mydb_v_am'] instead of  $this->mydb_v_am )
+  public function beforeSave($insert)  //$insert
+  {
     if (parent::beforeSave(false)) {
  
         // Place your custom code here
@@ -89,13 +119,40 @@ public function beforeSave($insert)  //$insert
     } else {
         return false;
     }
-} // END BEFORESAVE();
+  } // END BEFORESAVE();
 // **                                                                                  **
 // **************************************************************************************
 // **************************************************************************************
-//---------------------------------------------------------
 
 
 
+
+
+
+
+
+
+
+ /**
+  * Method description
+  *
+  * @return mixed The return value
+  */
+// **************************************************************************************
+// **************************************************************************************
+//                                                                                     **
+ public function beforeValidate()
+ {
+     //$this->book_from
+	 
+     return parent::beforeValidate();
+ }
+ 
+ 
+ 
+ 
+ 
+ 
+ 
 
 }

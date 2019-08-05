@@ -35,6 +35,7 @@ Table of contents:
 14.Register custom assets (js, css)
 15.Multilanguages
 16. Has Many relation
+17. Yii2 my custom validation
 
 98.V.A(ActRec,create URL, redirect, get $_POST[''], etc)
 99. Known Errors
@@ -585,6 +586,28 @@ How to add multilanguages:
 	 $orders = $currentUser->tokens; //call hasMany action //Token is a function getTokens
   
    
+ 
+ 
+ 
+ 
+ 
+ ==============================================================
+ 17. Yii2 my custom validation
+ To use your custom validation:
+  1. Put to model, to public function rules(){Section} your validation rule in format [['field to validate','your custom function that checks validation']]:
+     ['book_from','validateDatesX']
+ 
+   2. Deploy in model your custom validation function:
+       public function validateDatesX(){
+           if(strtotime($this->book_from) <= date("U")){//strtotime($this->start_date)){
+              $this->addError('book_from','Can"t be past!!!Please give correct Start Day');
+              //$this->addError('end_date','Please give correct Start and End dates');
+           }
+       }
+
+   
+ 
+ 
  
  
  
