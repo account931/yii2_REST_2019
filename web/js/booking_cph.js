@@ -1,5 +1,6 @@
 (function(){ //START IIFE (Immediately Invoked Function Expression)
 $(document).ready(function(){
+	var clickedThis; //global var with $this ($this of clicked on a single month among 6 month )
 
     //just for test, fillbadges with random numbers
 	/*
@@ -27,7 +28,7 @@ $(document).ready(function(){
 	
 	 $(document).on("click", '.my-month', function() {      //for newly generated 
 	 
-	 
+	      clickedThis = this; //to use in fucntion that deletes  a booking and needs to renew the view
 		  get_1_single_month(this); //pass this to get this attributes
 		  
 		  //Scroll to results in Mobile only
@@ -95,7 +96,7 @@ $(document).ready(function(){
 	
 	
 	
-	//Function to use in ajax SUCCESS section in function get_6_month(){
+	//Function to use in ajax SUCCESS section in function get_6_month(){. It builds 6 month view
 	// **************************************************************************************
     // **************************************************************************************
     //                                                                                     ** 
@@ -200,6 +201,106 @@ $(document).ready(function(){
 	 $(document).on("click", '.taken', function() {//this click is used to react to newly generated cicles;
 	    alert("Sorry, this date is already booked");
 	});
+	
+	
+	
+	
+	
+	
+	
+		
+	//Click to delete a single booking, available for click when u select a certain month
+	// **************************************************************************************
+    // **************************************************************************************
+    //                                                                                     ** 
+	   $(document).on("click", '.deleteBooking', function() {//this click is used to react to newly generated cicles;
+	        if (confirm("Are you sure to delete this booking?") == true) {
+				//alert(this.id);
+				run_ajax_to_delete_this_booking(this.id);
+                return true;
+            } else {
+                return false;
+            }
+	   });
+	
+	
+	// **                                                                                  **
+    // **************************************************************************************
+    // **************************************************************************************
+	
+	
+	
+	
+	
+	
+	
+			
+	//Function to delete  a single booking, triggered in $(document).on("click", '.deleteBooking', function()
+	// **************************************************************************************
+    // **************************************************************************************
+    //                                                                                     ** 
+	  function run_ajax_to_delete_this_booking(passedID){
+		 $(".loader").show(200); //show the loader
+		 
+		 
+		 //getting the path to current folder with JS to form url for ajax, i.e /yii2_REST_and_Rbac_2019/yii-basic-app-2.0.15/basic/web/booking-cph/ajax_get_6_month
+		 var loc = window.location.pathname;
+         var dir = loc.substring(0, loc.lastIndexOf('/'));
+		 var urlX = dir + '/ajax_delete_1_booking';
+		  //alert(urlX);
+		
+		 // send  data  to  PHP handler  ************ 
+         $.ajax({
+            url: urlX,
+            type: 'POST',
+			dataType: 'json' ,//'JSON', // without this it returned string(that can be alerted), now it returns object
+			//passing the city
+            data: { 
+			    serverBookingID:passedID,
+	
+			},
+            success: function(data) {
+                // do something;
+				alert(data.delete_status);
+				$(".loader").hide(5000); //hide the loader
+				get_1_single_month(clickedThis); //renew the view of clicked month
+				//scrollResults(".single-clicked-month"/*, ".parent()."*/); /*.single-clicked-month*///scroll to div. Put it here to ensure, that the div has been html-es, so it scroll directly to it, + make sure loader will visible
+            },  //end success
+			error: function (error) {
+				alert("Error while deleting the booking");
+            }	
+        });
+	  }
+	
+	// **                                                                                  **
+    // **************************************************************************************
+    // **************************************************************************************
+	
+	
+	
+	
+	
+	
+	
+	
+	//DISABLE BOOKED date in datepicker
+	
+    var disabledDays = [
+       "21-8-2019", "21-08-2019", "26-12-2016",
+       "4-4-2017", "5-4-2017", "6-4-2017", "6-4-2016", "7-4-2017", "8-4-2017", "9-4-2017"
+    ];
+	/*
+   $(document).on("change", '#uniqueIDFrom', function(e) {  //must have {e} to detect event //newly generated
+       if(disabledDays.indexOf($("#uniqueIDFrom").val()) == -1){
+	      alert("date already booked");
+	   }
+   });
+   */
+
+
+	
+	
+	
 	
 	
 	

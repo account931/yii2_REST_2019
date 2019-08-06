@@ -648,6 +648,8 @@ How to add multilanguages:
 
 #Form url with JS for ajax: var loc = window.location.pathname; var dir = loc.substring(0, loc.lastIndexOf('/'));  var urlX = dir + '/ajax_get_6_month';
 #Form url with Php for ajax: $URL = Yii::$app->request->baseUrl . "/site/ajax-rbac-insert-update";
+
+#Add id to form input => 	<?= $form->field($model, 'book_from' ,['inputOptions' => ['id' => 'uniqueID',],]) ->input('date') ;
 =======================================================
 99. Known Errors
 99.1 While trying to add RBAC migrations there is a Error "You should configure "authManager", while u have already added authManager to component in /config/web.php.

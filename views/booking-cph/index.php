@@ -10,6 +10,8 @@ use yii\helpers\Url;
 /* @var $this yii\web\View */
 
 
+
+
  use app\assets\CPH_AssertOnly;   // use your custom asset
  CPH_AssertOnly::register($this); // register your custom asset to use this js/css bundle in this View only(1st name-> is the name of Class)
 	   
@@ -71,6 +73,8 @@ $this->params['breadcrumbs'][] = $this->title;
 		    
 			echo "<p class='alert-danger'>You are logged as <i class='fa fa-address-book-o' style='font-size:1.3em;'></i> <b>" . Yii::$app->user->identity->username . "</b></p>";
 			
+			
+		
 		    $form = ActiveForm::begin (/*[
            'id' => 'login-form',
            'layout' => 'horizontal',
@@ -82,8 +86,8 @@ $this->params['breadcrumbs'][] = $this->title;
            ]*/); ?>
 
            <?php 
-		    $model->book_user = Yii::$app->user->identity->username; //set default value for $model->book_user with current username 
-            echo $form->field($model, 'book_user')->textInput(['maxlength' => true, /*'value'=> $d*/ ]); //Current logged user
+		    //$model->book_user = Yii::$app->user->identity->username; //set default value for $model->book_user with current username 
+            //echo $form->field($model, 'book_user')->textInput(['maxlength' => true, /*'value'=> $d*/ ]); //Current logged user
             echo $form->field($model, 'book_guest' /*,  ['enableAjaxValidation' => true]*/)->textInput();
 		   /* echo $form->field($model, 'book_from'); */ 
 		   /* echo $form->field($model, 'book_to');  */ ?>
@@ -91,8 +95,8 @@ $this->params['breadcrumbs'][] = $this->title;
 		   <lable>&nbsp;&nbsp;&nbsp;to </lable><input type="date" value="" id="calendarPick_to"/><hr>-->
 		   
 		   
-		   <?= $form->field($model, 'book_from')->input('date'); //html5 inject ?>
-		   <?= $form->field($model, 'book_to')->input('date'); //html5 inject, can use "color" ?>
+		   <?= $form->field($model, 'book_from' ,['inputOptions' => ['id' => 'uniqueIDFrom',],]) ->input('date') ; //FROM datepicker, html5 inject ?>
+		   <?= $form->field($model, 'book_to')->input('date'); //TO datepicker,html5 inject, can use "color" ?>
 		   	   
   
            <div class="form-group">

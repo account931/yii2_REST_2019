@@ -47,13 +47,14 @@
 
 
 .free{
-	background:green;
-	
+	background:green;	
 }
 
 .taken{
 	background:red;
 }
+
+.blank{background:grey;}
 
 /*----Hover over free seats---*/	
 .free:hover{
@@ -62,7 +63,7 @@
 }
 
 /*----Hover over taken seats-*/	
-.taken:hover{
+.taken:hover, .blank:hover{
 	background:pink;
 	cursor:not-allowed;
 }
@@ -94,7 +95,27 @@ table th{
 	padding:2em;
 }
 
+/* ------------------------------ Mobile */
+@media screen and (max-width: 480px) { 
+   .guestList div{padding:1em 0.2em 1em 0.2em; border-bottom:none; }
+}
+/* ----------------------------- Mobile */
 
+
+/* Delete image*/
 .deleteBooking{
 	cursor:pointer;
 }
+
+
+
+
+/* Fix to make all dicvs the same hight */
+.guestList{
+	display: table; /* Make the container element behave like a table */
+    width: 100%; /* Set full-width to expand the whole page */}
+	
+.colX {
+    display: table-cell; /* Make elements inside the container behave like table cells */
+}
+/* END Fix to make all dicvs the same hight */

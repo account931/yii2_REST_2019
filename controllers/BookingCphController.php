@@ -90,17 +90,38 @@ class BookingCphController extends Controller
 	 $model = new BookingCph(); //model of SQL table{booking_cph},  models/BookingCph. Used pass to view to create a form.
 	 
 	 //just for test, gets all record from SQL table{booking_cph}
-	 $all_records = BookingCph::find()->where(['book_user' => Yii::$app->user->identity->username])->all();
+	 //$all_records = BookingCph::find()->where(['book_user' => Yii::$app->user->identity->username])->all();
 	 
+	 
+	 $model->book_user = Yii::$app->user->identity->username; //fill the field "Who is booking" default value
+	 
+	 
+	 //SAVING THE FORM TO DB 
 	 //if u filled in the form to book a new date range for a new guest
 	 //if ($model->load(\Yii::$app->request->post()) && $model->save()) {
 	 if ($model->load(\Yii::$app->request->post())) {
-		 if($model->save()){
-             \Yii::$app->session->setFlash("successX", "Successfully booked with guest <i class='fa fa-address-book-o' style='font-size:1.2em;'></i> <b> $model->book_guest</b>");
-			 return $this->refresh(); //prevent  F5  resending	
-         } else {
-		    \Yii::$app->session->setFlash('failedX', 'Booking Failed, please click  <button data-target="#rbacAdd" data-toggle="collapse">NEW BOOKING</button> button to see details');
-	     } 
+		 
+		 //check if dates are not booked yet
+		 $checkIf_free = BookingCph::find() //->where(['book_user' => Yii::$app->user->identity->username]) 
+		          ->andWhere(['between', 'book_from_unix', strtotime($model->book_from), strtotime($model->book_to) ])  //strtotime("12-Aug-2019") returns unixstamp
+				  ->andWhere(['between', 'book_to_unix',   strtotime($model->book_from), strtotime($model->book_to) ])  //strtotime("12-Aug-2019") returns unixstamp
+				  /*->where(['>=',    'book_from_unix', strtotime($model->book_from) ]) //where DB book_from_unix bigger than strtotime($model->book_from)
+                  ->andWhere(['<=', 'book_from_unix', strtotime($model->book_to) ])
+				  ->andWhere(['<=', 'book_to_unix',   strtotime($model->book_to) ])
+				   ->andWhere(['>=','book_to_unix',   strtotime($model->book_to) ])
+				   */
+				  ->all(); 
+		 
+		 if(empty($checkIf_free)){
+		     if($model->save()){
+                 \Yii::$app->session->setFlash("successX", "Successfully booked with guest <i class='fa fa-address-book-o' style='font-size:1.2em;'></i> <b> $model->book_guest</b>");
+			     return $this->refresh(); //prevent  F5  resending	
+             } else {
+		        \Yii::$app->session->setFlash('failedX', 'Booking Failed, please click  <button data-target="#rbacAdd" data-toggle="collapse">NEW BOOKING</button> button to see details');
+	         } 
+		 } else {
+			 \Yii::$app->session->setFlash('failedX', 'Booking Failed, Dates are already taken');
+		 }
          	 
 	 }
 	 
@@ -120,9 +141,9 @@ class BookingCphController extends Controller
             'current3' => $current3, // Act Record only- for Previous month summary
             'current4' => $current4, 
             'current5' => $current5, 
-           //'current6' => $current6, */
+           //'current6' => $current6, 
 		    'all_records' => $all_records //just for test, gets all record from SQL table{booking_cph}
-			
+			*/
         ]);
     }
     
@@ -188,6 +209,7 @@ class BookingCphController extends Controller
 		  $countX = 0;
 		  foreach ($monthData as $a){
 		      $number = ($a->book_to_unix - $a->book_from_unix)/60/60/24;
+			  $number = $number + 1; //if u want to count from 5 aug to 6 aug as 2 days , not as one 
 		      //$from = strtotime($last); $to = strtotime($first); $diff = $from - $to;   $countX = $diff;///60/60/24;
 			  $countX = $countX + $number;
 		  }
@@ -241,10 +263,11 @@ class BookingCphController extends Controller
 			
 			
 			
-			//count amount of booked days for for a specific Previous month one by one in a loop. Unix from & to are from DB results
+			//count amount of booked days for for a specific Previous month one by one in a loop. Unix book_to_unix & book_from_unix are from DB results
 		    $countX = 0;
 		    foreach (${'monthData'.$i} as $a){
 		      $number = ($a->book_to_unix - $a->book_from_unix)/60/60/24;
+			  $number = $number + 1; //if u want to count from 5 aug to 6 aug as 2 days , not as one 
 		      //$from = strtotime($last); $to = strtotime($first); $diff = $from - $to;   $countX = $diff;///60/60/24;
 			  $countX = $countX + $number;
 		    }
@@ -316,15 +339,17 @@ class BookingCphController extends Controller
 		 error_reporting(E_ALL & ~E_NOTICE); //JUST TO FIX 000wen HOSTING!!!!!!!!!!!!!!!
 		 
 		 $array_1_Month_days = array();//will store 1 month data days, ie [5,6,7,8]
+		 $array_allGuests = array();//will store all guests in relevant order according to values in $array_1_Month_days , ie [name, name]
 		 
 		 //guest list for $generalBookingInfo
 		 //Forminh here column names(like <TH>) for $guestList
 		 $guestList = "<div class='row border guestList'>" .  //div wrapper
-		                "<div class='col-sm-3 col-xs-3 bg-primary'>Guest</div>" . 
-		                "<div class='col-sm-3 col-xs-3 bg-primary'>From</div>" . 
-					    "<div class='col-sm-3 col-xs-3 bg-primary'>To</div>" . 
-					    "<div class='col-sm-2 col-xs-2 bg-primary'>Duration</div>" .
-					    "<div class='col-sm-1 col-xs-1 bg-primary'>Delete</div>";
+		                 "<div class='col-sm-3 col-xs-3 bg-primary colX'>Guest </div>" . 
+		                 "<div class='col-sm-3 col-xs-2 bg-primary colX'>From  </div>" . 
+					     "<div class='col-sm-3 col-xs-2 bg-primary colX'>To    </div>" . 
+					     "<div class='col-sm-2 col-xs-2 bg-primary colX'>Duration</div>" .
+					     "<div class='col-sm-1 col-xs-2 bg-primary colX'>Delete  </div>" .
+					   "</div>";
 		 $overallBookedDays; //all amount of days booked in this month
 		 $text;
 		 
@@ -339,7 +364,11 @@ class BookingCphController extends Controller
 		 $text.= "<tr><th> Mon </th><th> Tue </th><th> Wed </th><th> Thu </th><th> Fri </th><th> Sat </th><th> Sun </th></tr>";
 		 
 		
-		 
+		
+		
+		
+		
+		
 		 //complete $array_1_Month_days with booked days in this month, i,e [7,8,9,12,13]
 		 if($thisMonthData){
 		     foreach ($thisMonthData as $a)
@@ -350,16 +379,20 @@ class BookingCphController extends Controller
 			    //complete $array_1_Month_days with booked days in this month, i,e [7,8,9,12,13]
 			    for($i = 0; $i < $diff+1; $i++){
 			       $d = (int)$startDate[2]++; //(int) is used to remove 0 if any, then do ++
-			       array_push($array_1_Month_days, $d ); //adds to array booked days
+			       array_push($array_1_Month_days, $d ); //adds to array booked days, i.e [7,8,9,12,13]
+				   array_unshift($array_allGuests, $a->book_guest); //adds to array a guest name to display as titile in calnedar on hover //use array_unshift() to add to begging(not end) of array
 		        } 
+				
 			
 			    //generating guest list var $guestList  for $generalBookingInfo
 			    $singleGuestDuration = (( $a->book_to_unix - $a->book_from_unix)/60/60/24) + 1; //amount of booked days for every guest
-			    $guestList.= "<div class='col-sm-3 col-xs-3'><i class='fa fa-calendar-check-o'></i>" . $a->book_guest . "</div>" . //guest
-        			     "<div class='col-sm-3 col-xs-3'>" . $a->book_from  .  "</div>" . //from
-						 "<div class='col-sm-3 col-xs-3'>" . $a->book_to    . "</div>"  . //to
-						 "<div class='col-sm-2 col-xs-2'>" . $singleGuestDuration . "</div>" . //duration
-						 "<div class='col-sm-1 col-xs-1 deleteBooking'> <i class='fa fa-cut' style='color:red;'></i></div>";  //Delete icon
+			    $guestList.= "<div class='row border guestList'>" . 
+				                 "<div class='col-sm-3 col-xs-3 colX'><i class='fa fa-calendar-check-o'></i>" . $a->book_guest . "</div>" . //guest
+        			             "<div class='col-sm-3 col-xs-2 colX'>" . $a->book_from  .  "</div>" . //from
+						         "<div class='col-sm-3 col-xs-2 colX'>" . $a->book_to    . "</div>"  . //to
+						         "<div class='col-sm-2 col-xs-2 colX'>" . $singleGuestDuration . "</div>" . //duration
+						         "<div class='col-sm-1 col-xs-2 colX deleteBooking' id='" . $a->book_id . "'> <i class='fa fa-cut' style='color:red;'></i></div>" .  //Delete icon
+							  "</div>";
 			    $overallBookedDays+= (( $a->book_to_unix - $a->book_from_unix)/60/60/24) + 1; //all amount of days booked in this month
 			
 		     }
@@ -367,7 +400,7 @@ class BookingCphController extends Controller
 		  }
 		 
 		 
-		 $guestList.= "</div>";//close div wrapper
+		 //$guestList.= "</div>";//close div wrapper
 		 
 		 $dayofweek = /*"first day is " .*/ (int)date('w', $start); //returns the numeric equivalent of weekday of the 1st day of the month, i.e 1. 1 means Monday (first days of Loop month is Monday)
 		 $dayofweek = (($dayofweek + 6) % 7) + 1; //Mega Fix of Sundays, as Sundays in php are represented as {0}, and with this fix Sundays will be {7}
@@ -380,7 +413,10 @@ class BookingCphController extends Controller
 		 
 		 
 		 //Var with general info, ie "In June u have 2 guests. Overal amount of days are 22."
-		 $generalBookingInfo = "<br><h3>In <b>" . date("F", $start)/*i.e June*/ . "</b> the amount of guests you have: <i class='fa fa-calendar-check-o'></i><b>" . count($thisMonthData) . "</b>. <br><br>Overall amount of booked days are:" . $overallBookedDays;
+		 $generalBookingInfo = "<br><h3>In <b>" . date("F", $start).  //i.e June*
+		                       "</b> the amount of guests you have: <i class='fa fa-calendar-check-o'></i><b>&nbsp;" . count($thisMonthData) . "</b>. <br><br>" .
+		                       "Overall amount of booked days are: <i class='fa fa-area-chart'></i>" . $overallBookedDays;
+							   
 		 $generalBookingInfo.= "<hr><p><b>Guest list:</b></p>" . $guestList;
 		 
 		 
@@ -389,21 +425,25 @@ class BookingCphController extends Controller
 		 $breakCount = 0; //var to detect when to use a new line in table, i.e add <td>
 		 $lastDayNormal = date("F-Y-d", $end);// gets the last day in normal format fromUnix, ie Jule-2019-31
 		 $lastDay = explode("-", $lastDayNormal);//gets the last day in this month, i.e 31
+		 $guestX = 0; //iterator to use in $array_allGuests
 		 
 		 //building blanks days, it is engaged only in case the 1st day of month(1) is not the first day of the week, i.e not Monday
 		 for($i = 1; $i < $dayofweek; $i++){  //$dayofweek is the 1st week day of the month, i.e 1. 1 means Monday
-			 $text.= "<td class='free'> Y </td>";
+			 $text.= "<td class='blank'>  </td>"; //Y
 			 $breakCount++;
 		 }
 		 
 		 //building the calendar with free/taken days
-		 for($j = 1 /*$dayofweek*/; $j < (int)$lastDay[2]+1 /*count($array_1_Month_days)*/; $j++){  //$array_1_Month_days-> is an array with booked days in this month, i,e [7,8,9,12,13]
+		 for($j = 1 /*$dayofweek*/; $j < (int)$lastDay[2]+1 /*count($array_1_Month_days)*/; $j++){  //$lastDay[2]+1 is a quantity of days in this month //$array_1_Month_days-> is an array with booked days in this month, i,e [7,8,9,12,13]
 			 
+			 //var to detect when to use a new line in table, i.e add <td>
 			 if($breakCount%7 == 0){$text.= "<tr>";}
 			 $breakCount++;
 			 
+			
 			 if (in_array($j, $array_1_Month_days)){ //if iterator in array $array_1_Month_days, i.e this day is booked
-			   $text.= "<td class='taken' title='already booked'>" . $j . "</td>";  
+			   $text.= "<td class='taken' title='already booked for " . $array_allGuests[$guestX]  ."'>" . $j . "</td>";  //title "booked for Guest name"
+               $guestX++;			   
 			 } else {
 				 $text.= "<td class='free'>" . $j . "</td>";
 			 } 
@@ -425,7 +465,10 @@ class BookingCphController extends Controller
 		 */
 		 //END BUILDING A CALENDAR-------------------------------------------
 		 
-		 $text.= "</table><hr><hr>" . $generalBookingInfo . "<h4>Booked days array=>" . implode("-", $array_1_Month_days) ."</h4>"; //implode("-", $array_1_Month_days)-> just to display array with booked days, i.e [4,5,6,18,19]
+		 
+		 
+		 $text.= "</table><hr><hr>" . $generalBookingInfo . "<h4>Booked days array=>" .
+		          implode("-", $array_1_Month_days) ."</h4>"; //implode("-", $array_1_Month_days)-> just to display array with booked days, i.e [4,5,6,18,19]
 		 
 		 return $text;
 		 //return "OK <br>";
@@ -441,7 +484,34 @@ class BookingCphController extends Controller
 	
 	
 	
+	//action to delete  a single booking. Comes as ajax from js/booking_cph.js-> run_ajax_to_delete_this_booking(passedID). Triggered in $(document).on("click", '.deleteBooking', function()
+	// **************************************************************************************
+    // **************************************************************************************
+    // **                                                                                  **
+    // **                                                                                  **
+	 public function actionAjax_delete_1_booking() //ajax
+     {
+		$status = "Pending"; 
+	    $thisMonthData = BookingCph::find() -> where([ 'book_id' => $_POST['serverBookingID']])  -> one() -> delete();  
+        if($thisMonthData){
+			$status = "Deleted Successfully " . $_POST['serverBookingID'];
+		} else {
+			$status = "Failed deleting";
+		}	
+        //RETURN JSON DATA
+		 // Specify what data to echo with JSON, ajax usese this JSOn data to form the answer and html() it, it appears in JS consol.log(res)
+         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;  
+          return [
+             'result_status' => "OK", // return ajx status
+             'delete_status' => $status,		 
+          ]; 		
+	 }
 	
-
+    		
+	// **                                                                                  **
+    // **************************************************************************************
+    // **************************************************************************************	
+		
+		
 
 }
