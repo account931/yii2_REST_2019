@@ -13,7 +13,8 @@ TABLE OF CONTENT:
 4.RestFul Api.
 5.Booking CPH
 5.1 How to validate dates input in form in Booking CPH
-
+5.2 MARGIN MONTHS fix, when booking include magrin maonths, i.e 28 Aug - 3 Sept) 
+6. error_reporting(E_ALL & ~E_NOTICE); //JUST TO FIX 000wen HOSTING!!!!!!!!!!!!!!!
 
 
 -------------------------------------------------------------
