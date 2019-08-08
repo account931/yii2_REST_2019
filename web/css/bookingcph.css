@@ -90,19 +90,21 @@ table th{
 	font-size:0.7em;
 }
 
-/*----Padding inside div with Guest, from, to, duration, delete-*/
+/*----Padding inside div of Guest List table, from, to, duration, delete-*/
 .guestList div{
 	padding:2em;
 }
 
 /* ------------------------------ Mobile */
 @media screen and (max-width: 480px) { 
-   .guestList div{padding:1em 0.2em 1em 0.2em; border-bottom:none; }
+   .guestList div{padding:1em 0.2em 1em 0.2em;  word-break: break-all; }
+   
+
 }
 /* ----------------------------- Mobile */
 
 
-/* Delete image*/
+/* Delete imag in Guest List table */
 .deleteBooking{
 	cursor:pointer;
 }
@@ -110,7 +112,7 @@ table th{
 
 
 
-/* Fix to make all dicvs the same hight */
+/* Fix to make all divs in Guest List table of the same hight */
 .guestList{
 	display: table; /* Make the container element behave like a table */
     width: 100%; /* Set full-width to expand the whole page */}

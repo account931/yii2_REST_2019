@@ -517,7 +517,8 @@ How to:
 =====================================================
 15.Multilanguages
 (see live example at MultilanguageController/public function actionIndex())
-NB: setting is reset to null on reload, u should save selected language to Session)
+NB: setting is reset to null on reload, u should save selected language to Session or Cookie)
+When using Cookie keep in mind MEGA FIX : {Yii::$app->request->cookies} is for READ ONLY, to add a new cookie use {Yii::$app->response->cookies->}
 How to add multilanguages:
   1. Add to main config (for basic it is /config/web.php)=>
         return [

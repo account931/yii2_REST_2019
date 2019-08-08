@@ -101,11 +101,12 @@ class BookingCphController extends Controller
 	 //if ($model->load(\Yii::$app->request->post()) && $model->save()) {
 	 if ($model->load(\Yii::$app->request->post())) {
 		 
-		 //check if dates are not booked yet 
+		 //check if selected in form dates are not booked yet(not yet in DB BOOKINGCPH)
 		 $checkIf_free = BookingCph::find() 
 		          ->where(['book_user' => Yii::$app->user->identity->username]) //if this line uncommented, each user has its own private booking(many users-> each user has own private booking appartment, other users cannot book it). Comment this if u want that booking is general, ie many users->one booking appartment(many users can book 1 general appartment) 
 		          ->andWhere(['between', 'book_from_unix', strtotime($model->book_from), strtotime($model->book_to) ])  //strtotime("12-Aug-2019") returns unixstamp
 				  ->orWhere (['between', 'book_to_unix',   strtotime($model->book_from), strtotime($model->book_to) ])  //(MARGIN MONTHS fix, when booking include margin months, i.e 28 Aug - 3 Sept) //strtotime("12-Aug-2019") returns unixstamp
+				  ->orWhere (['and', ['<','book_from_unix',strtotime($model->book_from)], ['>', 'book_to_unix', strtotime($model->book_to) ] ]) //Fix situation when in DB we have 21-28Aug and user's input is 22-23Aug
 				  /*->where(['>=',    'book_from_unix', strtotime($model->book_from) ]) //where DB book_from_unix bigger than strtotime($model->book_from)
                   ->andWhere(['<=', 'book_from_unix', strtotime($model->book_to) ])
 				  ->andWhere(['<=', 'book_to_unix',   strtotime($model->book_to) ])
@@ -166,7 +167,7 @@ class BookingCphController extends Controller
     {
 		
 
-        error_reporting(E_ALL & ~E_NOTICE); //JUST TO FIX 000wen HOSTING!!!!!!!!!!!!!!!
+        error_reporting(E_ALL & ~E_NOTICE); //JUST TO FIX 000wen HOSTING, Hosting wants this only for Ajax Actions!!!!!!!!!!!!!!!
 		date_default_timezone_set('UTC');  //use ('UTC') to avoid -1 day result    //('europe/kiev')	('UTC')
 		
 		$array_All_Month = array();//will store all 6 month data
@@ -183,9 +184,10 @@ class BookingCphController extends Controller
 		
 		
 		 //-------------------- 1 current month only ---------------------------------
-		 //Start Procedure for 1 current month only************
+		 //Start Procedure for 1 current month only******==================================================================================================
 		 //gets current month/year
-	     $current = date('M', strtotime(date('Y-m'))) . " " . date('Y', strtotime(date('Y-m'))); //i.e Jul 2019
+	     /*
+		 $current = date('M', strtotime(date('Y-m'))) . " " . date('Y', strtotime(date('Y-m'))); //i.e Jul 2019
 		 array_push($array_All_Month, $current); //adds current month to array
 		 
 		 //test first/last days
@@ -202,9 +204,9 @@ class BookingCphController extends Controller
 		 array_push($array_All_Unix, $array_tempo); //push subarray to array in order to have structure [[35, 57], [35, 57], [35, 57],]
 		 
 		  //SQL for 1 current month only
-		  $monthData = BookingCph::find() ->orderBy ('book_id DESC')  /*->limit('5')*/ 
-		            ->where([ 'book_user' => Yii::$app->user->identity->username, /* 'mydb_id'=>1*/]) //if this line uncommented, each user has its own private booking(many users-> each user has own private booking appartment, other users cannot book it). Comment this if u want that booking is general, ie many users->one booking appartment(many users can book 1 general appartment)  
-					->andWhere(['between', 'book_from_unix', strtotime($first), strtotime($last)   ])   /*->andFilterWhere(['like', 'supp_date', $PrevMonth])  ->andFilterWhere(['like', 'supp_date', $PrevYear])*/    
+		  $monthData = BookingCph::find() ->orderBy ('book_id DESC')  //->limit('5') 
+		            ->where([ 'book_user' => Yii::$app->user->identity->username,]) //'mydb_id'=>1 //if this line uncommented, each user has its own private booking(many users-> each user has own private booking appartment, other users cannot book it). Comment this if u want that booking is general, ie many users->one booking appartment(many users can book 1 general appartment)  
+					->andWhere(['between', 'book_from_unix', strtotime($first), strtotime($last)   ])   //->andFilterWhere(['like', 'supp_date', $PrevMonth])  ->andFilterWhere(['like', 'supp_date', $PrevYear])   
 					->orWhere (['between', 'book_to_unix',   strtotime($first1), strtotime($last1) ])  //(MARGIN MONTHS fix, when booking include margin months, i.e 28 Aug - 3 Sept) //strtotime("12-Aug-2019") returns unixstamp
 					->all(); 
           array_push($array_All_sqlData, $monthData); //adds this current month booking data to array $array_All_sqlData
@@ -239,23 +241,26 @@ class BookingCphController extends Controller
 		  
 		  array_push($array_All_CountDays, $countX); //adds this current month booked days (in numbers, i.e 22) to array 
 		  //END count amount of booked days for this 1 current month. Unix from & to are from DB results
-		  
-		 //END  Procedure for 1 current month only*************
+		  */
+		 //END  Procedure for 1 current month only********=====================================================================================
 		 
 		 
 		 
-		 //must be declared out of for loop, to save its value for further iteration, in case if($may == 1 )
+		 
+		 
+		 //var with year, used for creating Unix for next years, must be declared out of for loop, to save its value for further iteration, in case if($may == 1 )
 		 $yearX = date("Y"); //gets the current year, i.e 2019
 	 
 	 
-	 
-	 
-	 
 		
-		 //-------------------- Next 6 month ---------------------------------
-	     // FIND SQL DATA for ALL Future 6-MONTHS IN FOR LOOP
-         for ($i = 1; $i < 9; $i++){  //($i=1; $i<4; $i++)  // $i < 6 means for 5 future month //YOU CAN CHANGE THE AMOUNT OF FUTURE MONTH TO DISPLAY HERE
-            //Start DATE for Previous month  ONLY----------------------------
+		 //-------------------- This one current month + Next 6 month ---------------------------------
+	     //FIND SQL DATA for This one current month + ALL Future 6-MONTHS IN FOR LOOP. To use it fot months incl current, changed $i=0 (was $i=1)
+         for ($i = 0; $i < 9; $i++){  //($i=1; $i<4; $i++)  // $i < 6 means for 5 future month //YOU CAN CHANGE THE AMOUNT OF FUTURE MONTH TO DISPLAY in $i = YOUR Unlimited amount
+		    
+			//if it is Zero iteration, ie it is this current month
+		    //if($i == 0){	}
+			
+            //Start DATE for Previous month  ONLY (+ this current month in first iteration)----------------------------
             $PrevMonth = date('M', strtotime(date('Y-m'). " + " .$i. " month")); //i.e Jul  //$PrevMonth=date('M', strtotime(date('Y-m')." -1 month"));         
             $PrevYear =  date('Y', strtotime(date('Y-m')." + " .$i. " month"));  //i.e 2019 // $PrevYear=date('Y', strtotime(date('Y-m')." -1 month"));// getting previous  month  and  year;
         
@@ -270,7 +275,7 @@ class BookingCphController extends Controller
 			
 			if($may == 1 ){
 				//$yearX must be declared out of for loop, to save its value for further iteration, in case if($may == 1 )
-				$yearX = (int)date("Y") + 1; // gets the current year & adds +1 to get the next year, ie. 2019 + 1 = 2020
+				$yearX++ ; //was = (int)date("Y") + 1; Fix for unlimited future years// gets the current year & adds +1 to get the next year, ie. 2019 + 1 = 2020
 			    //$yearX = (string)$yearX;
 			} 
 			
@@ -278,14 +283,14 @@ class BookingCphController extends Controller
 			$first1 = date("Y-m-d", mktime(0, 0, 0, $may , 1 ,$yearX)); //gets the first day of the current month, returns  "2019-05-01"
 		    $last1 = date("Y-m-d",  mktime(0, 0, 0, $may+1, 0, $yearX)); //gets the last day of the current month,returns "2019-05-31"
 			
-			//gets Unix Start Time & Unix End Time of the current month (i.e Unix of the 1st & last day)
+			//gets Unix Start Time & Unix End Time of the current month (+ this current month in first iteration) (i.e Unix of the 1st & last day)
 		    $array_tempo = array(strtotime($first1), strtotime($last1)); //push current month unix stamp start/stop Unix time to subarray // returns [1556654400,1559246400]
 		    array_push($array_All_Unix, $array_tempo); //push subarray to array in order to have structure [[35, 57], [35, 57], [35, 57],]
 		
 		
 	
 			
-		    //Find SQL data for a specific Previous month (from 6-months range) one by one in a loop
+		    //Find SQL data for a specific Previous month (+ this current month in first iteration) (from 6-months range) one by one in a loop
            //creating array {SmonthData1,SmonthData2,}
             ${'monthData'.$i} = BookingCph::find()   ->orderBy ('book_id DESC')  /*->limit('5')*/ 
 			    ->where([ 'book_user' => Yii::$app->user->identity->username, /*'mydb_id'=>1*/]) //if this line uncommented, each user has its own private booking(many users-> each user has own private booking appartment, other users cannot book it). Comment this if u want that booking is general, ie many users->one booking appartment(many users can book 1 general appartment)  
@@ -294,11 +299,11 @@ class BookingCphController extends Controller
 				->all(); 
 				  
             array_push($array_All_sqlData, ${'monthData'.$i}); //adds current month booking data to array $array_All_sqlData
-			//END DATE for Previous month  ONLY-------------------------------
+			//END DATE for Previous month  ONLY (+ this current month in first iteration)-------------------------------
 			
 			
 			
-			//Badges:count amount of booked days for for a specific Previous month (from 6-months range) one by one in a loop. Unix book_to_unix & book_from_unix are from DB results
+			//Badges:count amount of booked days for for a specific Previous month (from 6-months range) (+ this current month in first iteration) one by one in a loop. Unix book_to_unix & book_from_unix are from DB results
 		    $countX = 0;
 		    foreach (${'monthData'.$i} as $a){
 				
@@ -332,7 +337,7 @@ class BookingCphController extends Controller
 			
 		
          } // END FOR(++)
-    //END  FIND SQL DATA for ALL PREVIOUS MONTHS IN FOR LOOP
+    //END  FIND SQL DATA for ALL PREVIOUS MONTHS (+ this current month in first iteration) IN FOR LOOP
 		
 		
 		
@@ -391,14 +396,14 @@ class BookingCphController extends Controller
 		 
 		 //ini_set('display_errors', 1);
          //ini_set('display_startup_errors', 1);
-		 error_reporting(E_ALL & ~E_NOTICE); //JUST TO FIX 000wen HOSTING!!!!!!!!!!!!!!!
+		 error_reporting(E_ALL & ~E_NOTICE); //JUST TO FIX 000wen HOSTING, Hosting wants this only for Ajax Actions!!!!!!!!!!!!!!!
 		 
 		 $array_1_Month_days = array();//will store 1 month data days, ie [5,6,7,8]
 		 $array_allGuests = array();//will store all guests in relevant order according to values in $array_1_Month_days , ie [name, name]
 		 $MonthList= array("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"); //General array for all click actions
 		 
 		 //guest list for $generalBookingInfo
-		 //Forminh here column names(like <TH>) for $guestList
+		 //Forming here column names(like <TH>) for $guestList table, i.e(guest/start/end/duration/delete)
 		 $guestList = "<div class='row border guestList'>" .  //div wrapper
 		                 "<div class='col-sm-3 col-xs-3 bg-primary colX'>Guest </div>" . 
 		                 "<div class='col-sm-3 col-xs-2 bg-primary colX'>From  </div>" . 
@@ -419,7 +424,7 @@ class BookingCphController extends Controller
 						->orWhere (['between', 'book_to_unix',   $start, $end ])  //Start MARGIN MONTHS fix, when booking include margin months, i.e 28 Aug - 3 Sept)**********
 						->all(); 
 	     
-		 $text = "<div><h2>" .date("F-Y", $start) . "</h2> <p><span class='example-taken'></span> - means booked dates</p></div><br>"; //header: month-year //returns July 2019 + color sample explain
+		 $text = "<br><br><br><br><div><h2>" .date("F-Y", $start) . "</h2> <p><span class='example-taken'></span> - means booked dates</p></div><br>"; //header: month-year //returns July 2019 + color sample explain
 		 $text.="<table class='table table-bordered'>";
 		 $text.= "<tr><th> Mon </th><th> Tue </th><th> Wed </th><th> Thu </th><th> Fri </th><th> Sat </th><th> Sun </th></tr>";
 		 
@@ -470,7 +475,7 @@ class BookingCphController extends Controller
 		        } 
 				
 			
-			    //generating guest list var $guestList  for $generalBookingInfo
+			    //generating guest list var $guestList  for $generalBookingInfo, i.e(guest/start/end/duration/delete)
 			    $singleGuestDuration = (( $a->book_to_unix - $a->book_from_unix)/60/60/24) + 1; //amount of booked days for every guest
 			    $guestList.= "<div class='row border guestList'>" . 
 				                 "<div class='col-sm-3 col-xs-3 colX'><i class='fa fa-calendar-check-o'></i>" . $a->book_guest . "</div>" . //guest
@@ -578,7 +583,12 @@ class BookingCphController extends Controller
 	 public function actionAjax_delete_1_booking() //ajax
      {
 		$status = "Pending"; 
-	    $thisMonthData = BookingCph::find() -> where([ 'book_id' => $_POST['serverBookingID']])  -> one() -> delete();  
+	    $thisMonthData = BookingCph::find() 
+		     -> where([ 'book_id' => $_POST['serverBookingID']])  
+			 ->where([ 'book_user' => Yii::$app->user->identity->username])
+			 -> one() 
+			 -> delete();  
+			 
         if($thisMonthData){
 			$status = "Deleted Successfully " . $_POST['serverBookingID'];
 		} else {

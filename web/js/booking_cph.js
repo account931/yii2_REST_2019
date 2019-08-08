@@ -175,7 +175,13 @@ $(document).ready(function(){
 				//getAjaxAnswer_andBuild_1_month(data);
 				$(".loader").hide(5000); //hide the loader
 				scrollResults(".single-clicked-month"/*, ".parent()."*/); /*.single-clicked-month*///scroll to div. Put it here to ensure, that the div has been html-es, so it scroll directly to it, + make sure loader will visible
-            },  //end success
+                //sets the same hight for Guest List Table in mobile only
+				if(screen.width <= 640){ 
+				    setSameHight_JS();
+				}
+		
+			
+			},  //end success
 			error: function (error) {
 				$(".single-clicked-month").stop().fadeOut("slow",function(){ $(this).html("Failed")}).fadeIn(2000);
             }	
@@ -282,7 +288,46 @@ $(document).ready(function(){
 	
 	
 	
+
+
+   //function that sets the same hight for Guest List Table, uses function getTallestHeight. We use delay, as this div is loaded with animation for 2 sec and function can't see its classes ".colX"
+   //Used in mobile only
+   // **************************************************************************************
+   // **************************************************************************************
+   //                                                                                     ** 
+   function setSameHight_JS(){
+	    setTimeout(function(){
+			 var els = $('.colX');
+	         var s = getTallestHeight(els); //alert(s);
+             els.height(s);
+		}, 3000);	
+   }
+   
+   function getTallestHeight(elements) {
+      var tallest = 0, height;
+
+      for(i = 0; i < elements.length; i++) {
+        height = $(elements[i]).height();
+
+        if(height > tallest) 
+            tallest = height;
+      }
+
+      return tallest;
+   };
 	
+  // **                                                                                  **
+  // **************************************************************************************
+  // **************************************************************************************	
+	
+	
+	
+	
+	
+	
+	
+	
+		
 	//DISABLE BOOKED date in datepicker
 	
     var disabledDays = [
@@ -297,12 +342,6 @@ $(document).ready(function(){
    });
    */
 
-
-	
-	
-	
-	
-	
 	
 //========================================================================================================================
 

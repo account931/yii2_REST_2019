@@ -63,7 +63,9 @@ class MultilanguageController extends Controller
 	
     public function actionIndex()
     {
-		$session = Yii::$app->session;//opens session
+		//MEGA FIX : {Yii::$app->request->cookies} is READ ONLY, to add a new cookie use {Yii::$app->response->cookies->}
+		$session = Yii::$app->session;//opens session for setting language -> not used as now language storage CHANGED TO COOKIES!!!!!
+		$cookies = Yii::$app->request->cookies;//getting all Cookies from collection
 		
 		$modelX =  new MultuLang(); //new model object
 		/*
@@ -76,13 +78,15 @@ class MultilanguageController extends Controller
 		//check if $_GET['l'] is NOT set
 		if (!$lang = Yii::$app->getRequest()->getQueryParam('l')){ //gets $_GET['l'] param), we check if $_GET['l'] is NOT set
 		
-		    if(!$languageX =  $session->get('language')){ //check if language is NOT set in Session
+		     if (!$cookies->has('language')){ //Cookie variant instead of Session
+			//if(!$languageX =  $session->get('language')){ //check if language is NOT set in Session  //CHANGED TO COOKIES language storage variant!!!!!
 		        //if no language is set,set it to "en-US" by default/ Otherwise, it display no lanaguage status during the 1st visit
                 if(!\Yii::$app->language) {
 	               \Yii::$app->language = 'en-US';
 	            }
-		    } else { //if language is set in Session use it
-                \Yii::$app->language = $session->get('language');		
+		    } else { //if language is set in Session/Cookies use it
+			    \Yii::$app->language = $cookies->getValue('language', 'en-US');  //Cookie variant instead of Session
+              //\Yii::$app->language = $session->get('language');	//CHANGED TO COOKIES language storage variant!!!!!
 		    }
 		
         //if $_GET['l'] is set, then use it
@@ -90,7 +94,8 @@ class MultilanguageController extends Controller
 		
 		    $lang = Yii::$app->getRequest()->getQueryParam('l'); //gets $_GET['l'] param
 		    \Yii::$app->language = $lang; //set the Yii language
-		    $session->set('language', $lang); //saves the Yii2 language to Session
+			Yii::$app->response->cookies->add(new \yii\web\Cookie(['name' => 'language', 'value' => $lang, 'expire' => time() + 86400 * 365, ] )); //saves the Yii2 language to Session //Cookie variant instead of Session
+		    //$session->set('language', $lang); //saves the Yii2 language to Session //CHANGED TO COOKIES language storage variant!!!!!
 		}
 		
 		
