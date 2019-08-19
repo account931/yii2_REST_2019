@@ -12,9 +12,9 @@ TABLE OF CONTENT:
 3.Automatically become an {adminX} (i.e gets adminX role) by going to link (actionAddAdmin).
 4.RestFul Api.
 5.Booking CPH
-5.1 How to validate dates input in form in Booking CPH
-5.2 MARGIN MONTHS fix, when booking include magrin maonths, i.e 28 Aug - 3 Sept) 
-6. error_reporting(E_ALL & ~E_NOTICE); //JUST TO FIX 000wen HOSTING!!!!!!!!!!!!!!!
+5.6 Margin months Fix, when booking include magrin months, i.e 28 Aug - 3 Sept) 
+7. How to validate dates input in form in Booking CPH
+8. Why should we use {error_reporting(E_ALL & ~E_NOTICE);} on 000web.com hosting //JUST TO FIX 000web HOSTING!!!!!!!!!!!!!!!
 
 
 -------------------------------------------------------------
@@ -96,9 +96,95 @@ RestFull Api-> see {Readme_YII2_mine_Common_Comands.txt}
 
 
 
+
+
+
+
+
 //===========================================================================
 5.Booking CPH
 How Booking CPH works (booking a flat for any day in further 6 month)
+How to:
+This application provides booking a flat during the next 6 month (duration of months is configurable in Controllers/ BookingCphController, in function  actionAjax_get_6_month().
+
+-----------
+
+5.1. General overview:
+  5.1.)One and the only view for displaying Booking CPH is views/booking-cph/index( + additionally thus view is filled with ajax 6-month & 1-month divs)
+  5.2.)6-months view is created by: onLoad  Js functiob get_6_month();} is triggered, sends ajax to BookingCphController/ajax_get_6_month(), gets a JSON as a response and in SUCCESS ajax section constructs 6 months, then html () it.
+  5.3.) When u click on any of 6 month, JS { js/bookingcph.js/function get_1_single_month(this) }   detects it, get data-unix attribute of clicked Div and sends ajax to with data (start/end day in Unix of this month)  to BookingCphController /actionAjax_get_1_month(). 
+
+PHP {BookingCphController /actionAjax_get_1_month} does construct the 1 month calendar to one php variable and rerurn it (as long as php echo in Controller causes crash). JS gets a response and html() the whole response (html (data)).
+Booking CPH 2
+
+
+---------------------- ----------------------
+
+5.2. Creating 6-month view. Detailed overview  (step-by-step):
+5.2.1. When u run  BookingCphController/actionIndex, it renders view/index.php. This view/index.php register custom asset CPH_AssertOnly  with JS file booking_cph.js.
+ OnLoad (when u run   BookingCphController/actionIndex), js function {get_6_month();} sends ajax to BookingCphController/ajax_get_6_month(). 
+
+This php action in {for()} loop gets the current year and month ($current=Jun-2019), pushes it to $array_All_Month, then gets current month in digits(i.e  $monthZZZ=2	), then  gets the first day of the current month( $first="2019-05-01"), then gets week day  of 1st day($first), (i.e   $dayofweek_first=3, 3 means Wed), then gets last day of the month and its weekday ($last="2019-05-31"; $dayofweek_last), then gets UnixStamp for the 1st and last days of this month and push these values to $array_All_Unix.
+
+Then makes SQL request to find all records in Table Booking CPH . {andWhere(['between', 'book_from_unix', strtotime($first), strtotime($last) ])}, saves results to $monthData
+and push  $monthData  to  $array_All_sqlData. Then additionally makes foreach ($monthData) to count amount of booked days for this month (to be used to be displayed in round red badges).
+
+5.2.4. Then in for loop, it does the same but for the next i (6) month (rest $i). In the end php script echoes json with several arrays.
+
+JS gets the json_encoded from   BookingCphController/function get_6_month()  and in success  ajax section runs function    getAjaxAnswer_andBuild_6_month(dataX), that builds html of 6 future month with month names and round badges (which display amount of booked days in this month).
+
+---------------------- ----------------------
+
+5.3. Creating 1-month view. Detailed overview  (step-by-step):
+5.3.1. One month is ajax created while clicking on any of 6 months divs.
+5.3.2 OnClick on any of 6 months divs, JS gets the data-unix of this div, which is in format  {unix stamp of 1st day in given month/unix last days}, i.e {46888/56788}, then sends ajax to BookingCphController /actionAjax_get_1_month(), passing these unix start/end. Php script DOESN'T JSON ECHO some json vars, but it returns the whole result (all html with created calendar in one variable, so in Ajax success u'll just html(dataX) of the whole data).
+
+5.4. New booking (Inserting new Booking).
+When the form is submitted, model {BookingCph} checks if selected dates are not past time and if input1 !> input2. If validation is OK, the script make SELECT to see if the dates are not in SQL DB yet (if dates are not booked yet).
+
+5.6 Margin months Fix
+This is a special fix/check used while creating  a single one month calendar in case if booking dates are margining 2 months, i.e 28Aug - 3Sept.
+
+ This Fix checks if the END Unix date of this month booking is bigger than this month last day Unix, meaning that this  booking ends in the next month(and days from next month must not be included to this month calendar graphic display. 
+Then additionally checks if this month bookings's START Unix date is smaller than this month 1st day in Unix, meaning that this booking begins in previous month and days from previous month must not be included to this month calendar graphic display.
+
+---
+
+5.7 Building a calendar for a single month.
+How to build a Calendar for this one month:
+# on clicking on a single month, js/bookingcph.js/function get_1_single_month(this) 
+sends ajax to with data (start/end day in Unix of this month)  to BookingCphController /actionAjax_get_1_month()
+
+Action gets passed from js ajax start/end day in Unix of this month:
+$start = (int)$_POST['serverFirstDayUnix'];  $end = (int)$_POST['serverLastDayUnix']; 
+
+and makes request to DB base with SELECT where records between this month first day Unix time and last day.
+
+$thisMonthData = BookingCph::find()->..someElse..->andWhere(['between', 'book_from_unix', $start, $end ]) ->orWhere (['between', 'book_to_unix', $start, $end ]).
+
+Then, it runs foreach ($thisMonthData) to get var {$diff }(i.e amount of booked days in this month).
+
+Then, it runs for($i = 0; $i < $diff+1; $i++){} to get array  { $array_1_Month_days} with booked days, i.e [7,8,9,12,13]
+
+Then, run  for($i = 1; $i < $dayofweek; $i++)
+to build blanks days, it is used only in case if the 1st day of month(in numeric, i.e Tue means 2) is not the first day of the week, i.e not Monday.
+
+Then, runs for($j = 1; $j < (int)$lastDay[2]+1; $j++) to 
+ build the calendar with free/taken days	.$lastDay[2]+1 is a quantity of days in this month(i.e last day in this month).
+
+Then it returns to js ajax var {$text} with whole calendar, which ajax Success section htmls to div ( html(data)).
+//END 5.Booking CPH
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -108,13 +194,17 @@ How Booking CPH works (booking a flat for any day in further 6 month)
 
 
 =========================================================================
-5.1 How to validate dates input in form in Booking CPH 
+7. How to validate dates input in form in Booking CPH
 SEE DETAILS at {Readme_YII2_mine_Common_Comands.tx-> 17. Yii2 my custom validation}
 https://www.yiiframework.com/doc/guide/2.0/ru/tutorial-core-validators
 
 #To make sure that user selects a date that in not a past date, or make sure that start date is not bigger that end date we apply validation:
  #We could use JS validation like this=>   $("#myForm").on("beforeSubmit", function (event, messages) { 
  , but we use here Yii2 my custom validation. SEE DETAILS at {Readme_YII2_mine_Common_Comands.tx-> 17. Yii2 my custom validation}
+ 
+ 
+ =========================================================================
+ 8. Why should we use {error_reporting(E_ALL & ~E_NOTICE);} on 000web.com hosting //JUST TO FIX 000web HOSTING!!!!!!!!!!!!!!!
  
  
  

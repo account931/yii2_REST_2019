@@ -98,7 +98,8 @@ $this->params['breadcrumbs'][] = $this->title;
 		   <?= $form->field($model, 'book_from' ,['inputOptions' => ['id' => 'uniqueIDFrom',],]) ->input('date') ; //FROM datepicker, html5 inject ?>
 		   <?= $form->field($model, 'book_to')->input('date'); //TO datepicker,html5 inject, can use "color" ?>
 		   	   
-  
+           
+		   
            <div class="form-group">
             <?= Html::submitButton('Add', ['class' => 'btn btn-primary']) ?>
            </div>
