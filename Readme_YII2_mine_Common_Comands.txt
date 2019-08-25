@@ -301,7 +301,7 @@ How to implement access to Yii2 Rest Api with access token only:
         return static::findOne(['access_token' => $token]);
       }
 
-   c2.)IN CASE YOU STORE TOKENS in a special own created SQL database(created for storing tokens only)-> {rest_access_tokens} in field {rest_tokens}) , 
+   c2.)IN CASE YOU STORE TOKENS in a special own created SQL database(created for storing tokens only)-> for example in {rest_access_tokens} in field {rest_tokens}) , 
      c2_step1:set this method in models/User:
 	 
 	     public static function findIdentityByAccessToken($token, $type = null){

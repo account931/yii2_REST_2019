@@ -99,6 +99,7 @@ public function behaviors()
 		
 		
 		//This enables REST API Authorized access only (with token only). Token is stored in DB, field "access-token" Comment it and Rest Api will work without access-token.
+		//+ if u use access token, make sure u have edited USER model, SEE DETAILS at {Readme_YII2_mine_Common_Comands.tx-> 7.1 Yii Restful API(control token authorization(access available with token only))
 		//test url with token=> http://localhost/yii2_REST_and_Rbac_2019/yii-basic-app-2.0.15/basic/web/rests?access-token=1111
 		'authenticator' => [
             'class' => CompositeAuth::className(),
