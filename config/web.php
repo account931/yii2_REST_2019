@@ -123,13 +123,26 @@ $config = [
 		
 		
 		
-		
+		//E-MAIL settings
         'mailer' => [
             'class' => 'yii\swiftmailer\Mailer',
             // send all mails to a file by default. You have to set
             // 'useFileTransport' to false and configure a transport
             // for the mailer to send real emails.
-            'useFileTransport' => true,
+            'useFileTransport' => true, //true means sending mail to /runtime/, false means sending real emails
+			
+		    'transport' => [
+               'class' => 'Swift_SmtpTransport',
+               'host' => 'imap.ukr.net',
+               'username' => 'account931@ukr.net',
+               'password' => '****',
+               'port' => '993',
+               'encryption' => 'ssl',
+           ],
+		 //END E-MAIL settings
+			
+			
+			
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,

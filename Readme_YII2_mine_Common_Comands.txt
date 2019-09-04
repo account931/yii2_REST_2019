@@ -36,6 +36,9 @@ Table of contents:
 15.Multilanguages
 16. Has Many relation
 17. Yii2 my custom validation
+18. Reset password form (if you have forgotten it)
+19. Sending mail
+
 
 98.V.A(ActRec,create URL, redirect, get $_POST[''], etc)
 99. Known Errors
@@ -44,7 +47,7 @@ Codexception
 Yii ajax(shop)
 crsf
 Widget
-Access Control filter
+
  
 
  
@@ -611,6 +614,52 @@ How to add multilanguages:
  
  
  
+  
+ ==============================================================
+ 18. Reset password form (if you have forgotten it)
+ https://xn--d1acnqm.xn--j1amh/%D0%B7%D0%B0%D0%BF%D0%B8%D1%81%D0%B8/yii2-basic-%D0%B0%D0%B2%D1%82%D0%BE%D1%80%D0%B8%D0%B7%D0%B0%D1%86%D0%B8%D1%8F-%D0%B8-%D1%80%D0%B5%D0%B3%D0%B8%D1%81%D1%82%D1%80%D0%B0%D1%86%D0%B8%D1%8F-%D1%87%D0%B5%D1%80%D0%B5%D0%B7-%D0%B1%D0%B4
+ 
+ # Edit /models/User.php by adding RESET Password Section methods (findByPasswordResetToken($token), isPasswordResetTokenValid($token), generatePasswordResetToken(), removePasswordResetToken())
+   Exact method implementation please see at https://github.com/account931/yii2_REST_and_Rbac_2019/blob/master/models/User.php
+ # Set {'user.passwordResetTokenExpire' => 3600,} and {'supportEmail' => 'robot@devreadwrite.com'} in {/congif/params.php}
+ # Create PasswordResetRequestForm.php model in models\ResetPassword\, a model for form with email input where u request password resetting;
+ # Create ResetPasswordForm.php model in models\ResetPassword\, a model if you go to your email and click on a reset link in letter;
+ # Create text layout for email in {/mail/layouts/text.php}
+ # Create html & text email views -> {/mail/passwordResetToken-html.php}  and {/mail/passwordResetToken-text.php}
+ # Create 2 actions in Controller (i.e PasswordResetController)=> actionRequestPasswordReset() and actionResetPassword($token). See details at https://github.com/account931/yii2_REST_and_Rbac_2019/blob/master/controllers/PasswordResetController.php
+   1st action is to input your email to request resetting the password, the 2ns action is a form to change the password if you followed the link in your received email letter
+ # Create 2 views in {/views/password-reset/} => passwordResetRequestForm.php and resetPasswordForm.php
+ # Add reset link at Login page (i.e If you forgot your password you can <?= Html::a('reset it', ['password-reset/request-password-reset']) ?>.)
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ =====================================================
+ 19. Sending mail
+ Go to config/web.php->
+     'mailer' => [
+            'class' => 'yii\swiftmailer\Mailer',
+            // send all mails to a file by default. You have to set 'useFileTransport' to false and configure a transportfor the mailer to send real emails.
+            'useFileTransport' => true, //true means sending mail to /runtime/, false means sending real emails
+			
+		    'transport' => [
+               'class' => 'Swift_SmtpTransport',
+               'host' => 'imap.ukr.net',
+               'username' => 'account931@ukr.net',
+               'password' => 'm',
+               'port' => '993',
+               'encryption' => 'ssl',
+           ],
+ 
+ 
+ 
+ 
+ 
+ 
+ 
  
  
  
@@ -651,6 +700,10 @@ How to add multilanguages:
 #Form url with Php for ajax: $URL = Yii::$app->request->baseUrl . "/site/ajax-rbac-insert-update";
 
 #Add id to form input => 	<?= $form->field($model, 'book_from' ,['inputOptions' => ['id' => 'uniqueID',],]) ->input('date') ;
+
+# Use some model(2 ways): use app\models\User;  OR \app\models\User
+
+
 =======================================================
 99. Known Errors
 99.1 While trying to add RBAC migrations there is a Error "You should configure "authManager", while u have already added authManager to component in /config/web.php.

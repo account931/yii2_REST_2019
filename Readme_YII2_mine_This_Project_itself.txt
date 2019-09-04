@@ -1,5 +1,10 @@
-﻿#RestFul API and RBAC Yii2 application.
-#This YIi2 Basic template uses stack: RESTful API, custom REST action (with WHERE statement), RBAC roles (if(Yii::$app->user->can('adminX') ), SLQ DB registration/login, multilanguage, token generator, booking
+﻿#RestFul API and RBAC Yii2 application & so on....
+#This YIi2 Basic template uses stack: RESTful API, custom REST action (with WHERE statement), 
+   RBAC roles (if(Yii::$app->user->can('adminX') ), 
+   SQL DB registration/authentication (check login credential), 
+   multilanguage, token generator, 
+   bookingCPH, edit password, password reset by email.
+   
 #Yii2 uses SQL database  => yii2-rest
 
 To get necessary DB table for this project, apply migration:

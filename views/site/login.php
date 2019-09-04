@@ -44,4 +44,9 @@ $this->params['breadcrumbs'][] = $this->title;
         You may login with <strong>admin/admin</strong> or <strong>demo/demo</strong>.<br>
         To modify the username/password, please check out the code <code>app\models\User::$users</code>.
     </div>
+	
+	<div class="col-lg-offset-1">
+	<br>
+    If you forgot your password you can <?= Html::a('reset it', ['password-reset/request-password-reset']) ?>.
+    </div>
 </div>

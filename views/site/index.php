@@ -52,7 +52,7 @@ $this->title = 'My Yii REST';
                 <h2>RBAC <span class="glyphicon glyphicon-fire" style="font-size:1.2em"></span></h2>
 
                 <p>
-				 <b>This YIi2 Basic uses stack:</b> <br>  #RESTful API, custom REST action (with WHERE statement),<br> #RBAC roles (if(Yii::$app->user->can('adminX')), <br>  #SLQ DB registration/login, <br> #multilanguage, token generator, booking.
+				 <b>This YIi2 Basic uses stack:</b> <br>  # RESTful API, custom REST action (with WHERE statement),<br> # RBAC roles (if(Yii::$app->user->can('adminX')), <br> # SQL DB registration/authentication (check login credential), <br># Multilanguage, token generator, bookingCPH <br># Edit password, password reset by email.
 				 <br><br>
 				 1. Rbac works using 2 tables: {auth_items} DB (keeps all rbac roles & descriptions) and {auth_assignment} DB (keeps pairs: rbac role - userID, who has this role).<br>
                  Rbac managements table is created via php, updated via ajax.A collapsed form to add a new role uses php only.<br>
