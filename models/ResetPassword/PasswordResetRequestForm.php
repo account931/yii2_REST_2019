@@ -15,6 +15,9 @@ class PasswordResetRequestForm extends Model
 {
     public $email;
 	public $myToken; //just for test in flash, must be DELETED in Production
+	
+	public $captcha;
+    public $recaptcha;
  
     /**
      * @inheritdoc
@@ -30,6 +33,9 @@ class PasswordResetRequestForm extends Model
                 'filter' => ['status' => User::STATUS_ACTIVE],
                 'message' => 'There is no user with such email.'
             ],
+			 //captcha
+			[['captcha','recaptcha'], 'required'],
+            ['recaptcha', 'compare', 'compareAttribute' => 'captcha', 'operator' => '=='],
         ];
     }
  

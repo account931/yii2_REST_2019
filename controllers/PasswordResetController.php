@@ -100,6 +100,9 @@ class PasswordResetController extends Controller
     public function actionRequestPasswordReset()
     {
         $model = new PasswordResetRequestForm();
+		
+		//captcha
+		$model->captcha = rand(11111,99999);
  
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             if ($model->sendEmail()) {

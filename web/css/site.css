@@ -122,13 +122,13 @@ a.desc:after {
 /* ---------------------------------------- MINE CSS ----------------------------- */
 
 
-/*yii logo on home page */
-.yii-logo {width:32%;}
+/*CPH image on home page */
+.yii-logo {width:95%;}  /*32%*/
 
 
 /* ---------------------------------------- Mobile */
 @media screen and (max-width: 480px) { 
-   .yii-logo {width:76%;}
+   .yii-logo {width:96%;}
 }
 /* ---------------------------------------- Mobile */
 

@@ -206,6 +206,7 @@ $(document).ready(function(){
 	//Click on a booked date
 	 $(document).on("click", '.taken', function() {//this click is used to react to newly generated cicles;
 	    alert("Sorry, this date is already booked");
+		//swal("Sorry!", "this date is already booked!", "danger");
 	});
 	
 	

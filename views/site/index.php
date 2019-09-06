@@ -8,10 +8,11 @@ $this->title = 'My Yii REST';
 
     <div class="jumbotron">
         <!--<h1>Congratulations!</h1>-->
-        <?php echo Html::img(Yii::$app->getUrlManager()->getBaseUrl().'/images/yii1.jpg' , $options = ["id"=>"s","margin-left"=>"","class"=>"yii-logo","width"=>"","title"=>"text"] ); ?>
-        <br><br><br>
+        <?php echo Html::img(Yii::$app->getUrlManager()->getBaseUrl().'/images/city3.jpg' , $options = ["id"=>"","margin-left"=>"","class"=>"yii-logo","width"=>"","title"=>"text"] ); ?>
+
+		<br><br><br>
 		<p class="lead">You have successfully created Yii-powered Restful API & RBAC application.</p>
-       
+
         <p><a class="btn btn-lg btn-success" href="http://www.yiiframework.com">Get started with Yii</a></p>
     </div>
 	
@@ -62,6 +63,10 @@ $this->title = 'My Yii REST';
 
                 <p><a class="btn btn-default" href="http://www.yiiframework.com/extensions/">Yii Extensions &raquo;</a></p>
             </div>
+			
+			<?php echo Html::img(Yii::$app->getUrlManager()->getBaseUrl().'/images/city2.jpg' , $options = ["id"=>"","margin-left"=>"","class"=>"yii-logo","width"=>"","title"=>"text"] ); ?>
+            <br><br>
+
         </div>
 
     </div>

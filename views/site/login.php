@@ -6,6 +6,7 @@
 
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
+use yii\bootstrap\Collapse;  //Collapse (hide/show)
 
 $this->title = 'Login';
 $this->params['breadcrumbs'][] = $this->title;
@@ -39,14 +40,53 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
 
     <?php ActiveForm::end(); ?>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+<?php
+//  Collapse (Hide/  show  options)
+// ******************************************************
+// ******************************************************
+//                                                     **
+echo Collapse::widget([
+    'items' => [
+        [
+            'label' => '-',
+            'content' => '   
+                         <div class="col-lg-offset-1" style="color:#999;">
+                         You may login with <strong>admin/admin</strong> or <strong>demo/demo</strong>.<br>
+						 Or <strong>dima/****x2</strong>.<br>
+                         To modify the username/password, please check out the code <code>app\models\User::$users</code>.
+                         </div>   ',
+            // to  be  this  block open  by  default   de  comment  the  following 
+            /*'contentOptions' => [
+                'class' => 'in'
+            ]*/
+        ], ]
+]);
+// **                                                          **
+// **************************************************************
+// **************************************************************
+// END  Collapse (Hide/  show  options
+?>	
+	
+	
+	
+	
 
-    <div class="col-lg-offset-1" style="color:#999;">
-        You may login with <strong>admin/admin</strong> or <strong>demo/demo</strong>.<br>
-        To modify the username/password, please check out the code <code>app\models\User::$users</code>.
-    </div>
+  
 	
 	<div class="col-lg-offset-1">
 	<br>
-    If you forgot your password you can <?= Html::a('reset it', ['password-reset/request-password-reset']) ?>.
+    If you forgot your password you can 
+	   <?= Html::a('Reset It', ['password-reset/request-password-reset'], ['class'=>'btn btn-xs btn-danger'], ['options'=>['style' => '']]);
+	   echo "&nbsp;";
+	   echo Html::img(Yii::$app->getUrlManager()->getBaseUrl().'/images/reset.png' , $options = ["id"=>"","margin-left"=>"5%","class"=>"","width"=>"3%","title"=>"reset"] ); ?>
     </div>
 </div>

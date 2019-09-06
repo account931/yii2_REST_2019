@@ -24,6 +24,15 @@ $this->params['breadcrumbs'][] = $this->title;
  
             <?php $form = ActiveForm::begin(['id' => 'request-password-reset-form']); ?>
                 <?= $form->field($model, 'email')->textInput(['autofocus' => true]) ?>
+				
+				<!-- Captcha -->
+				<?= $form->field($model, 'captcha')->hiddenInput()->label(false) ?>
+                <div class="form-group">
+                    Captcha: <mark><b><?= $model->captcha ?></b></mark>                    
+                 </div>
+                 <?= $form->field($model, 'recaptcha')->textInput(['placeholder' => 'Enter Captcha'])->label(false) ?>
+				<!-- Captcha -->
+				
                 <div class="form-group">
                     <?= Html::submitButton('Send', ['class' => 'btn btn-primary']) ?>
                 </div>

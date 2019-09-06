@@ -24,11 +24,15 @@ class CPH_AssertOnly extends AssetBundle
         //'css/site.css',
 		//'css/rbac.css', //rbac css
 		'css/bookingcph.css', //booking CPH css
+		'https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.css', //Sweet Alert CSS
     ];
 	
     public $js = [
 	    'js/booking_cph.js', //booking CPH JS
+		'https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js', //Sweet Alert JS
+		'https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert-dev.min.js',
     ];
+	
     public $depends = [
         'yii\web\YiiAsset',
         'yii\bootstrap\BootstrapAsset',

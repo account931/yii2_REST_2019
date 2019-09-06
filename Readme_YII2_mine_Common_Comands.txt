@@ -38,6 +38,7 @@ Table of contents:
 17. Yii2 my custom validation
 18. Reset password form (if you have forgotten it)
 19. Sending mail
+20. Hand made captcha
 
 
 98.V.A(ActRec,create URL, redirect, get $_POST[''], etc)
@@ -662,13 +663,40 @@ How to add multilanguages:
  
  
  
+ =====================================================
+ 20. Hand made captcha
+ 
+ 1. Add to necessary model:
+      public $captcha;
+      public $recaptcha;
+	  
+	  public function rules(){ return [
+	      [[ 'captcha','recaptcha'], 'required'],
+          ['recaptcha', 'compare', 'compareAttribute' => 'captcha', 'operator' => '=='],
+      ];}
+
+2. Add to necessary action in Controller:
+     $model->captcha = rand(11111,99999);
+	 
+3. Add to necessary model:
+    <?= $form->field($model, 'captcha')->hiddenInput()->label(false) ?>
+    <div class="form-group">
+       <mark><b><?= $model->captcha ?></b></mark>                    
+    </div>
+    <?= $form->field($model, 'recaptcha')->textInput(['placeholder' => 'Enter Captcha'])->label(false) ?>
+ 
+ 
+ 
+ 
+ 
  
  
 =====================================================
 98.V.A(ActRec,create URL, redirect, get $_POST[''], etc)
 
-#Create URL =>$infoLink= Html::a( "more  info", ["/site/about", "period" => "",   ] /* $url = null*/, $options = ["title" => "more  info",] ); 
-#Create URL2 =>  use yii\helpers\Url; $url = Url::to(['message/view', 'id' => 100]);
+#Create URL link  => $infoLink = Html::a( "more  info", ["/site/about", "period" => "",   ] /* $url = null*/, $options = ["title" => "more  info",] ); 
+#Create URL2 link  =>  use yii\helpers\Url; $url = Url::to(['message/view', 'id' => 100]);
+#Create URL link in button => Html::a('Reset It', ['password-reset/request-password-reset'], ['class'=>'btn btn-small btn-info']);
 
 #Redirect =>  return $this->redirect(['support-data/index']);
 

@@ -16,6 +16,7 @@ class ResetPasswordForm extends Model
 {
  
     public $password;
+	public $password_confirm;
  
     /**
      * @var \app\models\User
@@ -55,6 +56,10 @@ class ResetPasswordForm extends Model
         return [
             ['password', 'required'],
             ['password', 'string', 'min' => 6],
+			
+			['password_confirm','required'],
+            //my compare passwords  & confirm
+            ['password_confirm', 'compare', 'compareAttribute'=>'password', 'message'=>"Passwords don't match", /*'on' => 'update' */   ],
         ];
     }
  
