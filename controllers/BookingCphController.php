@@ -536,7 +536,9 @@ class BookingCphController extends Controller
 			   $text.= "<td class='taken' title='already booked for " . $array_allGuests[$guestX]  ."'>" . $j . "</td>";  //title "booked for Guest name"
                $guestX++;			   
 			 } else {
-				 $text.= "<td class='free'>" . $j . "</td>";
+				 if ($j < 10){$v = "0" . $j;} else {$v = $j;} //if less than 10, add a zero, ie 09
+				 $day = date("Y-m", $start) . "-" . $v; //construct this date in format 2011-12-31, to use in data-dayZ[] in js/booking_cph.js
+				 $text.= "<td class='free' title='start booking' data-dayZ='".$day."'> " . $j . "</td>";
 			 } 
 		 }
 		 

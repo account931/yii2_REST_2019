@@ -198,16 +198,74 @@ $(document).ready(function(){
 	
 	
 	
+	/*
+	  $('a').tooltip({          
+          disabled: true,
+         close: function( event, ui ) { $(this).tooltip('disable'); }
+      });
+	  */
 	
 	
+
+
+
 	
+	 //Click on a free date in 1 month calendar
+	 // **************************************************************************************
+     // **************************************************************************************
+     //                                                                                     **
 	
-	
-	//Click on a booked date
-	 $(document).on("click", '.taken', function() {//this click is used to react to newly generated cicles;
-	    alert("Sorry, this date is already booked");
-		//swal("Sorry!", "this date is already booked!", "danger");
+	 $(document).on("click", '.free', function() {//this click is used to react to newly generated cicles;
+	    //alert("Sorry, this date is already booked");
+        //$(this).tooltip('enable').tooltip('open');
+		
+		
+		 var dayZ = this.getAttribute("data-dayZ"); //gets data-dayZ (it is set in {BookingCphControler/actionAjax_get_1_month()}, must be set there in format in format 2011-12-31
+		
+		
+		//Sweet alert.
+		   swal({ title: dayZ + " is Free!", //Sweet alert   // 21.09.2011 is Free 
+
+		       text: "Want to start booking from this date?", 
+		       type: "success", 
+		       showCancelButton: true, 
+			   confirmButtonClass: "btn-danger",
+			   //closeOnConfirm: false
+		   },
+		   function(valueX){
+			   if(valueX){ //if click OK
+			       //alert(dayZ);  
+				   $("#rbacAdd").show(999); //open the form
+				   scrollResults("#rbacAdd"); //scroll to div with form
+				   $("#uniqueIDFrom").val(dayZ); //set day in form_input_1
+				   //$("#uniqueIDFrom").datepicker("setDate", new Date(2018, 8, 1));
+				   
+				   
+			   } else {    //if click cancel
+			       //alert('cancelled');
+				   
+			   }
+           });
+		   //end Swall callback 
+
 	});
+	// **                                                                                  **
+    // **************************************************************************************
+    // **************************************************************************************
+	
+	
+	
+	
+	
+	
+	
+	//Click on a booked date in 1 month calendar
+	 $(document).on("click", '.taken', function() {//this click is used to react to newly generated cicles;
+	    //alert("Sorry, this date is already booked");
+		swal("Sorry!", "This date is already booked!", "error");
+	});
+	
+	
 	
 	
 	
