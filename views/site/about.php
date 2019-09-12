@@ -28,7 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
 		if(Yii::$app->user->can('adminX')){
             echo '<h5>You have role <b>adminX</b> and can view current page</h5>';
 			echo Html::img(Yii::$app->getUrlManager()->getBaseUrl().'/images/unlocked.png' , $options = ["id"=>"unlck","margin-left"=>"3%","class"=>"cl-mine","width"=>"14%","title"=>"access granted"] );
-            echo "<p style='border:1px solid black; padding:2em;font-size:2em; color:red;width:70%;'>Some hidden content that is visible for users with adminX RBAC rights only</p>";
+            echo "<br><div class='col-sm-8 col-xs-12' style='border:1px solid black; padding:2em;font-size:1.6em; color:red;'>Some hidden content that is visible for users with adminX RBAC rights only</div>";
 		} else {
 			echo "<h5> You have no <b>adminX</b> role and <b>CAN NOT</b> view this page</h5>";
 			echo '<p>Access to this page is Limited in views/site/about.php with RBAC <b>{ if(Yii::$app->user->can("adminX"))} </b></p>'; //must be single quote or 000webhost crashed!!!

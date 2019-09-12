@@ -79,7 +79,7 @@ class BookingCphController extends Controller
  
  
 
-    public function actionIndex() //uses web/js/booking_cph.js!!!!
+    public function actionIndex() //uses web/js/booking_cph.js!!!! //Includes adding to SQL from form
  // **************************************************************************************
  // **************************************************************************************
  // **                                                                                  **
@@ -119,8 +119,13 @@ class BookingCphController extends Controller
                  \Yii::$app->session->setFlash("successX", "Successfully booked with guest <i class='fa fa-address-book-o' style='font-size:1.2em;'></i> <b> $model->book_guest</b>");
 			     return $this->refresh(); //prevent  F5  resending	
              } else {
-		        \Yii::$app->session->setFlash('failedX', 'Booking Failed, please click  <button data-target="#rbacAdd" data-toggle="collapse">NEW BOOKING</button> button to see details');
-	         } 
+				 //will fire if model validation fails
+		        \Yii::$app->session->setFlash('failedX', 'Booking Failed, Please click  <button data-target="#rbacAdd" data-toggle="collapse">&darr;&darr;</button> button to see details. &nbsp;&nbsp;<i class="fa fa-asterisk fa-spin" style="font-size:24px"></i>');
+				//\Yii::$app->session->setFlash('failedX', null);
+				//return $this->refresh(); //prevent  F5  resending	
+				
+                            
+			 } 
 		 } else {
 			 \Yii::$app->session->setFlash('failedX', 'Booking Failed, These dates are already taken. Please click  <button data-target="#rbacAdd" data-toggle="collapse">NEW BOOKING</button> button to change dates &nbsp;&nbsp; <i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span class="sr-only">Loading...</span>');
 		 }
@@ -405,9 +410,9 @@ class BookingCphController extends Controller
 		 //guest list for $generalBookingInfo
 		 //Forming here column names(like <TH>) for $guestList table, i.e(guest/start/end/duration/delete)
 		 $guestList = "<div class='row border guestList'>" .  //div wrapper
-		                 "<div class='col-sm-3 col-xs-3 bg-primary colX'>Guest </div>" . 
-		                 "<div class='col-sm-3 col-xs-2 bg-primary colX'>From  </div>" . 
-					     "<div class='col-sm-3 col-xs-2 bg-primary colX'>To    </div>" . 
+		                 "<div class='col-sm-3 col-xs-2 bg-primary colX'>Guest </div>" . 
+		                 "<div class='col-sm-3 col-xs-3 bg-primary colX'>From  </div>" . 
+					     "<div class='col-sm-3 col-xs-3 bg-primary colX'>To    </div>" . 
 					     "<div class='col-sm-2 col-xs-2 bg-primary colX'>Duration</div>" .
 					     "<div class='col-sm-1 col-xs-2 bg-primary colX'>Delete  </div>" .
 					   "</div>";
@@ -478,9 +483,9 @@ class BookingCphController extends Controller
 			    //generating guest list var $guestList  for $generalBookingInfo, i.e(guest/start/end/duration/delete)
 			    $singleGuestDuration = (( $a->book_to_unix - $a->book_from_unix)/60/60/24) + 1; //amount of booked days for every guest
 			    $guestList.= "<div class='row border guestList'>" . 
-				                 "<div class='col-sm-3 col-xs-3 colX'><i class='fa fa-calendar-check-o'></i>" . $a->book_guest . "</div>" . //guest
-        			             "<div class='col-sm-3 col-xs-2 colX'>" . $a->book_from  .  "</div>" . //from
-						         "<div class='col-sm-3 col-xs-2 colX'>" . $a->book_to    . "</div>"  . //to
+				                 "<div class='col-sm-3 col-xs-2 colX'><i class='fa fa-calendar-check-o'></i>" . $a->book_guest . "</div>" . //guest
+        			             "<div class='col-sm-3 col-xs-3 colX'>" . $a->book_from  .  "</div>" . //from
+						         "<div class='col-sm-3 col-xs-3 colX'>" . $a->book_to    . "</div>"  . //to
 						         "<div class='col-sm-2 col-xs-2 colX'>" . $singleGuestDuration . "</div>" . //duration
 						         "<div class='col-sm-1 col-xs-2 colX deleteBooking' id='" . $a->book_id . "'> <i class='fa fa-cut' style='color:red;'></i></div>" .  //Delete icon
 							  "</div>";
@@ -573,6 +578,10 @@ class BookingCphController extends Controller
 		
 		
 		
+	
+	
+	
+	
 	
 	
 	

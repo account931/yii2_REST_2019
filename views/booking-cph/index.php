@@ -51,10 +51,19 @@ $this->params['breadcrumbs'][] = $this->title;
 	
 	<!------ FLASH FAIL from BookingCpg/actionIndex() ----->
    <?php if( Yii::$app->session->hasFlash('failedX') ): ?>
-    <div class="alert alert-danger alert-dismissible" role="alert">
+     <div class="alert alert-danger alert-dismissible" role="alert">
         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <?php echo Yii::$app->session->getFlash('failedX'); ?>
-    </div>
+		<?php 
+		//opens the form 
+$js = <<< JS
+	//$("#rbacAdd").show(999);
+JS;
+           $this->registerJs($js);
+		   
+		?>
+	
+     </div>
     <?php endif;?>
   <!------ END FAIL Successfrom BookingCpg/actionIndex() ----->
 	
@@ -96,7 +105,7 @@ $this->params['breadcrumbs'][] = $this->title;
 		   
 		   
 		   <?= $form->field($model, 'book_from' ,['inputOptions' => ['id' => 'uniqueIDFrom',],]) ->input('date') ; //FROM datepicker, html5 inject ?>
-		   <?= $form->field($model, 'book_to')->input('date'); //TO datepicker,html5 inject, can use "color" ?>
+		   <?= $form->field($model, 'book_to',   ['inputOptions' => ['id' => 'uniqueIDTo',],])->input('date'); //TO datepicker,html5 inject, can use "color" ?>
 		   	   
            
 		   

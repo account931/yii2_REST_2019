@@ -210,7 +210,7 @@ $(document).ready(function(){
 
 
 	
-	 //Click on a free date in 1 month calendar
+	 //Click on a free green date in 1 month calendar
 	 // **************************************************************************************
      // **************************************************************************************
      //                                                                                     **
@@ -224,7 +224,7 @@ $(document).ready(function(){
 		
 		
 		//Sweet alert.
-		   swal({ title: dayZ + " is Free!", //Sweet alert   // 21.09.2011 is Free 
+		   swal({ title: dayZ.split("-")[2] + "." + dayZ.split("-")[1] + "." + dayZ.split("-")[0] + " is Free!", //Sweet alert   // 21.09.2011 is Free //dayZ is MM/DD/YY, change to DD/MM/DD/YY
 
 		       text: "Want to start booking from this date?", 
 		       type: "success", 
@@ -233,11 +233,12 @@ $(document).ready(function(){
 			   //closeOnConfirm: false
 		   },
 		   function(valueX){
-			   if(valueX){ //if click OK
+			   if(valueX){ //if click OK tobook
 			       //alert(dayZ);  
 				   $("#rbacAdd").show(999); //open the form
-				   scrollResults("#rbacAdd"); //scroll to div with form
-				   $("#uniqueIDFrom").val(dayZ); //set day in form_input_1
+				   scrollResults("#rbacAdd", ".parent().parent()."); //advanced scroll, scrolls to div with form //arg(DivID, levels to go up from DivID)
+				   $("#uniqueIDFrom").val(dayZ); //set clicked in calendar day to form_input_1  
+				   $("#uniqueIDTo").focus(); //set focus to input_2
 				   //$("#uniqueIDFrom").datepicker("setDate", new Date(2018, 8, 1));
 				   
 				   
