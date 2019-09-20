@@ -235,7 +235,7 @@ $(document).ready(function(){
 		   function(valueX){
 			   if(valueX){ //if click OK tobook
 			       //alert(dayZ);  
-				   $("#rbacAdd").show(999); //open the form
+				   $("#rbacAdd").show(999); //open the form, change it from hidden to open
 				   scrollResults("#rbacAdd", ".parent().parent()."); //advanced scroll, scrolls to div with form //arg(DivID, levels to go up from DivID)
 				   $("#uniqueIDFrom").val(dayZ); //set clicked in calendar day to form_input_1  
 				   $("#uniqueIDTo").focus(); //set focus to input_2

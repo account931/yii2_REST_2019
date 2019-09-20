@@ -28,7 +28,7 @@ Table of contents:
 7.1 Yii Restful API(control token authorization(access available with token only))
 8.Yii RBAC
 9.Error deep_copy.php
-10.Pagination, PageLinker, AR
+10.Pagination, LinkPager, Active Record
 11.Flash message
 12.DataProvider(can be used both in GridViw and ListView) + GridView + ListView.
 13.Yii Access Filter (ACF)
@@ -39,7 +39,8 @@ Table of contents:
 18. Reset password form (if you have forgotten it)
 19. Sending mail
 20. Hand made captcha
-
+21. Change application name
+22. Hide {/web/} from URL
 
 98.V.A(ActRec,create URL, redirect, get $_POST[''], etc)
 99. Known Errors
@@ -375,7 +376,7 @@ How to implement access to Yii2 Rest Api with access token only:
 
 
 ===============================================
-10.Pagination, PageLinker, AR
+10.Pagination, LinkPager, Active Record
 In Controller:
 use yii\data\Pagination;
 use yii\data\ActiveDataProvider;
@@ -685,6 +686,26 @@ How to add multilanguages:
     </div>
     <?= $form->field($model, 'recaptcha')->textInput(['placeholder' => 'Enter Captcha'])->label(false) ?>
  
+ 
+ 
+ 
+ 
+ ========================================================
+ 21. Change application name
+ For basic=> add in config/web.php:
+            'name'=>'Your new name',
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ =======================================================
+22. Hide {/web/} from URL
+To hide {/web/} from URL & prevent basic folder from listing (instead of putting there empty index.php)
+  #create 2 .htaccess files, one in /web/ folder and the 2nd in root folder.
+  #See detailed code in this file at 4.Pretty URL.
  
  
  
