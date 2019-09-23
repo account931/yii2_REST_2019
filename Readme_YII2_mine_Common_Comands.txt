@@ -41,6 +41,9 @@ Table of contents:
 20. Hand made captcha
 21. Change application name
 22. Hide {/web/} from URL
+23. Prevent folder from Listing (e.g images)
+
+
 
 98.V.A(ActRec,create URL, redirect, get $_POST[''], etc)
 99. Known Errors
@@ -711,6 +714,19 @@ To hide {/web/} from URL & prevent basic folder from listing (instead of putting
  
  
  
+ =======================================================
+23. Prevent folder from Listing (e.g images)
+ Used Not only in Yii.
+ To prevent folder from Listing, put to Images folder .htaccess with content:
+ 
+   #to prevent folder from Listing
+   Options -Indexes
+
+
+
+ 
+ 
+ 
  
 =====================================================
 98.V.A(ActRec,create URL, redirect, get $_POST[''], etc)
@@ -718,6 +734,7 @@ To hide {/web/} from URL & prevent basic folder from listing (instead of putting
 #Create URL link  => $infoLink = Html::a( "more  info", ["/site/about", "period" => "",   ] /* $url = null*/, $options = ["title" => "more  info",] ); 
 #Create URL2 link  =>  use yii\helpers\Url; $url = Url::to(['message/view', 'id' => 100]);
 #Create URL link in button => Html::a('Reset It', ['password-reset/request-password-reset'], ['class'=>'btn btn-small btn-info']);
+#Create URL link in <image><img> => echo Html::a(Html::img(Yii::$app->getUrlManager()->getBaseUrl().'/images/'. $model->avatar), [ 'view3', 'id' => $model->id], ['class'=>'lightboxed'] ); 
 
 #Redirect =>  return $this->redirect(['support-data/index']);
 
