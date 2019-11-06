@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Хост: 127.0.0.1:3306
--- Час створення: Вер 25 2019 р., 18:30
+-- Час створення: Лис 06 2019 р., 18:14
 -- Версія сервера: 5.5.28-log
 -- Версія PHP: 5.4.8
 
@@ -223,6 +223,54 @@ INSERT INTO `user` (`id`, `username`, `auth_key`, `password_hash`, `password_res
 (4, 'Dima', 'DwDx9pzGrmDIwtHLNpQkyTOKoaGqw_aF', '$2y$13$B0eZsmSAF7rFvhs9lG8hwuLv53SfqzwOLYtLoNPJX92XUOuKmwqvy', NULL, 'dima@ukr.net', 10, 1558955248, 1558955248, 1111),
 (9, 'Dimakk', 'DwDx9pzGrmDIwtHLNpQkyTOKoaGqw_aF', '$2y$13$B0eZsmSAF7rFvhs9lG8hwuLv53SfqzwOLYtLoNPJX92XUOuKmwqvy', NULL, 'dimhhha@ukr.net', 10, 1558955248, 1558955248, 0),
 (10, 'olya', '-JR3easZZr4RgmPlPpeS-aPe1R53fOJK', '$2y$13$39aqtKjIbSHJ0UF5RnpzlOS1a9kHa0T.lOn0pnDpQgndtNTq.c7I2', 'TQ54N3hxSR5tAsZ5CA5Y0ykUHgXJcab8_1567766765', 'account931@ukr.net', 10, 1560869824, 1567766766, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблиці `wpress_blog_post`
+--
+
+CREATE TABLE IF NOT EXISTS `wpress_blog_post` (
+  `wpBlog_id` int(11) NOT NULL AUTO_INCREMENT,
+  `wpBlog_title` varchar(222) NOT NULL,
+  `wpBlog_text` text NOT NULL,
+  `wpBlog_author` int(11) NOT NULL,
+  `wpBlog_created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `wpBlog_category` int(11) NOT NULL,
+  `wpBlog_status` enum('0','1') NOT NULL DEFAULT '1',
+  PRIMARY KEY (`wpBlog_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
+
+--
+-- Дамп даних таблиці `wpress_blog_post`
+--
+
+INSERT INTO `wpress_blog_post` (`wpBlog_id`, `wpBlog_title`, `wpBlog_text`, `wpBlog_author`, `wpBlog_created_at`, `wpBlog_category`, `wpBlog_status`) VALUES
+(1, 'Setting  Enum in PhpMyAdmin', 'Setting  Enum in SQL\r\nunder your phpmyadmin\r\n\r\nchoose enum\r\n\r\nin Length/Values column put there : ''0'' ,''1''\r\n\r\nand your done', 4, '2019-11-06 10:36:29', 1, '1'),
+(2, 'Milgram experiment', 'The Milgram experiment on obedience to authority figures was a series of social psychology experiments conducted by Yale University psychologist Stanley Milgram. They measured the willingness of study participants, men from a diverse range of occupations with varying levels of education, to obey an authority figure who instructed them to perform acts conflicting with their personal conscience. Participants were led to believe that they were assisting an unrelated experiment, in which they had to administer electric shocks to a "learner." These fake electric shocks gradually increased to levels that would have been fatal had they been real.[2]', 4, '2019-11-06 10:37:52', 2, '1'),
+(3, 'Milgram results', 'The extreme willingness of adults to go to almost any lengths on the command of an authority constitutes the chief finding of the study and the fact most urgently demanding explanation.\r\n\r\nOrdinary people, simply doing their jobs, and without any particular hostility on their part, can become agents in a terrible destructive process. Moreover, even when the destructive effects of their work become patently clear, and they are asked to carry out actions incompatible with fundamental standards of morality, relatively few people have the resources needed to resist authority.[10]', 4, '2019-11-06 10:39:18', 2, '1'),
+(4, 'Как вывести результаты связи HasMany', 'Получаю ошибку "Trying to get property of non-object."<br>\r\nКак теперь правильно выводить\r\nполучить объект для начала\r\n<br>\r\nЯ же все это вроде описывал, ну да ладно:<br>\r\n1. Переделайте реляцию под более правильно название:\r\n<br>\r\n1\r\npublic function getTimes();\r\n<br>\r\n2. Осознаем то, что тут перебираем массив тасков, но в реляции тоже лежит массив!\r\n\r\n<br>\r\n<code>\r\nforeach ($tasks as $task): \r\n<br>\r\n  <tr>\r\n \r\n    <td height="40" class="tskdetails"> Начало выполнения : \r\n<br><?php   echo "<br>".$task->time->start; ?> </td>\r\n        </tr>\r\n\r\n</code>\r\n<br>\r\n3. Когда мы все это осознали, исправляем косяки\r\n<br>\r\n\r\n<code>\r\n<?php foreach ($tasks as $task): ?>\r\n<br>\r\n  <tr>\r\n       <?php foreach ($task->times as $time): ?> //loop array times\r\n<br>\r\n            <td height="40" class="tskdetails"> Начало выполнения : <?= ''<br>'', $time->start; ?> </td>\r\n        </tr>\r\n</code>\r\n<br>\r\n<a href="http://www.cyberforum.ru/php-yii/thread2313064.html">Source link</a>', 4, '2019-11-06 13:39:18', 3, '1');
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблиці `wpress_category`
+--
+
+CREATE TABLE IF NOT EXISTS `wpress_category` (
+  `wpCategory_id` int(11) NOT NULL AUTO_INCREMENT,
+  `wpCategory_name` varchar(77) NOT NULL,
+  PRIMARY KEY (`wpCategory_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
+
+--
+-- Дамп даних таблиці `wpress_category`
+--
+
+INSERT INTO `wpress_category` (`wpCategory_id`, `wpCategory_name`) VALUES
+(1, 'General'),
+(2, 'Science'),
+(3, 'Tips and Tricks');
 
 --
 -- Constraints for dumped tables

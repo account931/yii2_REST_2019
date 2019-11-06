@@ -77,6 +77,7 @@ $config = [
         'user' => [
             'identityClass' => 'app\models\User',
             'enableAutoLogin' => true,
+			'identityCookie' => ['name' => '2f_dimmm931'], //Two Yii2 application Login Conflict mega Fix
         ],
 		//END Set my RBAC---------------
 		

@@ -72,6 +72,9 @@ $menuItems = [
 			['label' => 'HasMany::relation', 'url' => ['/site/has-many']],
 			['label' => 'Reset Password <br>(when u forget your password & cant login,<br> used at login page only)', 'url' => ['/password-reset/request-password-reset']],
 			['label' => 'Codexception', 'url' => ['/site/codexcept']],
+			['label' => 'Vote/comment Widgets(N/A)', 'url' => ['#']],
+			['label' => 'Dektrium/Yii2_User Module(N/A)', 'url' => ['#']],
+			['label' => 'WPress alternative', 'url' => ['/wpress-blog/show-all-blogs']],
 			
             //submenu with image,(won't  work  without  {encodeLabels' => false,}  ,  it  is  inserted  below)   /*/yii/basic_download/web*/
             ['label' => Html::img(Yii::$app->request->baseUrl.'/images/system_key.jpg' , $options = ["id"=>"sx","margin-left"=>"","class"=>"s","width"=>"16%","title"=>"my title"]) . ' My login(no use)',  'url' => ['/site/login'],     ],  

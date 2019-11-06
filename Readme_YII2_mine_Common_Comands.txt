@@ -39,11 +39,14 @@ Table of contents:
 18. Reset password form (if you have forgotten it)
 19. Sending mail
 20. Hand made captcha
+20.1 Built-in Captcha=> 
 21. Change application name
 22. Hide {/web/} from URL
 23. Prevent folder from Listing (e.g images)
 
-
+24. Basic vs Advanced configs
+25. Comments widget extension =>rmrevin/yii2-comments + Vote widget extension => /Chiliec/yii2-vote + Dektrium/Yii2_User Module 
+26. Yii2 Ccodeception tests
 
 98.V.A(ActRec,create URL, redirect, get $_POST[''], etc)
 99. Known Errors
@@ -119,6 +122,7 @@ How to Add your module
         // Disable r= routes
         'enablePrettyUrl' => true,
         'rules' => array(
+		    'yout-text-from-config-web-php.rar' => 'site/about', //pretty url for 1 action(if Yii sees 'site/about' it turn it to custom text)
             '<controller:\w+>/<id:\d+>' => '<controller>/view',
             '<controller:\w+>/<action:\w+>/<id:\d+>' => '<controller>/<action>',
             '<controller:\w+>/<action:\w+>' => '<controller>/<action>',
@@ -384,7 +388,7 @@ In Controller:
 use yii\data\Pagination;
 use yii\data\ActiveDataProvider;
 
-$query=SupportData::find()->orderBy ('sData_id DESC')->andFilterWhere(['like', 'sData_text', Yii::$app->getRequest()->getQueryParam('q')])/*->where(['sData_text'=>Yii::$app->getRequest()->getQueryParam('q') ])*/ /* ->all()*/;
+$query=SupportData::find()->orderBy ('sData_id DESC')->andFilterWhere(['like', 'sData_text', Yii::$app->getRequest()->getQueryParam('q')])/*->where(['sData_text'=>Yii::$app->getRequest()->getQueryParam('q') ])*/ /* ->all()*/;  //don't use { ->all()} as it returns array not object
 $pages= new Pagination(['totalCount' => $query->count(), 'pageSize' => 9]);
 $modelPageLinker = $query->offset($pages->offset)->limit($pages->limit)->all();  
 
@@ -580,6 +584,12 @@ How to add multilanguages:
  
  
  
+ 
+ 
+ 
+ 
+ 
+ 
 =====================================================
 16. Has Many relation 
 (see live example at SiteController/public function actionHasMany())
@@ -588,13 +598,51 @@ How to add multilanguages:
     Getter name must start with get:
 	
 	  public function getTokens(){
-       return $this->hasMany(RestAccessTokens/*AuthAssignment*/::className(), ['r_user' => 'id']); //args=> (model/db name to connect, this model/DB column name => second model/db name id// Db fields which cooherent each other(from 2 DBs)
+       return $this->hasMany(RestAccessTokens/*AuthAssignment*/::className(), ['r_user' => 'id']); //args=> (model/db name to connect, [THAT model/DB column name => THIS CLASS model/db name id]    // Db fields which cooherent each other(from 2 DBs)
       }
   2. Then u can use this Getter in Controller:
      $currentUser = User::findOne(Yii::$app->user->identity->id); //just find current user
 	 $orders = $currentUser->tokens; //call hasMany action //Token is a function getTokens
   
-   
+  
+ ---------------------
+ 
+16.2 INPORTANT UPDATE => hasMany/hasOne relations. relation for multiple records
+(see live example at WpressBlogController/public function actionShowAllBlogs())
+
+  16.2.3 if Model uses hasOne relation (i.e this model for DB table {articles), and any article can have only ONE author):
+     #in model place GETTER ()must start with getNNNNNNN:
+	      public function getUsernames(){                                //that table ID(User)     //THIS table ID
+              return $this->hasOne(User/*table to connect*/::className(), ['id' => 'wpBlog_author']); //[THAT table column/ THIS CLASS column]
+          
+	 #in View (if from Controller u passed an array of Objects and use foreach()):
+	      foreach($data as $model){
+		  //...do some stuff u want to display from the 1st DB and then when u want to display from the 2nd table->
+	      echo "<p>"user .  $model->usernames->username  . "</p>";   //username, has ONE relations //i.e $model->getUsernames()->username //model->YourGetter->columnName in 2nd DB
+  
+  
+   16.2.3 if Model uses hasMany relation (i.e this model for DB table {articles), and any article can have many Categories) http://www.cyberforum.ru/php-yii/thread2313064.html:
+       #in model place GETTER ()must start with getNNNNNNN:
+	      public function getTokens(){                                              //that table ID(User)  //THIS table ID
+              return $this->hasMany(WpressCategory/*table to connect*/::className(), ['wpCategory_id' => 'wpBlog_category']); //[THAT table column/ THIS CLASS column]
+          
+	   #in View (if from Controller u passed an array of Objects and use foreach()).The trick here is to use double foreach:
+              foreach ($modelPageLinker as $model) {
+              //...do some stuff u want to display from the 1st DB and then when u want to display from the 2nd table->
+                 foreach ($model->tokens as $b){ //i.e model->GETTER
+			         echo "<p'> category: " .    $b->wpCategory_name  . "</p>";   //display category, has many relations. {wpCategory_name} is columnName in 2nd DB			  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
  
  
  
@@ -693,6 +741,26 @@ How to add multilanguages:
  
  
  
+ 
+ 
+ 
+ ==========================================================
+ 20.1 Built-in Captcha=> 
+    In model:
+            public $verifyCode; //for captcha
+			 //..
+			 // verifyCode needs to be entered correctly
+            ['verifyCode', 'captcha'],
+    In View:
+	 echo $form->field($model, 'verifyCode')->widget(Captcha::className(), [
+                 'template' => '<div class="row"><div class="col-lg-3">{image}</div><div class="col-lg-6">{input}</div></div>',
+                ]);
+ 
+ 
+ 
+ 
+ 
+ 
  ========================================================
  21. Change application name
  For basic=> add in config/web.php:
@@ -723,7 +791,20 @@ To hide {/web/} from URL & prevent basic folder from listing (instead of putting
    Options -Indexes
 
 
-
+   
+ =======================================
+24. Basic vs Advanced configs
+ See => https://github.com/account931/Laravel-Yii2_Comment_Vote_widgets/blob/master/Yii2_comment_widget/ReadMe.txt
+ 
+ 
+  =======================================
+25. Comments widget extension =>rmrevin/yii2-comments + Vote widget extension => /Chiliec/yii2-vote + Dektrium/Yii2_User Module 
+ See => https://github.com/account931/Laravel-Yii2_Comment_Vote_widgets/blob/master/Yii2_comment_widget/ReadMe.txt
+ 
+ 
+  =======================================
+26. Yii2 Ccodeception tests
+ See => https://github.com/account931/Laravel-Yii2_Comment_Vote_widgets/blob/master/Yii2_comment_widget/ReadMe.txt
  
  
  
@@ -769,13 +850,44 @@ To hide {/web/} from URL & prevent basic folder from listing (instead of putting
 
 # Use some model(2 ways): use app\models\User;  OR \app\models\User
 
+#Debugger: Eneable development mode on Local host only
+if($_SERVER['REMOTE_ADDR'] == '127.0.0.1') {
+    // comment out the following two lines when deployed to production
+    defined('YII_DEBUG') or define('YII_DEBUG', true);  defined('YII_ENV') or define('YII_ENV', 'dev');}
+
+# Array from object => Countries::find()->where(['alive'=>1])->select(['country', 'code'])->asArray()->all();
+
+#Render partial => echo $this->render('render_partial/myCommentForm', ['model'=> $model]);
+
+				
+#Hidden input field + default value + hide lable =>  $form->field($model, 'entity')-> hiddenInput(['value'=> ''])->label(false);
+		
+#cancel last migration => yii migrate/down  
+
+#Use CLI in full screen =>   mode 800
+#Check php version => php -v
+
+#GII => first generate model, then based on model generate CRUD (controller + view folder)
+
+
+
+
+
+
 
 =======================================================
 99. Known Errors
 99.1 While trying to add RBAC migrations there is a Error "You should configure "authManager", while u have already added authManager to component in /config/web.php.
   Solution: add same config {  'authManager' => ['class' => 'yii\rbac\DbManager',],} to /config/console.php (for Basic template). For Advanced template, add it  to /console/config/main.php and not in the backend or frontend configuration files.
   
-  
+99.2 Two Yii2 application Login Conflict=> when u log in to 1st Yii2 app, the 2nd automatically log out & vice versa
+  To fix add to config/main.php to 
+          'components' => [
+		        //other components........
+		        'user' => [
+				    //.....
+				    'identityCookie' => ['name' => 'YOUR_UNIQUE_NAME_HERE'], //Two Yii2 application Login Conflict mega Fix
+                 ], ]
   
   
   

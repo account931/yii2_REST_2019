@@ -1,0 +1,19 @@
+
+/* Wpress span */
+.smallX{
+	font-size:0.7em; margin-top:-0.8em;
+}
+/*  */
+
+
+.articleX{width:20%; margin-left:2%; margin-bottom:0.6em;}
+
+
+/* ---------------------------------------- Mobile */
+@media screen and (max-width: 480px) { 
+   .articleX{width:44%; margin-left:0%;margin-bottom:0.6em;}
+}
+/* ---------------------------------------- Mobile */
+
+
+
