@@ -27,13 +27,13 @@ class WpressBlogPost extends \yii\db\ActiveRecord
     }
 
 	
-	//has many relations for table {wpress_category}
+	//has MANY relations for table {wpress_category}
 	 public function getTokens(){                                           //that table ID(WpressCategory)   //THIS table ID
         return $this->hasMany(WpressCategory/*AuthAssignment*/::className(), ['wpCategory_id' => 'wpBlog_category']); //[THAT table column/ THIS CLASS column]
 	   //return $this->hasMany(WpressCategory/*AuthAssignment*/::className(), ['wpBlog_category' => 'wpCategory_id']); //args=> (model/db name to connect, this model/DB column name => second model/db name id// Db fields which cooherent each other(from 2 DBs)
       }
 	  
-	 //has many relations for table {user}
+	 //has ONE relations for table {user}
 	 public function getUsernames(){                               //that table ID(User)     //THIS table ID
         return $this->hasOne(User/*AuthAssignment*/::className(), ['id' => 'wpBlog_author']); //[THAT table column/ THIS CLASS column]
 	   //return $this->hasMany(WpressCategory/*AuthAssignment*/::className(), ['wpBlog_category' => 'wpCategory_id']); //args=> (model/db name to connect, this model/DB column name => second model/db name id// Db fields which cooherent each other(from 2 DBs)

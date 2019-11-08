@@ -136,3 +136,10 @@ a.desc:after {
 .small-flag img {
 	width: 6%;
 }
+
+
+
+/* Fix for IOS, when JS cick does not work in Safari*/
+.iphoneX{
+	cursor:pointer;
+}

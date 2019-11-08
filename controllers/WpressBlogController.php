@@ -4,7 +4,7 @@ namespace app\controllers;
 
 use Yii;
 use app\models\Wpress\WpressBlogPost;
-use app\models\Wpress\WpressCategoryt;
+use app\models\Wpress\WpressCategory;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -33,6 +33,26 @@ class WpressBlogController extends Controller
         ];
     }
 
+	
+	
+	
+	
+	
+	
+	
+	
+  //triggered before any action in this controller. An equivalent of Access Filter
+  public function beforeAction($action)
+  {
+	  if(Yii::$app->user->isGuest){
+           throw new \yii\web\NotFoundHttpException("You are not logged. Triggered in beforeAction()");
+	  }
+      return parent::beforeAction($action);
+  }
+	
+	
+	
+	
     /**
      * Lists all WpressBlogPost models.
      * @return mixed
@@ -145,13 +165,21 @@ class WpressBlogController extends Controller
     //                                                                                     **
     public function actionShowAllBlogs()
     {
-        
-		$queryX = WpressBlogPost::find()-> orderBy('wpBlog_id DESC')->all(); //for counting all blogs in view
-        
-		$query = WpressBlogPost::find()-> orderBy('wpBlog_id DESC');  // dont use -> all() as it returns array not object
-        $pages = new Pagination(['totalCount' => $query->count(), 'pageSize' => 2]);
+        if(!Yii::$app->getRequest()->getQueryParam('category') || Yii::$app->getRequest()->getQueryParam('category') == '0' ){
+			$queryBasic = WpressBlogPost::find()-> orderBy('wpBlog_id DESC')->where(['wpBlog_status' => '1']);//->all(); //Main SQL QUERY
+		} else {
+		    $queryBasic = WpressBlogPost::find()-> orderBy('wpBlog_id DESC')->where(['wpBlog_status' => '1'])->andWhere(['wpBlog_category' => Yii::$app->getRequest()->getQueryParam('category')]);//->all(); //Main SQL QUERY
+		}
+		
+		$queryX = $queryBasic; //->all(); //for counting all blogs in view
+        $pageSizeX = 3; //number of articles per 1 page for Pagination
+		
+		
+		//PageLinker
+		$query = $queryBasic;//WpressBlogPost::find()-> orderBy('wpBlog_id DESC')->where(['wpBlog_status' => '1']);  // dont use -> all() as it returns array not object
+        $pages = new Pagination(['totalCount' => $query->count(), 'pageSize' => $pageSizeX]);
         $modelPageLinker = $query->offset($pages->offset)->limit($pages->limit)->all();  
-        
+        //PageLinker
 		
 		
 		/*
@@ -160,13 +188,18 @@ class WpressBlogController extends Controller
 		        $orders[] = $n->wpCategory_id; //call hasMany action //Token is a function getTokens
 			}}
 		*/
+		
+        //find all categories fro dropdown
+        $categories = WpressCategory::find()->all();		
 			
 		//RENDER
         return $this->render('blog-posts-all', [
              'modelPageLinker' => $modelPageLinker, //pageLinker
-             'pages' => $pages,      //pageLinker
+             'pages' => $pages,           //pageLinker
+			 'queryX' => $queryX,         //for counting of general amountof all blogs in view
+			 'categories' => $categories, //all categories fro dropdown
+			 //'pageSizeX' => $pageSizeX,  ////number of articles per 1 page for Pagination, used in view to display correct number of article 
 			 //'orders' => $orders,  //has many relations Getter
-			 'queryX' => $queryX,  //for counting all blogs in view
         ]);
     }
 	
@@ -178,6 +211,26 @@ class WpressBlogController extends Controller
 	
 	
 	
+	
+	
+	//Viewing 1 single blog post, followed by link "Read all"
+	// **************************************************************************************
+    // **************************************************************************************
+    //                                                                                     **
+    public function actionMySingleView($id)
+    {
+        
+	    $model = $this->findModel($id);
+		
+	    //RENDER
+        return $this->render('my-single-view', [
+             'model' => $model, //
+        ]);
+	}
+	
+	// **                                                                                  **
+    // **************************************************************************************
+    // **************************************************************************************  
 	
 	
 	

@@ -109,7 +109,7 @@ $(document).ready(function(){
 		
 		//HTML other 
 		for(var i = 0; i < dataX.array_All_CountDays.length; i++){
-			finalText+= '<div class="col-sm-3 col-xs-5 my-month badge badge1"' + 
+			finalText+= '<div class="col-sm-3 col-xs-5 my-month badge badge1 iphoneX"' + 
 			            'data-badge="' + dataX.array_All_CountDays[i] +  //data badge (amount of booked days in month (round red circle))
 						'" data-myUnix=' + dataX.array_All_Unix[i][0] + '/' + dataX.array_All_Unix[i][1] + //additional "data-myUnix" to keep Unix time of the 1st and last days of the formed month, i.e = 43643483/3647634
 						' id=' + i + '> <span class="v">' + dataX.allMonths[i]  + '</span></div>';
