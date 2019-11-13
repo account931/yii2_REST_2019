@@ -44,11 +44,15 @@ Table of contents:
 22. Hide {/web/} from URL
 23. Prevent folder from Listing (e.g images)
 
+
 24. Basic vs Advanced configs
 25. Comments widget extension =>rmrevin/yii2-comments + Vote widget extension => /Chiliec/yii2-vote + Dektrium/Yii2_User Module 
 26. Yii2 Ccodeception tests
+27. Dropdown List in </form>
+28. Behaviors
 
-98.V.A(ActRec,create URL, redirect, get $_POST[''], etc)
+98.V.A Yii (ActRec,create URL, redirect, get $_POST[''], etc)
+98.2.V.A(php)
 99. Known Errors
 
 Codexception
@@ -170,7 +174,7 @@ https://xn--d1acnqm.xn--j1amh/%D0%B7%D0%B0%D0%BF%D0%B8%D1%81%D0%B8/yii2-basic-%D
 ==============================================================
 6.Yii Error Handler (how to handle Exceptions).
 #You can throw your custom Yii exception with following code ->   throw new \yii\web\NotFoundHttpException("Your text");
-#If Yii2 encounters your exception or any internal error, it will use built-in ErrorHandler.
+#If Yii2 encounters your exception or any internal error, it will use ErrorHandler(built-in or your custom). It will use ErrorHandler if in Development, not Debug mode(true?)
 
 How to use built-in ErrorHandler, i.e when Yii2 encounters your custom Exception or some error (i.e 404 NOT FOUND):
 By default, the following code is already deployed in Yii2 application. Just make sure, this code exists, otherwise add it manually:
@@ -186,12 +190,18 @@ This built-in  error Handler will use built \vendor\yii\web\ErrorAction,if you w
 
 
 
+6.2If you want to use your own actionError(for example for the purpose of handling 404 errors differently from other errors):
+  - create it in controller => public function actionErrorNotUsed(){//your logic .....}. See more at https://github.com/account931/yii2_REST_and_Rbac_2019/blob/master/controllers/SiteController.php
+  - specify it in config/web.php => 
+       'errorHandler' => [
+            'errorAction' => 'site/error-not-used',  //'errorAction' => 'site/error', 
+        ],
 
 
 
 
-
-
+		
+		
 ===========================================================
 7.Yii Restful API
 #Yii Rest
@@ -419,6 +429,7 @@ echo LinkPager::widget([
 11.Flash message
 In Controller: Yii::$app->getSession()->setFlash('searchFail', "your text"); 
 In View: 
+use yii\bootstrap\Alert;
 $nn=Yii::$app->session->getFlash('searchFail'); //or directly <?= Yii::$app->session->getFlash('savedItem');?>
 if (Yii::$app->session->hasFlash('searchFail'))
     {
@@ -808,9 +819,74 @@ To hide {/web/} from URL & prevent basic folder from listing (instead of putting
  
  
  
+ ===========================================
+27. Dropdown List in </form>
+ #gets all items from DB => $Categories = WpressCategory::find()->orderBy ('wpCategory_id DESC')->all(); 
+ #in view convert object $Categories to array with ArrayHelper::map => 
+     use yii\helpers\ArrayHelper; 
+	 echo $form->field($model, 'wpBlog_status')->dropDownList([ '0'=>'Not_Published', '1'=>'Published', ], ['prompt' => '',  'options'=>['1'=>['Selected'=>true]]] )
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ ==========================================
+ 28. Behaviors
+ Steps to deploy behavior (the code that will fire in controller on every event u specify). Functionally it is  similar to nesting{beforeAction($action)} in controller
+ 28.1 In controller add to {public function behaviors()}
+     public function behaviors()
+     {
+        return [
+		    //something else..............,
+            
+			// my behavior...
+			'slugOrAnyName_at_all' => [
+                'class' => 'app\componentsX\behaviorsX\Slug', //specify your behavior class, i.e it is located in /componentsX/behaviorsX/Slug.php
+                //'iniciali' => 'someVar', //passing some variable to our behavior
+            ]
+			//my behavior........
+        ];
+		
+28.3 Create folder "componentsX" in the root and then folder "behaviorsX" inside.
+28.4 Create "Slug.php"=> 
+    namespace app\componentsX\behaviorsX; //your namespace, i.e pathway;
+    use yii\base\Behavior;
+    //use yii\web\Controller;  //must-have  as you use controller
+    class Slug extends Behavior{  //must extend beahvior
+        //public $title = 'title';
+ 
+        public function events(){
+           return [
+               //ActiveRecord::EVENT_BEFORE_VALIDATE => 'changeTitle',
+			    \yii\web\Controller::EVENT_BEFORE_ACTION => 'getMyMetodX'   //your method to launch
+           ];
+       }
+ 
+       //your method to launch
+       public function getMyMetodX(){
+	      //some your code...........
+          //throw new \yii\web\NotFoundHttpException("Launched in Behavior");
+       }
+    }
+
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
  
 =====================================================
-98.V.A(ActRec,create URL, redirect, get $_POST[''], etc)
+98.V.A Yii (ActRec,create URL, redirect, get $_POST[''], etc)
+
+#To get name/id of currently logged user => Yii::$app->user->identity->username; Yii::$app->user->identity->id;
 
 #Create URL link  => $infoLink = Html::a( "more  info", ["/site/about", "period" => "",   ] /* $url = null*/, $options = ["title" => "more  info",] ); 
 #Create URL2 link  =>  use yii\helpers\Url; $url = Url::to(['message/view', 'id' => 100]);
@@ -823,12 +899,12 @@ To hide {/web/} from URL & prevent basic folder from listing (instead of putting
  
 #To check if user has logged=> if(!Yii::$app->user->isGuest){ 
 
-#To get logged user name/id => Yii::$app->user->identity->username; Yii::$app->user->identity->id;
+#Access to components, models, etc in 2 ways: use app\models\User; ==> \app\models\User::find()...       use yii\web\Controller; ==> \yii\web\Controller::EVENT_BEFORE_ACTION.....
 
 #Active Record (in view use simple foreach(){})=> $activeRec = Mydbstart::find() ->orderBy ('mydb_id DESC') ->limit('5') ->where(['mydb_user' => Yii::$app->user->identity->username]) ->all();
 #Render=>  return $this->render('registration' , ['model' => $model, 'data' => $data]  );
  
-#Safe Echo text in view=>  <?= HtmlPurifier::process($model->mydb_g_am ." geo  per  ") ;  ?>
+#Safe Echo text in view. To display as text only(dropping html, i.e  htmlspecialchars())=>  echo Html::encode($user->name);  To display with thml => echo HtmlPurifier::process($model->mydb_g_am ." geo  per  ") ; 
 
 #Url name rule for actions like {actionAddAdmin} => {['/site/add-admin']]}
 #Url name rule for Controllers like {BookingCphController}  => {['/booking-cph/index']]}. Views/booking-cph/index.php
@@ -838,7 +914,7 @@ To hide {/web/} from URL & prevent basic folder from listing (instead of putting
 
 #How to write Method inside model-> $rbac = self::find()->where(['name' => $roleName])->one(); To use in Controller=>  if(AuthItem::checkIfRoleExist('adminX'))
 #Gii(prettyUrl):   yii-basic-app-2.0.15/basic/web/gii  Non-pretty:  yii-basic-app-2.0.15/basic/web/index.php?r=gii
-#Refresh(prevent from sending form on the reload of page)=> return $this->refresh();
+#Refresh(prevent from sending form on the reload of page)=> //setflash & then; return $this->refresh(); FALSE=> It will disable flash messages. In this case, after saving u can simply set form fields to empty value, like $model->field="";
 
 #Throw yii exception -> throw new \yii\web\NotFoundHttpException("This exception is hand made.");
 #Gii (access Gii with prettyUrl)-> http://localhost/yii2_REST_and_Rbac_2019/yii-basic-app-2.0.15/basic/web/gii
@@ -848,7 +924,7 @@ To hide {/web/} from URL & prevent basic folder from listing (instead of putting
 
 #Add id to form input => 	<?= $form->field($model, 'book_from' ,['inputOptions' => ['id' => 'uniqueID',],]) ->input('date') ;
 
-# Use some model(2 ways): use app\models\User;  OR \app\models\User
+
 
 #Debugger: Eneable development mode on Local host only
 if($_SERVER['REMOTE_ADDR'] == '127.0.0.1') {
@@ -857,17 +933,32 @@ if($_SERVER['REMOTE_ADDR'] == '127.0.0.1') {
 
 # Array from object => Countries::find()->where(['alive'=>1])->select(['country', 'code'])->asArray()->all();
 
-#Render partial => echo $this->render('render_partial/myCommentForm', ['model'=> $model]);
+#Render partial => pass $model from controller to view and then pass this $model again in view => echo $this->render('render_partial/myCommentForm', ['model'=> $model]);
 
 				
 #Hidden input field + default value + hide lable =>  $form->field($model, 'entity')-> hiddenInput(['value'=> ''])->label(false);
 		
 #cancel last migration => yii migrate/down  
+#GII => first generate model, then based on model generate CRUD (controller + view folder)
 
+#beforeAction, triggered before any action in this controller. An equivalent of Access Filter =>
+  public function beforeAction($action){
+      //....some code below
+	  if(Yii::$app->user->isGuest){throw new \yii\web\NotFoundHttpException("You are not logged. Triggered in beforeAction()");}
+      return parent::beforeAction($action); }
+  
+  
+#yii alert button =>
+#form hidden input=> $form->field($model, 'wpBlog_author')->hiddenInput(['value'=> Yii::$app->user->identity->id])->label(false); //
+
+
+
+========================================================
+98.2.V.A(php)
 #Use CLI in full screen =>   mode 800
 #Check php version => php -v
+#Difference in foreach (array vs object)=> foreach($_OBJECT as $b){echo $b->propertyName} vs foreach($_ARRAY as $b=>$v){echo $b . "" .$v} 
 
-#GII => first generate model, then based on model generate CRUD (controller + view folder)
 
 
 

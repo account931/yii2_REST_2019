@@ -64,11 +64,11 @@ class WpressBlogPost extends \yii\db\ActiveRecord
     {
         return [
             'wpBlog_id' => 'Wp Blog ID',
-            'wpBlog_title' => 'Wp Blog Title',
-            'wpBlog_text' => 'Wp Blog Text',
-            'wpBlog_author' => 'Wp Blog Author',
-            'wpBlog_created_at' => 'Wp Blog Created At',
-            'wpBlog_category' => 'Wp Blog Category',
+            'wpBlog_title' => 'Blog Title',
+            'wpBlog_text' => 'Blog Text',
+            'wpBlog_author' => 'Blog Author',
+            'wpBlog_created_at' => 'Created At',
+            'wpBlog_category' => 'Category',
             'wpBlog_status' => 'Wp Blog Status',
         ];
     }

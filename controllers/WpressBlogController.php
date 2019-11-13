@@ -30,6 +30,13 @@ class WpressBlogController extends Controller
                     'delete' => ['POST'],
                 ],
             ],
+			
+			// my test behavior...
+			'slugOrAnyName_at_all' => [
+                'class' => 'app\componentsX\behaviorsX\Slug', //specify your behavior class, i.e it is located in /componentsX/behaviorsX/Slug.php
+                //'iniciali' => 'someVar', //passing some variable to our behavior
+            ]
+			//my test behavior........
         ];
     }
 
@@ -81,6 +88,8 @@ class WpressBlogController extends Controller
         ]);
     }
 
+	
+	
     /**
      * Creates a new WpressBlogPost model.
      * If creation is successful, the browser will be redirected to the 'view' page.
@@ -88,16 +97,41 @@ class WpressBlogController extends Controller
      */
     public function actionCreate()
     {
-        $model = new WpressBlogPost();
+        $model = new WpressBlogPost(); //for form
+		
+	    //getting all categories for dropdown list in form
+		$allCategories = WpressCategory::find()->orderBy ('wpCategory_id DESC')->all(); 
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->wpBlog_id]);
-        }
+		//if u submitted the form
+        if ($model->load(Yii::$app->request->post())/* && $model->save()*/) {
+			if($model->save()){
+				 $this->refresh();
+			    //set FLASH message
+			    Yii::$app->getSession()->setFlash('addedSuccess', "Your article <b>$model->wpBlog_title</b> has been successfully saved");
+			    return $this->refresh();
+				$model->wpBlog_text = ""; //resetting the fields
+				$model->wpBlog_title = ""; //resetting the fields
+			    //return $this->render('create', ['model' => $model,'allCategories' => $allCategories]);
+                //return $this->redirect(['view', 'id' => $model->wpBlog_id]);
+            } else {
+			    Yii::$app->getSession()->setFlash('addedSuccess', "Your article saving was crashed!!!");
+		    }
+		}
 
         return $this->render('create', [
             'model' => $model,
+			'allCategories' => $allCategories
         ]);
     }
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
     /**
      * Updates an existing WpressBlogPost model.

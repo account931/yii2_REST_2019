@@ -85,7 +85,7 @@ $config = [
 		
 		//setting error handler
         'errorHandler' => [
-            'errorAction' => 'site/error',
+            'errorAction' => 'site/error', //'errorAction' => 'site/error-not-used',  //decoment last, if you you want to use your errof handler 
         ],
 		
 		

@@ -31,7 +31,7 @@ class SiteController extends Controller
 				
 				//To show message to unlogged users. Without this unlogged users will be just redirected to login page
 				'denyCallback' => function ($rule, $action) {
-                    throw new \yii\web\NotFoundHttpException("Only logged users are permitted!!!");
+                    throw new \yii\web\NotFoundHttpException("Only logged users are permitted(set in behaviors)!!!");
                  },
 				 //END To show message to unlogged users. Without this unlogged users will be just redirected to login page
 				 
@@ -75,7 +75,7 @@ class SiteController extends Controller
         return [
 		    //must be commented if want to use person actionError, otherwise errors will be handled with built vendor/yii\web\ErrorAction
             'error' => [
-                'class' => 'yii\web\ErrorAction',  //predifined error handler, comment if want to use my personal
+                'class' => 'yii\web\ErrorAction',  //pre-difined error handler, comment if want to use my personal
             ],
             'captcha' => [
                 'class' => 'yii\captcha\CaptchaAction',
@@ -172,14 +172,16 @@ class SiteController extends Controller
 	
 	
 	
-//My Error handler NOT USED, to use , should comment {'error' => ['class' => 'yii\web\ErrorAction',}
+//My Error handler NOT USED. To use , should comment {'error' => ['class' => 'yii\web\ErrorAction',}(not mandatory) and specify in config/web.php  'errorHandler' => [ 'errorAction' => 'site/error-not-used'], 
 // **************************************************************************************
 // **************************************************************************************
 // **                                                                                  **
 // **                                                                                  **
-	public function actionErrorNOTUSED()
+	public function actionErrorNotUsed()
     {
         $exception = Yii::$app->errorHandler->exception;
+		
+		//using diffrent templates for 404 and other errors
         if ($exception !== null) {
             if ($exception->statusCode == 404)
                 return $this->render('error404', ['exception' => $exception->getMessage()]); //$exception->getMessage() to get short mess, i.e "Page not found"
@@ -201,8 +203,9 @@ class SiteController extends Controller
 
 
 
-
-	 //Add just 1 user Admin if it doesnot exist //Currently, any user, who visits this page wil get adminX rbac role
+//"Be the admin" section
+//FALSE=> Add just 1 user Admin if it doesnot exist  
+//TRUE=> Currently, any user, who visits this page wil get adminX rbac role. According to my logic each user can have only 1 role.
 // **************************************************************************************
 // **************************************************************************************
 // **                                                                                  **
@@ -260,11 +263,15 @@ class SiteController extends Controller
 		var_dump($rolesForUser = Yii::$app->authManager->getRolesByUser($idX));
 		
 		
+		//Assigning 'adminX' role to the current user
 		//check role, if current user doesn't have it, we assign it to current user
 		if(Yii::$app->user->can('adminX')){
             echo '<br><br>Роль <b>adminX</b> уже присвоена to current user';
         } else {
 			echo "<br> You have no <b>adminX</b> role";
+			//.......check ig current has any role in auth_assignment table, if Yes, delete it before assigning a new one 
+			//..................!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+			
 			$userRole = Yii::$app->authManager->getRole('adminX');
             Yii::$app->authManager->assign($userRole, Yii::$app->user->identity->id);
 		}
