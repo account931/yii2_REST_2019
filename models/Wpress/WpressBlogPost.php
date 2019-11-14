@@ -27,19 +27,23 @@ class WpressBlogPost extends \yii\db\ActiveRecord
     }
 
 	
-	//has MANY relations for table {wpress_category}
+	//has MANY relations for table {wpress_category}. Used in in views rendered by actionShowAllBlogs()
 	 public function getTokens(){                                           //that table ID(WpressCategory)   //THIS table ID
         return $this->hasMany(WpressCategory/*AuthAssignment*/::className(), ['wpCategory_id' => 'wpBlog_category']); //[THAT table column/ THIS CLASS column]
 	   //return $this->hasMany(WpressCategory/*AuthAssignment*/::className(), ['wpBlog_category' => 'wpCategory_id']); //args=> (model/db name to connect, this model/DB column name => second model/db name id// Db fields which cooherent each other(from 2 DBs)
       }
 	  
-	 //has ONE relations for table {user}
+	 //has ONE relations for table {user}. Used in views rendered by actionShowAllBlogs(), actionIndex(Gridview)
 	 public function getUsernames(){                               //that table ID(User)     //THIS table ID
         return $this->hasOne(User/*AuthAssignment*/::className(), ['id' => 'wpBlog_author']); //[THAT table column/ THIS CLASS column]
 	   //return $this->hasMany(WpressCategory/*AuthAssignment*/::className(), ['wpBlog_category' => 'wpCategory_id']); //args=> (model/db name to connect, this model/DB column name => second model/db name id// Db fields which cooherent each other(from 2 DBs)
       }
 	  
 	  
+     //has ONE relations for table {wpress_category}. Used in in views rendered by  actionIndex(Gridview)
+	 public function getCategories(){                                         //that table ID(WpressCategory)   //THIS table ID
+        return $this->hasOne(WpressCategory/*AuthAssignment*/::className(), ['wpCategory_id' => 'wpBlog_category']); //[THAT table column/ THIS CLASS colum
+     }
 	  
 	  
 	  
@@ -69,7 +73,7 @@ class WpressBlogPost extends \yii\db\ActiveRecord
             'wpBlog_author' => 'Blog Author',
             'wpBlog_created_at' => 'Created At',
             'wpBlog_category' => 'Category',
-            'wpBlog_status' => 'Wp Blog Status',
+            'wpBlog_status' => 'Status',
         ];
     }
 }

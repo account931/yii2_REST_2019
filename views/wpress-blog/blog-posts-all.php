@@ -8,10 +8,17 @@ use yii\helpers\ArrayHelper;
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
+
+use app\assets\Wpress_AssertOnly;   // use your custom asset
+Wpress_AssertOnly::register($this); // register your custom asset to use this js/css bundle in this View only(1st name-> is the name of Class)
+
 $this->title = Yii::t('app', 'All Wpress Blog Posts <hasMany/hasOne relations>');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="wpress-blog-post-index">
+
+  
+  
+<div id="all" class="wpress-blog-post-index animate-bottom">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
@@ -25,7 +32,7 @@ $this->params['breadcrumbs'][] = $this->title;
 	
 	
 	<?php
-	
+	//NOT WORKING DROPDOWN-------
 	//array_unshift($categories,"blue=>dd");
 	$c =  ArrayHelper::map($categories, 'wpCategory_id', 'wpCategory_name'    );
 	//$c['8'] = 'nnnn';
@@ -42,7 +49,10 @@ $this->params['breadcrumbs'][] = $this->title;
                            'value' => [ 'class' => 'sx', 'style'=> 'color:red;',  ],
                            'value2' => ['label' => 'value 2'], ], ]
 			);
-				
+	//END NOT WORKING DROPDOWN-------
+
+
+		
 	  
 	  //MOST WORKING!!!!!!!!!!!!!!!!
 	  //Hand made Dropdown as can't inject <a href> in Html::dropDownList. JAVASCRIPT!!!!!!!!!
@@ -65,6 +75,13 @@ $this->params['breadcrumbs'][] = $this->title;
 		  }
 	  echo  '</select>';	
 
+	  
+	  
+	  
+	  
+	  
+	  
+	  //NOT WORKING DROPDOWN-------
 	  //echo $_SERVER['HTTP_HOST'] ; //localhost
 	  //var_dump($c );
 	  
@@ -82,10 +99,18 @@ $this->params['breadcrumbs'][] = $this->title;
 	     echo "</option>";
 	 }
      echo  '</select>';
+	//END NOT WORKING DROPDOWN-------
+	
+	
+	
+	
 	
 	
 	//echo  Html::encode("<script>alert(2);</script>");  //will display the text as it without alerting
 	//echo  \yii\helpers\HtmlPurifier::process("<script>alert(2);</script>"); //won't display anything unless it is a simple text
+	
+	
+	
 	
 	
 	//DISPLAY ALL BLOG POSTS-----------------------
@@ -122,7 +147,8 @@ $this->params['breadcrumbs'][] = $this->title;
         echo "<div class='list-group-item'>";
 		     echo Html::img(Yii::$app->getUrlManager()->getBaseUrl().'/images/iconX.png' , $options = ["id"=>"","margin-left"=>"","class"=>"articleX","width"=>"","title"=>"post"] ); 
       		 echo "<p><b>Post " . ++$i . "<br>" .  $model->wpBlog_title . "</b></p>";  //display: Post Number + Titile
-		     echo "<p>" .  $model->wpBlog_text  . "</p>";                              //display: post text
+		     echo "<p class='text-truncated iphoneX' title='click to expand'>" .  $model->wpBlog_text  . "</p>";       //display: post text, text of the article is cut with JS
+			 echo "<p class='text-hidden iphoneX' title='click to minimize'>" .  $model->wpBlog_text  . "</p>";       //display: post text, hidden by default, visible on click
              echo "<hr>";
 			 
 			 //getting has many relation for category (table {wpress_category})

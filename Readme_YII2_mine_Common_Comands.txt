@@ -958,7 +958,7 @@ if($_SERVER['REMOTE_ADDR'] == '127.0.0.1') {
 #Use CLI in full screen =>   mode 800
 #Check php version => php -v
 #Difference in foreach (array vs object)=> foreach($_OBJECT as $b){echo $b->propertyName} vs foreach($_ARRAY as $b=>$v){echo $b . "" .$v} 
-
+#Current URL => $_SERVER['HTTP_HOST']
 
 
 

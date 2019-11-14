@@ -1,5 +1,5 @@
 
-/* Wpress span */
+/* Wpress span text */
 .smallX{
 	font-size:0.7em; margin-top:-0.8em;
 }
@@ -21,4 +21,16 @@
 .categorMenu {
 	margin-left: 0.6em; padding: 0.4em; border:1px solid red;;
 }
+
+
+/* blog articles text that is hidden by default, visible on click */
+.text-hidden{display:none;}
+
+
+
+
+
+/* Wpress admin table class */
+.admin-even{background: #b8d1f3;}
+.admin-odd {background: #dae5f4;}
 
