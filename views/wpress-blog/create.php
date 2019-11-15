@@ -7,7 +7,7 @@ use yii\bootstrap\Alert;
 /* @var $model app\models\Wpress\WpressBlogPost */
 
 $this->title = Yii::t('app', 'Create Wpress Blog Post');
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Wpress Blog Posts'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Wpress Blog Posts'), 'url' => ['show-all-blogs']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="wpress-blog-post-create">

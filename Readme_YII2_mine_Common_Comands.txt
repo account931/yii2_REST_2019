@@ -44,15 +44,17 @@ Table of contents:
 22. Hide {/web/} from URL
 23. Prevent folder from Listing (e.g images)
 
-
 24. Basic vs Advanced configs
 25. Comments widget extension =>rmrevin/yii2-comments + Vote widget extension => /Chiliec/yii2-vote + Dektrium/Yii2_User Module 
 26. Yii2 Ccodeception tests
 27. Dropdown List in </form>
 28. Behaviors
+29. Events
+
 
 98.V.A Yii (ActRec,create URL, redirect, get $_POST[''], etc)
 98.2.V.A(php)
+98.3.V.A example references (CSS,JS,Php)
 99. Known Errors
 
 Codexception
@@ -173,6 +175,7 @@ https://xn--d1acnqm.xn--j1amh/%D0%B7%D0%B0%D0%BF%D0%B8%D1%81%D0%B8/yii2-basic-%D
   
 ==============================================================
 6.Yii Error Handler (how to handle Exceptions).
+(see example at => https://github.com/account931/yii2_REST_and_Rbac_2019/blob/master/controllers/SiteController.php)
 #You can throw your custom Yii exception with following code ->   throw new \yii\web\NotFoundHttpException("Your text");
 #If Yii2 encounters your exception or any internal error, it will use ErrorHandler(built-in or your custom). It will use ErrorHandler if in Development, not Debug mode(true?)
 
@@ -493,6 +496,7 @@ use yii\widgets\ListView;
  
 ===================================================== 
 13.Yii Access Filter (ACF).
+(see example at => https://github.com/account931/yii2_REST_and_Rbac_2019/blob/master/controllers/SiteController.php)
 It filters users access based if they are logged/unlogged.
 How to:
  #In Controller, adds to  {public function behaviors()}:
@@ -619,8 +623,8 @@ How to add multilanguages:
  ---------------------
  
 16.2 INPORTANT UPDATE => hasMany/hasOne relations. relation for multiple records
-(see live example at WpressBlogController/public function actionShowAllBlogs())
-
+(see live example at https://github.com/account931/yii2_REST_and_Rbac_2019/blob/master/models/Wpress/WpressBlogPost.php -> WpressBlogController/public function actionShowAllBlogs())
+(see live example at https://github.com/account931/yii2_REST_and_Rbac_2019/blob/master/models/Wpress/WpressBlogPost.php -> WpressBlogController/function actionIndex()
   16.2.3 if Model uses hasOne relation (i.e this model for DB table {articles), and any article can have only ONE author):
      #in model place GETTER ()must start with getNNNNNNN:
 	      public function getUsernames(){                                //that table ID(User)     //THIS table ID
@@ -661,6 +665,7 @@ How to add multilanguages:
  
  ==============================================================
  17. Yii2 my custom validation
+ (see details at => https://github.com/account931/yii2_REST_and_Rbac_2019/blob/master/models/BookingCph.php)
  To use your custom validation:
   1. Put to model, to public function rules(){Section} your validation rule in format [['field to validate','your custom function that checks validation']]:
      ['book_from','validateDatesX']
@@ -728,6 +733,7 @@ How to add multilanguages:
  
  =====================================================
  20. Hand made captcha
+ (see details at => https://github.com/account931/yii2_REST_and_Rbac_2019/blob/master/controllers/PasswordResetController.php  -> function actionRequestPasswordReset()
  
  1. Add to necessary model:
       public $captcha;
@@ -757,6 +763,7 @@ How to add multilanguages:
  
  ==========================================================
  20.1 Built-in Captcha=> 
+ (see example at => https://github.com/account931/Laravel-Yii2_Comment_Vote_widgets/blob/master/Yii2_comment_widget/frontend/controllers/SiteController.php  -> function actionVote_comment() ->views/site/voteComment.php + views/site/render_partial/myCommentForm.php
     In model:
             public $verifyCode; //for captcha
 			 //..
@@ -821,6 +828,7 @@ To hide {/web/} from URL & prevent basic folder from listing (instead of putting
  
  ===========================================
 27. Dropdown List in </form>
+(see details at =>https://github.com/account931/yii2_REST_and_Rbac_2019/blob/master/controllers/WpressBlogController.php -> function actionCreate())
  #gets all items from DB => $Categories = WpressCategory::find()->orderBy ('wpCategory_id DESC')->all(); 
  #in view convert object $Categories to array with ArrayHelper::map => 
      use yii\helpers\ArrayHelper; 
@@ -835,7 +843,8 @@ To hide {/web/} from URL & prevent basic folder from listing (instead of putting
  
  
  ==========================================
- 28. Behaviors
+ 28. Behaviors 
+ (see details at=>  https://github.com/account931/yii2_REST_and_Rbac_2019/blob/master/controllers/WpressBlogController.php)
  Steps to deploy behavior (the code that will fire in controller on every event u specify). Functionally it is  similar to nesting{beforeAction($action)} in controller
  28.1 In controller add to {public function behaviors()}
      public function behaviors()
@@ -874,6 +883,21 @@ To hide {/web/} from URL & prevent basic folder from listing (instead of putting
     }
 
 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ ====================================================
+ 29. Events
+ http://qaru.site/questions/202812/how-to-use-events-in-yii2
+ (see example at => https://github.com/account931/yii2_REST_and_Rbac_2019/blob/master/controllers/WpressBlogController.php    -> function actionIndex() + EVENT(specified in models/WpressBlogPost.php))
+ 
+ 
+ 
  
  
  
@@ -933,7 +957,8 @@ if($_SERVER['REMOTE_ADDR'] == '127.0.0.1') {
 
 # Array from object => Countries::find()->where(['alive'=>1])->select(['country', 'code'])->asArray()->all();
 
-#Render partial => pass $model from controller to view and then pass this $model again in view => echo $this->render('render_partial/myCommentForm', ['model'=> $model]);
+#Render partial => pass $model from controller to view and then pass this $model again in view => echo $this->render('render_partial/myCommentForm', ['model'=> $model]); 
+(see example at => https://github.com/account931/Laravel-Yii2_Comment_Vote_widgets/blob/master/Yii2_comment_widget/frontend/views/site/voteComment.php)
 
 				
 #Hidden input field + default value + hide lable =>  $form->field($model, 'entity')-> hiddenInput(['value'=> ''])->label(false);
@@ -942,6 +967,7 @@ if($_SERVER['REMOTE_ADDR'] == '127.0.0.1') {
 #GII => first generate model, then based on model generate CRUD (controller + view folder)
 
 #beforeAction, triggered before any action in this controller. An equivalent of Access Filter =>
+( see eaxample at => https://github.com/account931/yii2_REST_and_Rbac_2019/blob/master/controllers/WpressBlogController.php)
   public function beforeAction($action){
       //....some code below
 	  if(Yii::$app->user->isGuest){throw new \yii\web\NotFoundHttpException("You are not logged. Triggered in beforeAction()");}
@@ -949,7 +975,26 @@ if($_SERVER['REMOTE_ADDR'] == '127.0.0.1') {
   
   
 #yii alert button =>
+      echo Html::a(Yii::t('backend', 'Delete'), ['delete', 'id' => $model->id], [
+        'class' => 'btn btn-danger',
+        'data' => [
+            'confirm' => Yii::t('backend', 'Are you sure you want to delete this item?'),
+            'method' => 'post',
+        ],])
+	
+	
 #form hidden input=> $form->field($model, 'wpBlog_author')->hiddenInput(['value'=> Yii::$app->user->identity->id])->label(false); //
+
+#dropdown <select><option> with URL links => https://github.com/account931/portal_v2/blob/master/controllers/SiteController.php  -> function actionPortal()  + /js/autocomplete.js
+#inner Join => https://github.com/account931/iShop_Yii2_Gitted_from_LocalHost/blob/master/basic/controllers/ProductsController.php   ->  function actionPlaced()
+#GridView admin => https://github.com/account931/yii2_REST_and_Rbac_2019/blob/master/controllers/WpressBlogController.php   -> function actionIndex()
+
+
+
+
+
+
+
 
 
 
@@ -959,6 +1004,23 @@ if($_SERVER['REMOTE_ADDR'] == '127.0.0.1') {
 #Check php version => php -v
 #Difference in foreach (array vs object)=> foreach($_OBJECT as $b){echo $b->propertyName} vs foreach($_ARRAY as $b=>$v){echo $b . "" .$v} 
 #Current URL => $_SERVER['HTTP_HOST']
+
+
+
+
+
+
+
+
+
+
+======================================================
+98.3.V.A example references (CSS,JS,Php)
+#Pure CSS/JS Loader => https://github.com/account931/regist_login_DAO_2019/blob/master/README.md
+#React Bakcground Loader =>  https://github.com/account931/myWaze_GeoCode_Modules_CommonJS-18/blob/master/REDUX_REACT_REDUX/README_MY_REDUX.txt
+
+
+
 
 
 

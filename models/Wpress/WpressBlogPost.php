@@ -47,6 +47,34 @@ class WpressBlogPost extends \yii\db\ActiveRecord
 	  
 	  
 	  
+	  
+	  
+	  //EVENTS---------
+	  // declare constant that stores event name
+      const EVENT_NEW_MY_TRIGGER_X = 'any-text-you-want';
+	  public $eventStatus;
+	  
+	  // somy mome method to execute on Event
+      public function sendMail($event){
+		  global $eventStatus; //$GLOBALS['eventStatus'];
+	      $eventStatus = "EVENT IS OK. Implemented in models/WpressBlogPost";//echo 'Test of Yii2 EVENTS is OK';
+         // you code 
+     }
+	 
+	 // this should be inside Model class.
+     public function init(){
+         $this->on(self::EVENT_NEW_MY_TRIGGER_X, [$this, 'sendMail']);
+        //$this->on(self::EVENT_NEW_MY_TRIGGER_X, [$this, 'notification']);
+        // first parameter is the name of the event and second is the handler. 
+        parent::init(); // DON'T Forget to call the parent method.
+   }
+    //END EVENTS -----------------
+	  
+	  
+	  
+	  
+	  
+	  
     /**
      * @inheritdoc
      */

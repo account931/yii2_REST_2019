@@ -66,15 +66,33 @@ class WpressBlogController extends Controller
      */
     public function actionIndex()
     {
+	    //if user has no RBAC adminX right - terminate all now
+		if(!Yii::$app->user->can('adminX')){
+		    throw new \yii\web\NotFoundHttpException("You don't have the adminX RBAC access right");
+		}
+		
+		//For GridView
         $dataProvider = new ActiveDataProvider([
             'query' => WpressBlogPost::find(),
         ]);
-
+        
+		//test-> trigger EVENT(specified in models/WpressBlogPost.php)
+		//$eventStatus = $GLOBALS['eventStatus'];
+		global $eventStatus;
+		$model = new WpressBlogPost();
+		$model->trigger(WpressBlogPost::EVENT_NEW_MY_TRIGGER_X); 
+		//test-> trigger EVENT(specified in models/WpressBlogPost.php)
+		
         return $this->render('index', [
             'dataProvider' => $dataProvider,
+			 'eventStatus' => $eventStatus, //just text var, was set as EVENT in  models/WpressBlogPost.php
         ]);
     }
 
+	
+	
+	
+	
     /**
      * Displays a single WpressBlogPost model.
      * @param integer $id
