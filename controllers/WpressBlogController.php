@@ -77,8 +77,7 @@ class WpressBlogController extends Controller
         ]);
         
 		//test-> trigger EVENT(specified in models/WpressBlogPost.php)
-		//$eventStatus = $GLOBALS['eventStatus'];
-		global $eventStatus;
+		global $eventStatus; //$GLOBALS['eventStatus'];
 		$model = new WpressBlogPost();
 		$model->trigger(WpressBlogPost::EVENT_NEW_MY_TRIGGER_X); 
 		//test-> trigger EVENT(specified in models/WpressBlogPost.php)

@@ -147,8 +147,8 @@ $this->params['breadcrumbs'][] = $this->title;
         echo "<div class='list-group-item'>";
 		     echo Html::img(Yii::$app->getUrlManager()->getBaseUrl().'/images/iconX.png' , $options = ["id"=>"","margin-left"=>"","class"=>"articleX","width"=>"","title"=>"post"] ); 
       		 echo "<p><b>Post " . ++$i . "<br>" .  $model->wpBlog_title . "</b></p>";  //display: Post Number + Titile
-		     echo "<p class='text-truncated iphoneX' title='click to expand'>" .  $model->wpBlog_text  . "</p>";       //display: post text, text of the article is cut with JS
-			 echo "<p class='text-hidden iphoneX' title='click to minimize'>" .  $model->wpBlog_text  . "</p>";       //display: post text, hidden by default, visible on click
+		     echo "<p class='text-truncated iphoneX' title='click to expand' onClick=''>" .  $model->wpBlog_text  . "</p>";       //display: post text, text of the article is cut with JS
+			 echo "<p class='text-hidden iphoneX' title='click to minimize' onClick=''>" .  $model->wpBlog_text  . "</p>";       //display: post text, hidden by default, visible on click
              echo "<hr>";
 			 
 			 //getting has many relation for category (table {wpress_category})

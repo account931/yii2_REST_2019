@@ -1005,6 +1005,7 @@ if($_SERVER['REMOTE_ADDR'] == '127.0.0.1') {
 #Difference in foreach (array vs object)=> foreach($_OBJECT as $b){echo $b->propertyName} vs foreach($_ARRAY as $b=>$v){echo $b . "" .$v} 
 #Current URL => $_SERVER['HTTP_HOST']
 
+# IOS, safari JS click fix => add empty {onClick}  => <span onClick="" id="someID"></span>   OR => cursor: pointer;
 
 
 

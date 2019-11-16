@@ -538,12 +538,12 @@ class BookingCphController extends Controller
 			 
 			
 			 if (in_array($j, $array_1_Month_days)){ //if iterator in array $array_1_Month_days, i.e this day is booked
-			   $text.= "<td class='taken iphoneX' title='already booked for " . $array_allGuests[$guestX]  ."'>" . $j . "</td>";  //title "booked for Guest name"
+			   $text.= "<td class='taken iphoneX' onClick='' title='already booked for " . $array_allGuests[$guestX]  ."'>" . $j . "</td>";  //title "booked for Guest name"
                $guestX++;			   
 			 } else {
 				 if ($j < 10){$v = "0" . $j;} else {$v = $j;} //if less than 10, add a zero, ie 09
 				 $day = date("Y-m", $start) . "-" . $v; //construct this date in format 2011-12-31, to use in data-dayZ[] in js/booking_cph.js
-				 $text.= "<td class='free iphoneX' title='start booking' data-dayZ='".$day."'> " . $j . "</td>";
+				 $text.= "<td class='free iphoneX' onClick='' title='start booking' data-dayZ='".$day."'> " . $j . "</td>";
 			 } 
 		 }
 		 

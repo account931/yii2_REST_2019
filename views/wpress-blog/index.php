@@ -45,17 +45,17 @@ $this->params['breadcrumbs'][] = $this->title;
             ['attribute' =>'wpBlog_author', 'label'=>'Author', 'value' => 'usernames.username'], //{'value' => 'usernames.username'} uses hasOne relation from models\Wpress\WpressBlogPost. {usernames.username} means => function getUsernames()/table field name
             ['attribute' => 'wpBlog_created_at',  'label'=>'Создано',  'format'=> 'date', 'headerOptions' => ['width' => '150']],  //datetime //HH:mm:ss dd.MM.YYYY
             ['attribute' => 'wpBlog_category','label'=>'Category', 'value' => 'categories.wpCategory_name'],  //{'value' => 'categories.wpCategory_name'} uses hasOne relation from models\Wpress\WpressBlogPost => function getCategories()/table field name
-			['attribute'=>'wpBlog_status', 'label'=>'Status_','filter'=>array(0=>"OK", "1"=>"NO"),], //'wpBlog_status',
+			['attribute'=>'wpBlog_status', 'label'=>'Status_', 'content'=>function($data){$s = "Engaged"; if($data->wpBlog_status == 0){$s = "Not published"; } return $s;} /*'filter'=>array(0=>"OK", "1"=>"NO")*/,], //'wpBlog_status' => uses anonymous function to display "Published/Not published" instead of SQL DB Values (0, 1)
 			//END here go SQl Table fields to show
 			
             //settings for actions, i.e delete, update, view
-            ['class' => 'yii\grid\ActionColumn', 'header'=>'Do', 'headerOptions' => ['width' => '80'],'template' => '{view} {update} {delete}{link}',   
-			    'buttons' => [ //change image for "Update Button"
+            ['class' => 'yii\grid\ActionColumn', 'header'=>'Do', 'headerOptions' => ['width' => '80'],'template' => '{view} {update} {delete}',   
+			    /*'buttons' => [ //change image for "Update Button"
                 'update' => function ($url,$model) {
                     return Html::a(
                     '<span class="glyphicon glyphicon-edit"></span>', // '<button class="btn btn-primary"><span style="color:black;" class="glyphicon glyphicon-edit"></span></button>',
                     $url);
-                },  ] , //'options'=>['style'=>'background:red'],
+                },  ] , */ //'options'=>['style'=>'background:red'],
 				
 				
 				],
