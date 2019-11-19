@@ -1,0 +1,28 @@
+
+
+/* ---------------------------------------- Mobile */
+@media screen and (max-width: 480px) { 
+  
+}
+/* ---------------------------------------- Mobile */
+
+
+#allMsg {
+	height:190px;
+    border:1px solid grey; margin-bottom:2em;
+	padding: 2em;
+	overflow-y: scroll;
+    overflow-x: hidden;
+	}
+	
+.youText{color:blue; margin-top:1.9em;}
+.botText{color:red; }
+.time{color:black; font-size:0.8em;}
+
+
+.shadowX, #txtMsg{
+	box-shadow: 0 1px 4px rgba(0, 0, 0, .3),
+            -23px 0 20px -23px rgba(0, 0, 0, .6),
+            23px 0 20px -23px rgba(0, 0, 0, .6),
+            inset 0 0 40px rgba(0, 0, 0, .1);
+}

@@ -37,3 +37,7 @@
 
 /* to fix visibility of action icons (delete, update, etc) in admin GridView */
 .my-adminX .glyphicon{  -webkit-text-fill-color:blue;-webkit-text-stroke-color: white;-webkit-text-stroke-width: 0.7.00px;}
+
+.text-truncated, .text-hidden:hover {
+    cursor: pointer;
+}

@@ -15,10 +15,10 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p> 
-        <? /*echo Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->wpBlog_id], ['class' => 'btn btn-primary']);
-            echo Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $model->wpBlog_id], [
-            'class' => 'btn btn-danger',
-            'data' => [
+        <?php /*echo Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->wpBlog_id], ['class' => 'btn btn-primary']);
+              echo Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $model->wpBlog_id], [
+              'class' => 'btn btn-danger',
+              'data' => [
                 'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
                 'method' => 'post',
             ],

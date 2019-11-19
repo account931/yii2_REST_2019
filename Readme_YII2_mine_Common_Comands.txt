@@ -989,10 +989,16 @@ if($_SERVER['REMOTE_ADDR'] == '127.0.0.1') {
 #inner Join => https://github.com/account931/iShop_Yii2_Gitted_from_LocalHost/blob/master/basic/controllers/ProductsController.php   ->  function actionPlaced()
 #GridView admin => https://github.com/account931/yii2_REST_and_Rbac_2019/blob/master/controllers/WpressBlogController.php   -> function actionIndex()
 
+#passing PHP object variable to javascript -> 
+        use yii\helpers\Json; 
+		 $this->registerJs(
+            "var calenderEvents = ".Json::encode($model).";", 
+             yii\web\View::POS_HEAD, 
+            'calender-events-script'
+     );
 
 
-
-
+#count AR result => $found ->count();
 
 
 
@@ -1019,7 +1025,7 @@ if($_SERVER['REMOTE_ADDR'] == '127.0.0.1') {
 98.3.V.A example references (CSS,JS,Php)
 #Pure CSS/JS Loader => https://github.com/account931/regist_login_DAO_2019/blob/master/README.md
 #React Bakcground Loader =>  https://github.com/account931/myWaze_GeoCode_Modules_CommonJS-18/blob/master/REDUX_REACT_REDUX/README_MY_REDUX.txt
-
+#Bootstrap grid => <div class="col-lg-3 col-md-3 col-sm-3">
 
 
 

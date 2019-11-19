@@ -55,6 +55,9 @@ $this->params['breadcrumbs'][] = $this->title;
 		
 	  
 	  //MOST WORKING!!!!!!!!!!!!!!!!
+	  $c =  ArrayHelper::map($categories, 'wpCategory_id', 'wpCategory_name');  //covert the AR object with DB articles to array using Yii2 helper
+	  $c = array_merge(array('0' => 'All articles'), $c); //manually adds to the beginning of array text for "All articles"
+	  
 	  //Hand made Dropdown as can't inject <a href> in Html::dropDownList. JAVASCRIPT!!!!!!!!!
       echo  '<select id="dropdownnn" style="border:1px solid red;">';
           foreach($c as $idd=>$n){  //foreach($categories as $a){ 
