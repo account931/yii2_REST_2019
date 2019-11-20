@@ -23,6 +23,7 @@ class Bot_AssertOnly extends AssetBundle
     public $css = [
         //'css/site.css',
 		'//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css',  //CDN autocomplete css , // does not mean anything, it works!!!!
+		'https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.css', //Sweet Alert CSS
 
     ];
 	
@@ -30,6 +31,7 @@ class Bot_AssertOnly extends AssetBundle
 	    'js/bot/bot_form.js', //form
 		'js/bot/autocomplete.js', //autocomplete mine
 		'https://code.jquery.com/ui/1.12.1/jquery-ui.js', //JS lib for autocomplete
+		'https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js', //Sweet Alert JS
 
     ];
 	

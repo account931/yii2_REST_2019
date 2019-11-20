@@ -20,7 +20,7 @@ TABLE OF CONTENT:
 5.6 Margin months Fix, when booking include magrin months, i.e 28 Aug - 3 Sept) 
 7. How to validate dates input in form in Booking CPH
 8. Why should we use {error_reporting(E_ALL & ~E_NOTICE);} on 000web.com hosting //JUST TO FIX 000web HOSTING!!!!!!!!!!!!!!!
-
+9. Bot Yii
 
 -------------------------------------------------------------
 1.HOW TO TEST REST API from non-Yii2 file. 
@@ -212,4 +212,22 @@ https://www.yiiframework.com/doc/guide/2.0/ru/tutorial-core-validators
  8. Why should we use {error_reporting(E_ALL & ~E_NOTICE);} on 000web.com hosting //JUST TO FIX 000web HOSTING!!!!!!!!!!!!!!!
  
  
+ 
+ 
+ 
+ 
+ ==========================================================================
+ 9. Bot Yii
+ Bot that auoreplies your messages
+ #It uses SQL DB table  -> {bot}. Values in this table fields {b_autocomplete, b_reply} must be separated by "//". Field {b_key} does not requre that.
+  i.e"//" is a limiter to covert string to array => split() in js/bot/autocomplete.js and for explode() in BotController/actionAjaxReply()
+ 
+ # Main action is {BotController/function actionBotChat()} that sends ajax requests with your text to {BotController/function actionAjaxReply()}
+ 
+ #Php Array(b_autocomplete) for js autocomplete is passed to from PHP in views/bot/bot-view.php. PHP URL for JS ajax is passed there too.
+  
+  
+  
+  
+  
  

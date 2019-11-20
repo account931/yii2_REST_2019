@@ -1,10 +1,9 @@
+//ReadMe is in => https://github.com/account931/yii2_REST_and_Rbac_2019/blob/master/Readme_YII2_mine_This_Project_itself.txt
+
 (function(){ //START IIFE (Immediately Invoked Function Expression)
 
 
 
-	
-	
-	
 	
 	//JQ autocomplete UI,(+ must include JQ_UI.js + JQ_UI.css in index.php)
   $(document).ready(function(){
@@ -33,9 +32,9 @@
 	  for(var key in aucompleteX){  
 	     //for (i = 0; i < aucompleteX[key]['b_key'].length; i++){ 
 		//arrayAutocomplete.push(  { label: aucompleteX[i].b_reply[j], value: aucompleteX[i].b_reply[j] }  ); //gets name of every user and form in this format to get and lable and value(Name & ID)
-		 var sub = aucompleteX[key]['b_key'].split('//');
+		 var sub = aucompleteX[key]['b_autocomplete'].split('//');
 		 for (i = 0; i < sub.length; i++){ 
-		    arrayAutocomplete.push( sub[i]); //gets name of every product
+		    arrayAutocomplete.push(sub[i]); //gets name of every product
 	}
 	}
 	

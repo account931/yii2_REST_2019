@@ -992,7 +992,7 @@ if($_SERVER['REMOTE_ADDR'] == '127.0.0.1') {
 #passing PHP object variable to javascript -> 
         use yii\helpers\Json; 
 		 $this->registerJs(
-            "var calenderEvents = ".Json::encode($model).";", 
+            "var calenderEvents = ".Json::encode($model).";",  //"var urlXX ='" . $urlZ . "';",
              yii\web\View::POS_HEAD, 
             'calender-events-script'
      );
@@ -1012,7 +1012,7 @@ if($_SERVER['REMOTE_ADDR'] == '127.0.0.1') {
 #Current URL => $_SERVER['HTTP_HOST']
 
 # IOS, safari JS click fix => add empty {onClick}  => <span onClick="" id="someID"></span>   OR => cursor: pointer;
-
+#alert objetc=> alert(JSON.stringify(aucompleteX, null, 4));
 
 
 

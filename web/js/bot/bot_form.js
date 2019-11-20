@@ -57,12 +57,14 @@ $(document).ready(function(){
 				    //alert(res.result_status);
 			       
 				     //append bot answer to chat flow
-				     botReply(res);
+				     botReply(res, null);
 					
 					
                 },
                 error: function(errX){
-                    alert('Error from actionAjaxReply()!' + errX);
+                    //alert('Error from actionAjaxReply()!' + errX)); // alert(JSON.stringify(errX, null, 4)
+					//swal("Sorry!", "Server crashed!", "error"); //sweet alert
+					botReply(null, "Sorry, the server crashed, try again in 1 minute.");
                 }
             });
 			// END runs AJAX here
@@ -135,10 +137,14 @@ $(document).ready(function(){
     // **************************************************************************************
     //                                                                                     ** 
 	
-	function botReply(resss){
-	    //append bot answers to chat => time/bot/answer
-		var tt =  $( getCurrentTime() + "<span class='botText'><i class='fa fa-graduation-cap'></i> Bot: "  + resss.botreply + "</span><hr>").hide(); //to append with animation, firstly hide it 
-		//$("#allMsg").stop().fadeOut("slow",function(){$(this).append(tt)}).fadeIn();
+	function botReply(resss, textX){
+		if(textX == null){ //if 2nd arg is not given, meaning that ajax was performed OK-> just give an naswer from BotController/actionAjaxReply()
+	        //append bot answers to chat => time/bot/answer
+		    var tt =  $( getCurrentTime() + "<span class='botText'><i class='fa fa-graduation-cap'></i> Bot: "  + resss.botreply + "</span><hr>").hide(); //to append with animation, firstly hide it 
+		    //$("#allMsg").stop().fadeOut("slow",function(){$(this).append(tt)}).fadeIn();
+		} else { //if 2nd arg is given, meaning that ajax crashed & this funct is called from  error: function(errX){ => show error message
+			var tt =  $( getCurrentTime() + "<span class='botText'><i class='fa fa-graduation-cap'></i> Bot: <i class='	fa fa-warning'></i> "  + textX + "</span><hr>").hide(); //to append with animation, firstly hide it 
+		}
 
         $("#allMsg").append(tt); //to append with animation
         tt.show(1000); //to append with animation

@@ -1,5 +1,5 @@
 <?php
-
+//ReadMe is in => https://github.com/account931/yii2_REST_and_Rbac_2019/blob/master/Readme_YII2_mine_This_Project_itself.txt
 namespace app\controllers;
 
 use Yii;
@@ -142,7 +142,7 @@ class BotController extends Controller
         
         $model = new InputModel(); //model for my input, not Act Record
 		
-		$autoCompleteHint = BotModel::find()->all();
+		$autoCompleteHint = BotModel::find()->all(); //finds all sentences for autocomplete
 		
         return $this->render('bot-view', [
             'model' => $model, //model for my input, not Act Record
@@ -172,19 +172,49 @@ class BotController extends Controller
             $test = "Ajax  not recognized! message is from {actionAjaxReply}";
 		}
 		
-		$found = BotModel::find()->orderBy ('b_id DESC')->andFilterWhere(['like', 'b_key', $_POST['serverMessageX']])->asArray() ->all();
-		if($found){
-		    //if(strpos( $found[0]['b_reply'], '//' ) !== false){  
-		        $arr = explode("//",$found[0]['b_reply']);
-		        $countX = count($arr);
-		        $random = rand(0,$countX - 1 );
-		        $answer = $arr[$random];
-		    //} else {
-			    //$answer = $arr[0];
-		  //}
+		//Reg Exp to differentiate Statements/Questions; //NOT USED so far!!!!!!!
+        $RegExp_Name = '/\?/';  //'/^[a-zA-Z]{3,16}$/';
+		//checking name text input for {?}
+        if (!preg_match($RegExp_Name,  $_POST['serverMessageX'])){
+			$category = "Statements";
 		} else {
-			$answer = "Sorry, did not catch the meaning";
+			$category = "Questions";
 		}
+		
+		//handle empty messages
+		if($_POST['serverMessageX']==""){
+			$answer = "Your message is empty. Please try harder with a new one.";
+		} else { //if message is not empty
+		    //find answer from DB, returns array!!!!!!!
+		    $found = BotModel::find()->orderBy ('b_id DESC')/*->where(['b_category'=> $category ])*/ ->andFilterWhere(['like', 'b_key', $_POST['serverMessageX']])->asArray() ->all();
+		    if($found){
+				/* if($found[0][b_id] == 2){ //if it is weather question
+				  $weather_URL = "http://api.openweathermap.org/data/2.5/forecast/daily?q=Kyiv&mode=json&units=metric&cnt=7&appid=4**************";
+				} else { */
+		            //if(strpos( $found[0]['b_reply'], '//' ) !== false){  
+					
+					//if user's text is the same as prev, avoid the same answer
+					/*if (Yii::$app->session->has('prevMessage')){
+						if(Yii::$app->session->get('prevMessage') == $_POST['serverMessageX']){
+							
+						}
+					} else {
+					    Yii::$app->session->set('prevMessage', $_POST['serverMessageX']);
+					}*/
+					
+					
+		            $arr = explode("//",$found[0]['b_reply']);
+		            $countX = count($arr);
+		            $random = rand(0,$countX - 1 );
+		            $answer = $arr[$random];
+				//}
+
+		    } else {
+			    $answer = "Sorry, can not understand you. Try with another question.";
+		    }
+		}
+		
+		
 		
 		//RETURN JSON DATA
 		 // Specify what data to echo with JSON, ajax usese this JSOn data to form the answer and html() it, it appears in JS consol.log(res)
@@ -193,7 +223,8 @@ class BotController extends Controller
              'result_status' => $test, // return ajx status
              'code' => 100,	
 	         'messageX' => $_POST['serverMessageX'],
-             'botreply'	=>	$answer,
+			 'category' => $category,
+             'botreply'	=>	$answer, //Bot nswer
           ]; 
     }
 	

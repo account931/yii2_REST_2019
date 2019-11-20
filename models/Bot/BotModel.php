@@ -9,6 +9,7 @@ use Yii;
  *
  * @property int $b_id
  * @property string $b_category
+ * @property string b_autocomplete
  * @property string $b_key
  * @property string $b_reply
  */
@@ -42,6 +43,7 @@ class BotModel extends \yii\db\ActiveRecord
         return [
             'b_id' => Yii::t('app', 'B ID'),
             'b_category' => Yii::t('app', 'B Category'),
+			'b_autocomplete' => Yii::t('app', 'Autocomplete'),
             'b_key' => Yii::t('app', 'B Key'),
             'b_reply' => Yii::t('app', 'B Reply'),
         ];

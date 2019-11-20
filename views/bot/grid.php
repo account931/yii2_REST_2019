@@ -24,6 +24,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
             'b_id',
             'b_category:ntext',
+			'b_autocomplete',
             'b_key',
             'b_reply',
 
