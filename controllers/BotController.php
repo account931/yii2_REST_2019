@@ -164,55 +164,20 @@ class BotController extends Controller
 	
 	public function actionAjaxReply()
     {
-        
+		
+        $myModel = new BotModel();
+		
         //just a test if ajax is recognized
-        if (Yii::$app->request->isAjax) { 
-	        $test = "Ajax Worked, recognized! (message is from {actionAjaxReply})";
-	    } else {
-            $test = "Ajax  not recognized! message is from {actionAjaxReply}";
-		}
+        $test = $myModel->testIf_IsAjax();
 		
 		//Reg Exp to differentiate Statements/Questions; //NOT USED so far!!!!!!!
-        $RegExp_Name = '/\?/';  //'/^[a-zA-Z]{3,16}$/';
-		//checking name text input for {?}
-        if (!preg_match($RegExp_Name,  $_POST['serverMessageX'])){
-			$category = "Statements";
-		} else {
-			$category = "Questions";
-		}
+		//global $category;
+        $myModel->ifStatements_orQuestions_category();
 		
-		//handle empty messages
-		if($_POST['serverMessageX']==""){
-			$answer = "Your message is empty. Please try harder with a new one.";
-		} else { //if message is not empty
-		    //find answer from DB, returns array!!!!!!!
-		    $found = BotModel::find()->orderBy ('b_id DESC')/*->where(['b_category'=> $category ])*/ ->andFilterWhere(['like', 'b_key', $_POST['serverMessageX']])->asArray() ->all();
-		    if($found){
-				/* if($found[0][b_id] == 2){ //if it is weather question
-				  $weather_URL = "http://api.openweathermap.org/data/2.5/forecast/daily?q=Kyiv&mode=json&units=metric&cnt=7&appid=4**************";
-				} else { */
-		            //if(strpos( $found[0]['b_reply'], '//' ) !== false){  
-					
-					//if user's text is the same as prev, avoid the same answer
-					/*if (Yii::$app->session->has('prevMessage')){
-						if(Yii::$app->session->get('prevMessage') == $_POST['serverMessageX']){
-							
-						}
-					} else {
-					    Yii::$app->session->set('prevMessage', $_POST['serverMessageX']);
-					}*/
-					
-					
-		            $arr = explode("//",$found[0]['b_reply']);
-		            $countX = count($arr);
-		            $random = rand(0,$countX - 1 );
-		            $answer = $arr[$random];
-				//}
+		//output the final answer to ajax
+		$answer = $myModel->giveCoreAnswer();
+		
 
-		    } else {
-			    $answer = "Sorry, can not understand you. Try with another question.";
-		    }
-		}
 		
 		
 		
@@ -223,7 +188,7 @@ class BotController extends Controller
              'result_status' => $test, // return ajx status
              'code' => 100,	
 	         'messageX' => $_POST['serverMessageX'],
-			 'category' => $category,
+			 'category' => $myModel->category,
              'botreply'	=>	$answer, //Bot nswer
           ]; 
     }

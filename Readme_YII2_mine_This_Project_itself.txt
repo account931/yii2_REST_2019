@@ -21,6 +21,7 @@ TABLE OF CONTENT:
 7. How to validate dates input in form in Booking CPH
 8. Why should we use {error_reporting(E_ALL & ~E_NOTICE);} on 000web.com hosting //JUST TO FIX 000web HOSTING!!!!!!!!!!!!!!!
 9. Bot Yii
+10. Yii2 Wordpress analogue
 
 -------------------------------------------------------------
 1.HOW TO TEST REST API from non-Yii2 file. 
@@ -230,4 +231,29 @@ https://www.yiiframework.com/doc/guide/2.0/ru/tutorial-core-validators
   
   
   
+  
+  
+  
+  
+  
+  
+  
+  ===============================================================
+  10. Yii2 Wordpress analogue
+  Wpress read me
+#Yii2 equivalent of Wordpress blogging.
+#Uses 2 tables-> blogs {WpressBlogPost} and category{WpressCategory}.
+
+#Page with all articles (blogs) is => {WpressBlogController -> actionShowAllBlogs}. 
+It displays all articles from table {WpressBlogPost} using hasOne and hasMany relations from table {Users} and {WpressCategory}.
+On load article text is truncated with {js/ wpress.js} and comes in first <p>.
+Full text comes in next sibling <p> with css {display: none;}. On click, we switch visibility of two <p>.
+
+# Page displaying all Articles uses dropdown <select> with all categories selected from Db table {WpressCategory}.
+and on change redirects to same page, but with different $_Get ['category']. 
+In action {actionShowAllBlogs} we check $_Get ['category'] and make Active Record SQL query with WHERE statement.
+#Single article view {views/site/my-single-view.php} and Admin GridView {views/site/index}
+
+#Views of {WpressBlogController/actionShowAllBlogs & actionMySingleView($id)} use hasMany and hasOne relations.
+#Admin GridView uses hasMany and hasOne relations as well.
  

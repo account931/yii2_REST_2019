@@ -1011,6 +1011,10 @@ if($_SERVER['REMOTE_ADDR'] == '127.0.0.1') {
 #Difference in foreach (array vs object)=> foreach($_OBJECT as $b){echo $b->propertyName} vs foreach($_ARRAY as $b=>$v){echo $b . "" .$v} 
 #Current URL => $_SERVER['HTTP_HOST']
 
+#Time => date_default_timezone_set('Europe/Kiev'); date('m/d/Y h:i:s a', time()); // 11/21/2019 03:51:50 pm
+#Today date => date('j-M-D-Y'); //21-Nov-Thu-2019
+#Unix to normal => date('d M Y H:i:s Z', $Unix) ;
+
 # IOS, safari JS click fix => add empty {onClick}  => <span onClick="" id="someID"></span>   OR => cursor: pointer;
 #alert objetc=> alert(JSON.stringify(aucompleteX, null, 4));
 
