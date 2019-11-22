@@ -3,7 +3,7 @@
 namespace app\models\Bot;
 use Yii;
 
-//include("../../secret_tokens.php");
+include("../../secret_tokens.php");
 /**
  * This is the model class for table "bot".
  *
@@ -17,7 +17,7 @@ class BotModel extends \yii\db\ActiveRecord
 {
 	
 	public $category; 
-	
+	public $found; //used in isSearchAnswerExists_inSQL() as $this->found
 	
     /**
      * @inheritdoc
@@ -93,48 +93,15 @@ class BotModel extends \yii\db\ActiveRecord
 	
 	
 	
-	//output the answer to ajax
+	//output the answer. Gets predifined answers from SQL DB, from field ['b-reply'](to send to ajax)
 	// **************************************************************************************
     // **************************************************************************************
     //                                                                                     ** 
-	 public  function giveCoreAnswer(){
-		 
-		 //handle empty messages
-		if($_POST['serverMessageX']==""){
-			$answer = "Your message is empty. Please try harder with a new one.";
-		} else { //if message is not empty
-		
-		    //find answer from DB, returns array!!!!!!!
-		    $found = BotModel::find()->orderBy ('b_id DESC') /*->where(['b_category'=> $this->category ])*/ -> andFilterWhere(['like', 'b_key', $_POST['serverMessageX']])->asArray() ->all();
-		    if($found){
+	 public  function AnswerFromDataBase($found){
+		 	
+		    
+		    //if($found){
 				
-				 //Procees specific commands like weather, time, etc
-				 /*if($found[0][b_id] == 18){ //if it is time question
-				      date_default_timezone_set('Europe/Kiev');
-				      $answer = $found[0]['b_reply'] . " " . date('h:i:s a', time());
-			
-			     } else if($found[0][b_id] == 19){ //if it is day question
-				      date_default_timezone_set('Europe/Kiev');
-				      $answer = $found[0]['b_reply'] . " " .   date('j-M-D-Y');
-				 
-				 //weather
-				 } else if($found[0][b_id] == 2){ //if it is weather question
-				     $weather_URL = "http://api.openweathermap.org/data/2.5/forecast/daily?q=Kyiv&mode=json&units=metric&cnt=7&appid=" . WEATHER_API_TOKEN;
-					 if (!$json = file_get_contents($weather_URL)) {
-		                 $answer = 'weather api failed';
-	                 }
-					 $res = json_decode($json,true);
-					 $answer = "Weather in  " . $res['city']['name'] . ". Minimal temp is expected to be " . $res['list'][0]['temp']['max'] . "C. Forecast is for  " . date('d M Y ', $res['list'][0]['dt']) ;
-					 
-				//news
-				} else if($found[0][b_id] == 20){ //if it is News question  https://newsapi.org/v2/top-headlines?country=ua&apiKey=
-                      $news_URL = "http://newsapi.org/v2/top-headlines?country=ua&apiKey=" . NEWS_API_ORG;
-					  if(!$json2 = file_get_contents($news_URL)) {
-		                 $answer = 'news api failed';
-	                  }
-					 $res2 = json_decode($json2,true);
-				     $answer = $found[0]['b_reply'] . $res2['totalResults'] . " items. " . $res2['articles'][0]['title']; //$found[0]['b_reply'] .
-				*/	  
 					  
 					  
 				//proceed normal answers from DB
@@ -149,19 +116,18 @@ class BotModel extends \yii\db\ActiveRecord
 					} else {
 					    Yii::$app->session->set('prevMessage', $_POST['serverMessageX']);
 					}*/
-					
-					/*} else { */
+				
 		                $arr = explode("//",$found[0]['b_reply']);
 		                $countX = count($arr);
 		                $random = rand(0,$countX - 1 );
 		                $answer = $arr[$random];
-					/*} */
+					
 				//}
 
-		    } else {
+		   /* } else {
 			    $answer = "Sorry, can not understand you. Try with another question.";
-		    }
-		}
+		    }*/
+		//}  //!!!!!!!!!!
 		 return $answer;
 	 }
 	 
@@ -174,10 +140,193 @@ class BotModel extends \yii\db\ActiveRecord
 	 
 	 
 	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 //output the answer. Gets calculated answer, i.e response from Weather, News API, current time/date, etc. (to send to ajax) 
+	// **************************************************************************************
+    // **************************************************************************************
+    //                                                                                     ** 
+	 public  function giveComputeredAnswer($found){
+		 
+				 //Procees specific commands like weather, time, etc
+				 
+				 //if it is time question
+				 if($found[0][b_id] == 18){ 
+				      date_default_timezone_set('Europe/Kiev');
+				      $answer = "it is  " . date('h:i:s a', time());
+					  
+			     //if it is day question
+			     } else if($found[0][b_id] == 19){ 
+				      date_default_timezone_set('Europe/Kiev');
+				      $answer = "Today " .   date('j-M-D-Y');
+					  
+				 
+				 
+				 //if it is Open weather Api question for TODAY weather
+				 } else if($found[0][b_id] == 21){ 
+				     $weather_URL = "http://api.openweathermap.org/data/2.5/forecast/daily?q=Kyiv&mode=json&units=metric&cnt=7&appid=" . WEATHER_API_TOKEN;
+					 
+					 /*if (!$json = file_get_contents($weather_URL)) { //reassigned to cURL
+		                 $answer = 'weather api failed';
+	                 }*/
+					 $json = $this->run_cURL_requestt($weather_URL); //run cUrl
+					 $res = json_decode($json,true);
+					 $answer = "<br>Here you are today weather in  " .
+					         $res['city']['name'] . "." .  //city name
+							 "<br>Forecast is for  " . date('d M Y ', $res['list'][0]['dt']) . "." .  //date
+							 "<br> Temperature is expected to be min:" . $res['list'][0]['temp']['min'] . "C, max:  " . $res['list'][0]['temp']['max'] . "C, ".
+        					  $res['list'][0]['weather'][0]['description'] . ".";
+					 
+				
+				
+				
+				//if it is Open weather Api question for TOMORROW weather
+				 } else if($found[0][b_id] == 22){ 
+				     $weather_URL = "http://api.openweathermap.org/data/2.5/forecast/daily?q=Kyiv&mode=json&units=metric&cnt=7&appid=" . WEATHER_API_TOKEN;
+					 
+					 /*if (!$json = file_get_contents($weather_URL)) { //reassigned to cURL
+		                 $answer = 'weather api failed';
+	                 }*/
+					 $json = $this->run_cURL_requestt($weather_URL); //run cUrl
+					 $res = json_decode($json,true);
+					 $answer = "<br>Here you are tomorrow weather forecast in  " .
+					         $res['city']['name'] . "." .  //city name
+							 ", " . date('d M Y ', $res['list'][1]['dt']) . "." . //date
+							 "<br> Temperature is expected to be min:" . $res['list'][1]['temp']['min'] . "C, max:  " . $res['list'][1]['temp']['max'] . "C, ".
+        					  $res['list'][1]['weather'][0]['description'] . ".";
+				
+				
+				
+				
+				
+				
+				//if it is News question  https://newsapi.org/v2/top-headlines?country=ua&apiKey=
+				} else if($found[0][b_id] == 20){ 
+                      $news_URL = "http://newsapi.org/v2/top-headlines?country=ua&apiKey=" . NEWS_API_ORG;
+					  
+					  /*if(!$json2 = file_get_contents($news_URL)) { //reassigned to cURL
+		                 $answer = 'news api failed';
+	                  }*/
+					  
+					 $json2 = $this->run_cURL_requestt($news_URL); //run cUrl
+					 $res2 = json_decode($json2,true);
+					 
+					 $random = rand(0, $res2['totalResults']-1 ); //to get a 1 random news from all available
+				     $answer = "<br>" . $found[0]['b_reply'] . $res2['totalResults'] . " news found. " .  //found 30 news
+					           "<br>" . $res2['articles'][$random]['title']; //getting 1 random news from all available
+				}
+				
+				return $answer;
+	 }
+	 
+	// **                                                                                  **
+    // **************************************************************************************
+    // **************************************************************************************
+	
+	
+	
+	
+	
+	
+	
+	
+	 
+	 //search for key words presence in SQL Dn [b_key]
     // **************************************************************************************
     // **************************************************************************************
     //                                                                                     ** 
-	 
-	 
+	 function isSearchAnswerExists_inSQL(){
+		//find answer from DB, returns array!!!!!!!
+		$this->found = /*BotModel*/self::find()->orderBy ('b_id DESC') /*->where(['b_category'=> $this->category ])*/ -> andFilterWhere(['like', 'b_key', $_POST['serverMessageX']])->asArray() ->all(); 
+	     if($this->found){
+			 return true;
+		 } else {
+			 return false;
+		 }
+	 }
+	// **                                                                                  **
+    // **************************************************************************************
+    // **************************************************************************************
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	 // **************************************************************************************
+    // **************************************************************************************
+    //                                                                                     ** 
+	
+	function run_cURL_requestt($url){
+		
+        $curl = curl_init();
+        curl_setopt_array($curl, array(
+          CURLOPT_URL => $url,
+          CURLOPT_RETURNTRANSFER => true,
+          CURLOPT_ENCODING => "",
+          CURLOPT_MAXREDIRS => 10,
+          CURLOPT_TIMEOUT => 30,
+          CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+          CURLOPT_CUSTOMREQUEST => "GET", //PUT
+         //CURLOPT_POSTFIELDS => $dataX,//"{\n  \"customer\" : \"con\",\n  \"customerID\" : \"5108\",\n  \"customerEmail\" : \"jordi@correo.es\",\n  \"Phone\" : \"34600000000\",\n  \"Active\" : false,\n  \"AudioWelcome\" : \"https://audio.com/welcome-defecto-es.mp3\"\n\n}",
+         /* CURLOPT_HTTPHEADER => array(
+           "cache-control: no-cache",
+           "content-type: application/json",
+           "x-api-key: whateveriyouneedinyourheader"
+        ),*/
+       ));
+       curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false); //must option to Kill SSL, otherwise sets an error
+       $response = curl_exec($curl);
+	   
+       $err = curl_error($curl);
+       curl_close($curl);
+	   
+       if ($err) {
+           //echo "cURL Error #:" . $err;
+	       //array_push($this->messageArray, " ERROR SAVING MARKER"); //add message to messageArray to show later in div id="techInfo"
+      } else if ($response) {
+         //echo "<p> FEATURE STATUS=></p><p>Below is response from API-></p>";
+         //echo $response;
+	     //array_push($this->messageArray, $myName, $myDescript);//add message to messageArray to show later in div id="techInfo"
+         //echo "<br> Marker is Saved!!!";
+	     //array_push($this->messageArray, " Marker is Savedd!!!"); //add message to messageArray to show later in div id="techInfo"
+	     //array_push($this->messageArray, $response); //add message to messageArray to show later in div id="techInfo"
+		 return $response;
+       }
+     //END cURL -> Version for localhost and 000webhost.com, cURL is not supported on zzz.com.ua hosting-------------
+	}
+	// **                                                                                  **
+    // **************************************************************************************
+    // **************************************************************************************
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	 // **************************************************************************************
+    // **************************************************************************************
+    //                                                                                     ** 
+	
+	
+	
+	
+	
+	
+	
+	 // **************************************************************************************
+    // **************************************************************************************
+    //                                                                                     ** 
 }

@@ -171,11 +171,35 @@ class BotController extends Controller
         $test = $myModel->testIf_IsAjax();
 		
 		//Reg Exp to differentiate Statements/Questions; //NOT USED so far!!!!!!!
-		//global $category;
         $myModel->ifStatements_orQuestions_category();
 		
-		//output the final answer to ajax
-		$answer = $myModel->giveCoreAnswer();
+		//START CORE LOGIC => it outputs the final answer to ajax
+		
+		//if user's message is empty 
+		if($_POST['serverMessageX']==""){
+			$answerX = "Your message is empty. Please try harder with a new one.";
+			
+		} else { //if user's message is not empty
+		
+		    if($myModel->isSearchAnswerExists_inSQL()){ //if found keys [b_key] in SQL that matches user's message. Search for key words presence in SQL Dn [b_key], if exist return TRUE
+			   
+				if($myModel->found[0][b_category] == 'Script_Processed'){ //if found category has category 'Script_Processed', meaning it Gets calculated answer, like response from Weather, News API, current time/date, etc
+
+					 $answerX = $myModel->giveComputeredAnswer($myModel->found); // Gets calculated answer(), i.e response from Weather, News API, current time/date
+				} else {
+
+					$answerX = $myModel->AnswerFromDataBase($myModel->found); //Gets predifined answers from SQL DBc  
+				}
+				
+			//if DID NOT found keys [b_key] in SQL that matches user's message   
+		    } else {
+			    $answerX = "Sorry, can not understand you. Try with another question.";
+				
+		    }
+			
+		}
+		//END CORE LOGIC => it outputs the final answer to ajax
+		
 		
 
 		
@@ -189,7 +213,7 @@ class BotController extends Controller
              'code' => 100,	
 	         'messageX' => $_POST['serverMessageX'],
 			 'category' => $myModel->category,
-             'botreply'	=>	$answer, //Bot nswer
+             'botreply'	=>	$answerX, //Bot FINAL answer
           ]; 
     }
 	

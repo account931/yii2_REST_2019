@@ -62,7 +62,7 @@ $(document).ready(function(){
 					
                 },
                 error: function(errX){
-                    //alert('Error from actionAjaxReply()!' + errX)); // alert(JSON.stringify(errX, null, 4)
+                     //alert(JSON.stringify(errX, null, 4));//alert('Error from actionAjaxReply()!' + errX);   //alert(JSON.stringify(errX, null, 4)
 					//swal("Sorry!", "Server crashed!", "error"); //sweet alert
 					botReply(null, "Sorry, the server crashed, try again in 1 minute.");
                 }

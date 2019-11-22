@@ -219,7 +219,8 @@ https://www.yiiframework.com/doc/guide/2.0/ru/tutorial-core-validators
  
  ==========================================================================
  9. Bot Yii
- Bot that auoreplies your messages
+ Bot that auoreplies your messages. 
+ Uses cURL for Api requests(like weather/news) as file_get_contents() is not supported on hosting (though it works on localhost). cUrl is supported both on local & 000web.com hosting
  #It uses SQL DB table  -> {bot}. Values in this table fields {b_autocomplete, b_reply} must be separated by "//". Field {b_key} does not requre that.
   i.e"//" is a limiter to covert string to array => split() in js/bot/autocomplete.js and for explode() in BotController/actionAjaxReply()
  

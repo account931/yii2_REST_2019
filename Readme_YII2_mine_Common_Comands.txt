@@ -1016,9 +1016,10 @@ if($_SERVER['REMOTE_ADDR'] == '127.0.0.1') {
 #Unix to normal => date('d M Y H:i:s Z', $Unix) ;
 
 # IOS, safari JS click fix => add empty {onClick}  => <span onClick="" id="someID"></span>   OR => cursor: pointer;
-#alert objetc=> alert(JSON.stringify(aucompleteX, null, 4));
+# JS alert object => alert(JSON.stringify(aucompleteX, null, 4));
+#create Enum SQL => choose enum + in Length/Values column put there : '0' ,'1'
 
-
+# cURL library => https://github.com/account931/MapBox_Store_Location_2019/blob/master/Classes/AddMarker.php
 
 
 

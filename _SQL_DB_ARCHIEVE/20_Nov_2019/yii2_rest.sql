@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Хост: 127.0.0.1:3306
--- Час створення: Лис 20 2019 р., 17:30
+-- Час створення: Лис 22 2019 р., 14:56
 -- Версія сервера: 5.5.28-log
 -- Версія PHP: 5.4.8
 
@@ -139,7 +139,7 @@ CREATE TABLE IF NOT EXISTS `bot` (
   `b_key` text NOT NULL,
   `b_reply` text NOT NULL,
   PRIMARY KEY (`b_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=18 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=23 ;
 
 --
 -- Дамп даних таблиці `bot`
@@ -147,18 +147,22 @@ CREATE TABLE IF NOT EXISTS `bot` (
 
 INSERT INTO `bot` (`b_id`, `b_category`, `b_autocomplete`, `b_key`, `b_reply`) VALUES
 (1, 'Statements', 'My name is //', '// name //names //', 'So delighted to meeet you // Nice to  to get acquainted // My pleasure to getin touch with you'),
-(2, 'Questions', 'What is the weather like now in EU?', 'What about weather? // What is the weather like now in EU? // forecast //rain // warm ', 'It is great weather today // It is windy today // it is raining // I like the weather we have today // It is sunny // It is stormy'),
 (3, 'Questions', 'What is your name? // Who are you?', 'What is your name? // Who are you? // name?  // names? //surename //surenames?', 'You can call me Yii2 Bot // I am not too much about names // My name is Public Function actionAjaxReply() // Isn''t it too quick to get acquainted?'),
 (4, 'Statements', 'Hello // Hi ', 'Hello // Hi // How do you do? // Good morning', 'Hello // Hi // How do you do? // Good morning // Good everning // Greetings // Hey, brother'),
 (6, 'Statements', 'Let us talk about Copenhagen ', 'Let us talk about Copenhagen // Cph // Denmark', 'I like CPH // Copenhagen is a Scandinavian city // I like Rafshaleoen mostly // Tegneholmen is the pure waterfront experience // København was a Danish five-masted barque used as a naval training vessel until its disappearance after December 22, 1928. // København  is the capital and most populous city of Denmark. As of July 2018, the city has a population of 777,218 //  Copenhagen is situated on the eastern coast of the island of Zealand; another small portion of the city is located on Amager, and it is separated from Malmö, Sweden, by the strait of Øresund. The Øresund Bridge connects the two cities by rail and road. // Since the turn of the 21st century, Copenhagen has seen strong urban and cultural development, facilitated by investment in its institutions and infrastructure. The city is the cultural, economic and governmental centre of Denmark'),
-(7, 'Statements', 'Dnb music', 'Dnb // drum''n''bass', 'Calyx and Teebee are remarkable producers'),
+(7, 'Statements', 'Dnb music', 'Dnb // drum''n''bass //Dnb music', 'Calyx and Teebee are remarkable producers'),
 (8, 'Questions', 'Where do you live? ', 'Where do you live? // Where is your native place?', 'I live on Earth // I maintaine a residence nearby // I am bouncing around a lot // I am cosmopolitan // I used to shift many places'),
 (9, 'Questions', 'Android or IOS?', 'Android or IOS?', 'Android rocks!!! // Of course Android // IOS sucks // Choose Android anyway'),
 (10, 'Statements', 'Want to say goodbye', 'Want to say goodbye // good-bye // bye // see you later', 'Bye // See you later // Bye, come back later // Will be waiting for you to come back // Adieu // I will be looking forward to seeing you agian'),
 (12, 'Statements', 'I am kind of tired', 'I am kind of tired //bored // sad', 'Cheers up // Grab some food // Some sleep will fix it // Some dance? // Some beer? // Take a walk to the sea front'),
 (13, 'Questions', 'Plans for tomorrow?', 'Plans for tomorrow? //What are going to do?', 'Hit the city // Going to the countryside // Cycling around // Doing the gym // Improving the language'),
 (16, 'Questions', 'Best slogan for today?', 'Best slogan for today? // Motto // Idea // Slogan  Mottos // Ideas // Slogans  Motto? // Idea? // Slogan?  Mottos? // Ideas? // Slogans?', 'Don''t let the perfect be the enemy of the good.//\r\nI’ve done it before and I can do it again.//\r\nA journey of a thousand miles begins with a single step. //\r\nHealth first.//\r\nExercise—stay stronger longer.//\r\nWhere there’s a will, there’s a way.//\r\nHe who has a why can endure any how.//\r\nMake the right thing to do the easy thing to do.//\r\nSmoke-free—a healthy me'),
-(17, 'Questions', 'Tell me any useful proverb in English, will you?', 'Tell me any useful proverb in English, will you? // What is the best proverb in English? // proverb proverbs proverb? proverbs?', 'When in Rome, do as the Romans. //The squeaky wheel gets the grease. // When the going gets tough, the tough get going //No man is an island // Never look a gift horse in the mouth// You can''t make an omelet without breaking a few eggs //God helps those who help themselves// If it ain''t broke, don''t fix it // Too many cooks spoil the broth // Many hands make light work. // Many hands make light work. // Honesty is the best policy // Don’t make a mountain out of an anthill // Better late than never. // It’s better to be safe than sorry.');
+(17, 'Questions', 'Tell me any useful proverb in English, will you?', 'Tell me any useful proverb in English, will you? // What is the best proverb in English? // proverb proverbs proverb? proverbs?', 'When in Rome, do as the Romans. //The squeaky wheel gets the grease. // When the going gets tough, the tough get going //No man is an island // Never look a gift horse in the mouth// You can''t make an omelet without breaking a few eggs //God helps those who help themselves// If it ain''t broke, don''t fix it // Too many cooks spoil the broth // Many hands make light work. // Many hands make light work. // Honesty is the best policy // Don’t make a mountain out of an anthill // Better late than never. // It’s better to be safe than sorry.'),
+(18, 'Script_Processed', 'What time is it?', 'What time is it? // time // time? now //', 'Now it is '),
+(19, 'Script_Processed', 'What day is today?', 'What day is today? // What day is today //  today // today?', 'Today is '),
+(20, 'Script_Processed', 'Tell me the recent news', 'Tell me the recent news // news //news', 'News is: '),
+(21, 'Script_Processed', 'What is the weather like now?', 'What is the weather like now? // What about weather? // What is the weather like now in EU? // forecast //rain // warm ', 'THIS ANSWERS ARE NOT USED, ANSWER IS CALCULATED FROM OPEN WEATHER API. THOUGH YOU CAN USE THESE ANSWERS, LIKE WE DO IN time/date(1d;18,19) // It is great weather today // It is windy today // it is raining // I like the weather we have today // It is sunny // It is stormy'),
+(22, 'Script_Processed', 'Give the tomorrow''s weather forecast', 'Give the tomorrow''s weather forecast //  tomorrow''s weather forecast', 'THIS ANSWERS ARE NOT USED, ANSWER IS CALCULATED FROM OPEN WEATHER API. THOUGH YOU CAN USE THESE ANSWERS, LIKE WE DO IN time/date(1d;18,19)  //');
 
 -- --------------------------------------------------------
 
