@@ -183,7 +183,7 @@ class BotController extends Controller
 		
 		    if($myModel->isSearchAnswerExists_inSQL()){ //if found keys [b_key] in SQL that matches user's message. Search for key words presence in SQL Dn [b_key], if exist return TRUE
 			   
-				if($myModel->found[0][b_category] == 'Script_Processed'){ //if found category has category 'Script_Processed', meaning it Gets calculated answer, like response from Weather, News API, current time/date, etc
+				if($myModel->found[0]['b_category'] == 'Script_Processed'){ //if found category has category 'Script_Processed', meaning it Gets calculated answer, like response from Weather, News API, current time/date, etc
 
 					 $answerX = $myModel->giveComputeredAnswer($myModel->found); // Gets calculated answer(), i.e response from Weather, News API, current time/date
 				} else {

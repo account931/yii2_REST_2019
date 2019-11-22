@@ -155,19 +155,19 @@ class BotModel extends \yii\db\ActiveRecord
 				 //Procees specific commands like weather, time, etc
 				 
 				 //if it is time question
-				 if($found[0][b_id] == 18){ 
+				 if($found[0]['b_id'] == 18){ 
 				      date_default_timezone_set('Europe/Kiev');
 				      $answer = "it is  " . date('h:i:s a', time());
 					  
 			     //if it is day question
-			     } else if($found[0][b_id] == 19){ 
+			     } else if($found[0]['b_id'] == 19){ 
 				      date_default_timezone_set('Europe/Kiev');
 				      $answer = "Today " .   date('j-M-D-Y');
 					  
 				 
 				 
 				 //if it is Open weather Api question for TODAY weather
-				 } else if($found[0][b_id] == 21){ 
+				 } else if($found[0]['b_id'] == 21){ 
 				     $weather_URL = "http://api.openweathermap.org/data/2.5/forecast/daily?q=Kyiv&mode=json&units=metric&cnt=7&appid=" . WEATHER_API_TOKEN;
 					 
 					 /*if (!$json = file_get_contents($weather_URL)) { //reassigned to cURL
@@ -185,7 +185,7 @@ class BotModel extends \yii\db\ActiveRecord
 				
 				
 				//if it is Open weather Api question for TOMORROW weather
-				 } else if($found[0][b_id] == 22){ 
+				 } else if($found[0]['b_id'] == 22){ 
 				     $weather_URL = "http://api.openweathermap.org/data/2.5/forecast/daily?q=Kyiv&mode=json&units=metric&cnt=7&appid=" . WEATHER_API_TOKEN;
 					 
 					 /*if (!$json = file_get_contents($weather_URL)) { //reassigned to cURL
@@ -205,7 +205,7 @@ class BotModel extends \yii\db\ActiveRecord
 				
 				
 				//if it is News question  https://newsapi.org/v2/top-headlines?country=ua&apiKey=
-				} else if($found[0][b_id] == 20){ 
+				} else if($found[0]['b_id'] == 20){ 
                       $news_URL = "http://newsapi.org/v2/top-headlines?country=ua&apiKey=" . NEWS_API_ORG;
 					  
 					  /*if(!$json2 = file_get_contents($news_URL)) { //reassigned to cURL
@@ -217,7 +217,7 @@ class BotModel extends \yii\db\ActiveRecord
 					 
 					 $random = rand(0, $res2['totalResults']-1 ); //to get a 1 random news from all available
 				     $answer = "<br>" . $found[0]['b_reply'] . $res2['totalResults'] . " news found. " .  //found 30 news
-					           "<br>" . $res2['articles'][$random]['title']; //getting 1 random news from all available
+					           "<br>Here is a random news:</br>" . $res2['articles'][$random]['title']; //getting 1 random news from all available
 				}
 				
 				return $answer;
