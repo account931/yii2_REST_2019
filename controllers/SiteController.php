@@ -212,6 +212,13 @@ class SiteController extends Controller
 // **                                                                                  **
 	 public function actionAddAdmin() {
 		 
+		 Yii::$app->user->can('adminX')? $t = 'You already have adminX Rbac role' : $t = 'You don"t have adminX ';
+	
+		 
+		 //if(!Yii::$app->user->can('adminX')){
+			throw new \yii\web\NotFoundHttpException("Sorry, this feature is now disabled. Please refer to SiteController/actionAddAdmin().\n Notice: {$t}");
+		//}
+		 
 	     $text = "";
 	     $text .= "<h3>Currently, any logged user who visits this page, will obtain the access Rbac role {adminX}</h3>";
 		 echo "<h3>Currently, any logged user who visits this page, will obtain the access Rbac role {adminX}</h3>";

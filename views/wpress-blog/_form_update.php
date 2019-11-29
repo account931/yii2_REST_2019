@@ -23,7 +23,7 @@ use yii\helpers\ArrayHelper;
      //echo $form->field($model, 'wpBlog_created_at')->textInput(); 
 
      //echo $form->field($model, 'wpBlog_category')->textInput(); 
-	    //echo $form->field($model, 'wpBlog_category')->dropDownList(ArrayHelper::map($allCategories,'wpCategory_id','wpCategory_name'), ['prompt' => 'Select category']); 
+     echo $form->field($model, 'wpBlog_category')->dropDownList(ArrayHelper::map($allCategories,'wpCategory_id','wpCategory_name'), ['prompt' => 'Select category']); 
 
      echo $form->field($model, 'wpBlog_status')->dropDownList([ '0'=>'Not_Published', '1'=>'Published', ], ['prompt' => '',  'options'=>['1'=>['Selected'=>true]]] ) ?>
 

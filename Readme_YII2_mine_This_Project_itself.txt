@@ -227,7 +227,24 @@ https://www.yiiframework.com/doc/guide/2.0/ru/tutorial-core-validators
  # Main action is {BotController/function actionBotChat()} that sends ajax requests with your text to {BotController/function actionAjaxReply()}
  
  #Php Array(b_autocomplete) for js autocomplete is passed to from PHP in views/bot/bot-view.php. PHP URL for JS ajax is passed there too.
-  
+  --------------------------------------------------------------
+  #uses DB table {bot}. 
+  #Answers are given via ajax.
+  #DB table field category {b_category} is used for questions which answers are calculated in BotController/actionAjaxReply => $myModel->giveComputeredAnswer($myModel->found) & not taken from DB field {b_reply}
+ (though if wish u can still use this field as a part sentence for answer).
+  Other categories than {Script_Processed take answer from DB table field {b_reply}.
+
+  #When u click "Say" php makes sql request to DB with your input, if found any row, it checks it if it's category {Script_Processed}. In not takes answer from DB table field {b_reply}.
+  If yes, calculate the answer, like gets time, requests weathet, news API.
+
+  #DB table Field {b_autocomplete} is for <input> js autocomplete. Autocomplete sentences are stored in DB, php gets all values and pass them to web/js/bot/autocomplete.js
+
+  #DB table field {b_key} is used to store keys to find row with answers. Each value must be separated by "//", which is a limiter to split it to array.
+
+  #DB table field {b_reply} is used to store answers found by keys (if categories is other than {Script_Processed})
+  Each value must be separated by "//", which is a limiter to split it to array.
+
+  #Message scroll is done with js scroll_toBottom() 
   
   
   

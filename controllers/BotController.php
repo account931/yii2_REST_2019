@@ -29,12 +29,19 @@ class BotController extends Controller
         ];
     }
 
+	
+	
+	
     /**
      * Lists all BotModel models.
      * @return mixed
      */
     public function actionIndex()
     {
+		if(!Yii::$app->user->can('adminX')){
+			throw new \yii\web\NotFoundHttpException("Sorry, you don't have adminX RBAC");
+		}
+		
         $dataProvider = new ActiveDataProvider([
             'query' => BotModel::find(),
         ]);
@@ -44,6 +51,10 @@ class BotController extends Controller
         ]);
     }
 
+	
+	
+	
+	
     /**
      * Displays a single BotModel model.
      * @param integer $id

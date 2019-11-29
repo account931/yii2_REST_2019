@@ -74,11 +74,14 @@ $(document).ready(function(){
             success: function(data) {
                 // do something;
                 //$(".all-6-month").stop().fadeOut("slow",function(){ $(this).html("OK")}).fadeIn(2000);
+				console.log(data);
 				getAjaxAnswer_andBuild_6_month(data);
 				$(".loader").hide(3000); //hide the loader
+				
             },  //end success
 			error: function (error) {
 				$(".all-6-month").stop().fadeOut("slow",function(){ $(this).html("Failed")}).fadeIn(2000);
+				console.log(data);
             }	
         });
                                        

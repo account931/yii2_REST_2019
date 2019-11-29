@@ -160,6 +160,9 @@ class WpressBlogController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+		
+		//getting all categories for dropdown list for update form
+		$allCategories = WpressCategory::find()->orderBy ('wpCategory_id DESC')->all(); 
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->wpBlog_id]);
@@ -167,9 +170,13 @@ class WpressBlogController extends Controller
 
         return $this->render('update', [
             'model' => $model,
+			'allCategories' => $allCategories
         ]);
     }
 
+	
+	
+	
     /**
      * Deletes an existing WpressBlogPost model.
      * If deletion is successful, the browser will be redirected to the 'index' page.

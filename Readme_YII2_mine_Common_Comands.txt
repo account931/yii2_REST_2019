@@ -828,11 +828,13 @@ To hide {/web/} from URL & prevent basic folder from listing (instead of putting
  
  ===========================================
 27. Dropdown List in </form>
+dropdown
 (see details at =>https://github.com/account931/yii2_REST_and_Rbac_2019/blob/master/controllers/WpressBlogController.php -> function actionCreate())
  #gets all items from DB => $Categories = WpressCategory::find()->orderBy ('wpCategory_id DESC')->all(); 
  #in view convert object $Categories to array with ArrayHelper::map => 
      use yii\helpers\ArrayHelper; 
-	 echo $form->field($model, 'wpBlog_status')->dropDownList([ '0'=>'Not_Published', '1'=>'Published', ], ['prompt' => '',  'options'=>['1'=>['Selected'=>true]]] )
+	 echo $form->field($model, 'wpBlog_category')->dropDownList(ArrayHelper::map($allCategories,'wpCategory_id','wpCategory_name'), ['prompt' => 'Select category']);  //display <select> dropdown of all categories
+	 echo $form->field($model, 'wpBlog_status')->dropDownList([ '0'=>'Not_Published', '1'=>'Published', ], ['prompt' => '',  'options'=>['1'=>['Selected'=>true]]] );  //display <select> dropdown of all {Published/Not Published} instead of SQL DB {0,1}
  
  
  
@@ -987,7 +989,7 @@ if($_SERVER['REMOTE_ADDR'] == '127.0.0.1') {
 
 #dropdown <select><option> with URL links => https://github.com/account931/portal_v2/blob/master/controllers/SiteController.php  -> function actionPortal()  + /js/autocomplete.js
 #inner Join => https://github.com/account931/iShop_Yii2_Gitted_from_LocalHost/blob/master/basic/controllers/ProductsController.php   ->  function actionPlaced()
-#GridView admin => https://github.com/account931/yii2_REST_and_Rbac_2019/blob/master/controllers/WpressBlogController.php   -> function actionIndex()
+#gridview admin => https://github.com/account931/yii2_REST_and_Rbac_2019/blob/master/controllers/WpressBlogController.php   -> function actionIndex() with anonymous functions and hasOne relations in view
 
 #passing PHP object variable to javascript -> 
         use yii\helpers\Json; 
@@ -1009,28 +1011,36 @@ if($_SERVER['REMOTE_ADDR'] == '127.0.0.1') {
 #Use CLI in full screen =>   mode 800
 #Check php version => php -v
 #Difference in foreach (array vs object)=> foreach($_OBJECT as $b){echo $b->propertyName} vs foreach($_ARRAY as $b=>$v){echo $b . "" .$v} 
-#Current URL => $_SERVER['HTTP_HOST']
+#get current URL => $_SERVER['HTTP_HOST']
 
 #Time => date_default_timezone_set('Europe/Kiev'); date('m/d/Y h:i:s a', time()); // 11/21/2019 03:51:50 pm
 #Today date => date('j-M-D-Y'); //21-Nov-Thu-2019
 #Unix to normal => date('d M Y H:i:s Z', $Unix) ;
 
-# IOS, safari JS click fix => add empty {onClick}  => <span onClick="" id="someID"></span>   OR => cursor: pointer;
-# JS alert object => alert(JSON.stringify(aucompleteX, null, 4));
-#create Enum SQL => choose enum + in Length/Values column put there : '0' ,'1'
 
+#create Enum SQL => choose enum + in Length/Values column put there : '0' ,'1'
 # cURL library => https://github.com/account931/MapBox_Store_Location_2019/blob/master/Classes/AddMarker.php
 
+#function return mulitple values => https://github.com/account931/yii2_REST_and_Rbac_2019/blob/master/models/BookingCph.php
+    function some(){return array($a, $b);}  $r = some(); $value1 = $r[0]; $value2 = $r[1];  
+    function some(){return array('a'=> $a, 'b'=> $b);}  $r = some(); $value1 = $r['a']; $value2 = $r['b'];
+	 
+JS=>
+   # IOS, safari JS click fix => add empty {onClick}  => <span onClick="" id="someID"></span>   OR => cursor: pointer;
+   # JS alert object => alert(JSON.stringify(aucompleteX, null, 4));
+   
+
+CSS=>
+   #Bootstrap grid => <div class="col-lg-3 col-md-3 col-sm-3">
 
 
-
-
-
+   
+   
 ======================================================
 98.3.V.A example references (CSS,JS,Php)
 #Pure CSS/JS Loader => https://github.com/account931/regist_login_DAO_2019/blob/master/README.md
 #React Bakcground Loader =>  https://github.com/account931/myWaze_GeoCode_Modules_CommonJS-18/blob/master/REDUX_REACT_REDUX/README_MY_REDUX.txt
-#Bootstrap grid => <div class="col-lg-3 col-md-3 col-sm-3">
+
 
 
 

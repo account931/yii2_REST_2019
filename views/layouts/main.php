@@ -68,6 +68,7 @@ $menuItems = [
 			['label' => 'Rest Module (minor, no use)', 'url' => ['/admin/default/index']], //separate module with it's own controller
 			['label' => 'MultiLanguage', 'url' => ['/multilanguage/index']], //page with different language translation
 			['label' => 'Booking CPH', 'url' => ['/booking-cph/index']], //BookingCphController
+			['label' => 'Booking CPH_V.2 Hotel', 'url' => ['/booking-cph-v2-hotel/index']], //Booking CPH version 2 Hotel
 			['label' => 'Change password <br>(edit password, when logged)', 'url' => ['/site/change-password']], //edit password
 			['label' => 'HasMany::relation', 'url' => ['/site/has-many']],
 			['label' => 'Reset Password <br>(when u forget your password & cant login,<br> used at login page only)', 'url' => ['/password-reset/request-password-reset']],
