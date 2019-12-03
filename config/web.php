@@ -187,7 +187,22 @@ $config = [
 	
 	
     'params' => $params,
-];
+	
+	//create return Url to be redirected to prev page after login. NOT WORKING!!!!
+    /*'on afterAction' => function (yii\base\ActionEvent $e) {
+        if($e->action->id !== 'login' && $e->action->controller->id !== 'site')
+            Yii::$app->user->setReturnUrl(Yii::$app->request->url);
+    },*/
+	//create return Url
+	
+	
+]; //end config
+
+
+
+
+
+
 
 if (YII_ENV_DEV) {
     // configuration adjustments for 'dev' environment

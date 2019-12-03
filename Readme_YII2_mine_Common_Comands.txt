@@ -86,6 +86,27 @@ CLI:
 How to Add your migration(for instance in Basic, where no migration is avialble from start)
 #yii migrate/create create_user_table or (php yii migrate/create create_user_table)
 #yii migrate  ->(or {php yii migrate}), just command without migrate file name from {console/migration} to apply all migrations.
+#to apply 1 migration only=> php yii migrate/to m150101_185401_create_news_table
+
+#to create table migrations with colums at once using CLI, specify them via --fields. => yii migrate/create create_post_table --fields=title:string,body:text
+#view last applied migrations=> yii migrate/history all
+
+#to add columns to migration (in text editor) => see more at https://github.com/account931/yii2_REST_and_Rbac_2019/tree/master/migrations/m191203_114306_create_testttX_table.php
+   $this->createTable('testtt', [
+        't_id' => $this->primaryKey(),
+	    't_name' => $this->string()->notNull()->unique(),
+		't_desc' => $this->smallInteger()->notNull()->defaultValue(10),
+		'created_at' => $this->integer()->notNull(),	
+        ]);
+   
+#to add values to migration (in text editor) => 
+  $this->batchInsert('tableName', ['col_name_1', 'col_name_2'], [
+    ['category1', 'aaa'], 
+    ['category2', 'bbb'], 
+    ['category3', 'ccc']
+]);
+
+# to cancel last migration => yii migrate/down
 
 Error "Could not find driver PDOException in yii2", to fix go to openserver/modules/php/version/php.ini-> Line 886, decomment (remove{;}){pdo_mysql} -> ;extension=php_pdo_mysql.dll
 
@@ -1028,10 +1049,17 @@ if($_SERVER['REMOTE_ADDR'] == '127.0.0.1') {
 JS=>
    # IOS, safari JS click fix => add empty {onClick}  => <span onClick="" id="someID"></span>   OR => cursor: pointer;
    # JS alert object => alert(JSON.stringify(aucompleteX, null, 4));
+   # animate=>  $(".all-6-month").stop().fadeOut("slow",function(){ $(this).html(finalText)}).fadeIn(2000);
+   # click for for newly generated => $(document).on("click", '.subfolder', function() {      //for newly generated 
+   #get the clicked id=> //alert(this.id); // this.attr("id");   vs  var b = $(this);
+   #to work on mobile only  => if(screen.width <= 640){ 
    
 
 CSS=>
    #Bootstrap grid => <div class="col-lg-3 col-md-3 col-sm-3">
+   # css animation smoothly=> transition: 1.25s; -webkit-animation: fadeIn 1s;animation: fadeIn 1s;
+   # media query => @media screen and (max-width: 480px) { }
+ 
 
 
    
@@ -1039,6 +1067,7 @@ CSS=>
 ======================================================
 98.3.V.A example references (CSS,JS,Php)
 #Pure CSS/JS Loader => https://github.com/account931/regist_login_DAO_2019/blob/master/README.md
+                    => https://github.com/account931/yii2_REST_and_Rbac_2019/blob/master/controllers/WpressBlogController.php (use loader_Wpress.css + wpress.js (loader section))
 #React Bakcground Loader =>  https://github.com/account931/myWaze_GeoCode_Modules_CommonJS-18/blob/master/REDUX_REACT_REDUX/README_MY_REDUX.txt
 
 

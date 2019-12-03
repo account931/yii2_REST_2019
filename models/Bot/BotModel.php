@@ -116,11 +116,33 @@ class BotModel extends \yii\db\ActiveRecord
 					} else {
 					    Yii::$app->session->set('prevMessage', $_POST['serverMessageX']);
 					}*/
+					
+					    $cookies = Yii::$app->request->cookies;//getting all Cookies from collection
 				
-		                $arr = explode("//",$found[0]['b_reply']);
+		                $arr = explode("//",$found[0]['b_reply']); //explodes SQL DB table field {b_reply} to array
 		                $countX = count($arr);
-		                $random = rand(0,$countX - 1 );
-		                $answer = $arr[$random];
+		                $random = rand(0,$countX - 1 ); //generates random int within the range
+						
+						//If user question is the sane as prev, make sure not to display the same random answer
+						/*if($cookies->has('prevMessageID')){
+							if($found[0]['b_id'] == $cookies->getValue('prevRandomInt') && $random == $cookies->$cookies->getValue('prevRandomInt')){
+								$random = ($random == count($arr)) ? $random - 1 : $random + 1;
+								$answer = 'exists';
+							} else {
+						
+		                    $answer = 'No'; //$arr[$random];
+						   }
+						}*/
+							
+						 $answer = $arr[$random];
+						
+						//sets this answer ID & randon int to session variables
+						$cookies = Yii::$app->response->cookies;
+						$cookies->add(new \yii\web\Cookie(['name' => 'prevMessageID', 'value' => $found[0]['b_id'], 'expire' => time() + 86400 * 365, ] )); //saves Cookie variant 
+                        $cookies->add(new \yii\web\Cookie(['name' => 'prevRandomInt', 'value' => $random,           'expire' => time() + 86400 * 365, ] )); //saves Cookie variant 
+
+					   
+						
 					
 				//}
 
@@ -204,7 +226,7 @@ class BotModel extends \yii\db\ActiveRecord
 				
 				
 				
-				//if it is News question  https://newsapi.org/v2/top-headlines?country=ua&apiKey=
+				//if it is News API question  https://newsapi.org/v2/top-headlines?country=ua&apiKey=
 				} else if($found[0]['b_id'] == 20){ 
                       $news_URL = "http://newsapi.org/v2/top-headlines?country=ua&apiKey=" . NEWS_API_ORG;
 					  

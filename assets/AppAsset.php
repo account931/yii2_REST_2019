@@ -34,7 +34,7 @@ class AppAsset extends AssetBundle
 	
     public $js = [
 	    //'js/booking_cph.js', //booking CPH JS -> moved to a separate assert CPH_AssertOnly.php
-		  'js/wpress.js',  //Wpress JS
+		  //'js/wpress.js',  //Wpress JS
 		  //'js/jquery-easing_plugin/jquery.easing.min.js' //
 		
     ];

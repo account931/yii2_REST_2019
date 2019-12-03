@@ -1,4 +1,5 @@
 <?php
+//Assets for CPH_2_Booking_Hotel (with multiple rooms)
 /**
  * @link http://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
@@ -15,7 +16,7 @@ use yii\web\AssetBundle;
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @since 2.0
  */
-class Wpress_AssertOnly extends AssetBundle
+class CPH_2_Hotel_AssertOnly extends AssetBundle
 {
     public $basePath = '@webroot';
     public $baseUrl = '@web';
@@ -23,14 +24,14 @@ class Wpress_AssertOnly extends AssetBundle
     public $css = [
         //'css/site.css',
 		//'css/rbac.css', //rbac css
-		'css/loader_Wpress.css', //Wpress css
-		//'https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.css', //Sweet Alert CSS
+		'css/BookingCPH_2_Hotel/bookingcph_2.css', //booking_2 CPH css
+		'css/BookingCPH_2_Hotel/loader_cph_2.css', //booking_2 CPH Loader css
+		'https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.css', //Sweet Alert CSS
     ];
 	
     public $js = [
-	      'js/wpress.js',  //Wpress JS
-	    //'js/booking_cph.js', //booking CPH JS
-		//'https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js', //Sweet Alert JS
+	    'js/BookingCPH_2_Hotel/booking_cph_2.js', //booking CPH JS
+		'https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js', //Sweet Alert JS
 		//'https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert-dev.min.js',
     ];
 	

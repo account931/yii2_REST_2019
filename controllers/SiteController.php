@@ -88,6 +88,19 @@ class SiteController extends Controller
 	
 	
 	
+/*
+  public function beforeAction($action)
+  {
+	
+    Yii::$app->session['beforelogin'] = Yii::app()->request->pathInfo;`
+    return parent::beforeAction($action);
+  }
+	
+*/
+	
+	
+	
+	
 	
     /**
      * Displays homepage.
@@ -111,10 +124,17 @@ class SiteController extends Controller
         if (!Yii::$app->user->isGuest) {
             return $this->goHome();
         }
+		
+		
 
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
+			//return $this->goBack((!empty(Yii::$app->request->referrer) ? Yii::$app->request->referrer : null));
+            //return $this->goBack();
+			return $this->redirect(Yii::$app->request->referrer);
+			/*if(isset(Yii::app()->session['beforelogin'])) {
+               $this->redirect(Yii::app()->session['beforelogin']);
+            }*/
         }
 
         $model->password = '';
