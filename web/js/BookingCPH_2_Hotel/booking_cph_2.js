@@ -1,3 +1,4 @@
+//Booking CPH-2 Hotel (created based on BookingCPH but it is a version with multiple rooms)
 (function(){ //START IIFE (Immediately Invoked Function Expression)
 $(document).ready(function(){
 	var clickedThis; //global var with $this ($this of clicked on a single month among 6 month )
@@ -87,7 +88,7 @@ $(document).ready(function(){
 	// **************************************************************************************
     // **************************************************************************************
     //                                                                                     ** 
-	function get_6_month(id){
+	function get_6_month(idX){ 
 		$(".loader").show(200); //show the loader
 		
 		//getting the path to current folder with JS to form url for ajax, i.e /yii2_REST_and_Rbac_2019/yii-basic-app-2.0.15/basic/web/booking-cph/ajax_get_6_month
@@ -103,7 +104,7 @@ $(document).ready(function(){
 			dataType: 'JSON', // without this it returned string(that can be alerted), now it returns object
 			//passing the city
             data: { 
-			    //serverCity:window.cityX
+			    serverRoomId: idX
 			},
             success: function(data) {
                 // do something;
@@ -133,7 +134,7 @@ $(document).ready(function(){
 	
 	
 	
-	//Function to use in ajax SUCCESS section in function get_6_month(){. It builds 6 month view
+	//Function to use in ajax SUCCESS section in function get_6_month(){. It builds 6 month view with badges
 	// **************************************************************************************
     // **************************************************************************************
     //                                                                                     ** 
@@ -275,6 +276,7 @@ $(document).ready(function(){
 				   $("#rbacAdd").show(999); //open the form, change it from hidden to open
 				   scrollResults("#rbacAdd", ".parent().parent()."); //advanced scroll, scrolls to div with form //arg(DivID, levels to go up from DivID)
 				   $("#uniqueIDFrom").val(dayZ); //set clicked in calendar day to form_input_1  
+				   $("#uniqueIDTo").val(dayZ); //set clicked in calendar day to form_input_2 (just to help navigation)
 				   $("#uniqueIDTo").focus(); //set focus to input_2
 				   //$("#uniqueIDFrom").datepicker("setDate", new Date(2018, 8, 1));
 				   

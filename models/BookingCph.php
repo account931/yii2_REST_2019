@@ -318,7 +318,7 @@ class BookingCph extends \yii\db\ActiveRecord
 	 
 	 
 	 
-	 
+
  // **************************************************************************************
  // **************************************************************************************
  //                                                                                     **
@@ -326,23 +326,28 @@ class BookingCph extends \yii\db\ActiveRecord
 		 //var with year, used for creating Unix for next years, must be declared out of for loop, to save its value for further iteration, in case if($may == 1 )
 		 $MonthList= array("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"); //General array for all click actions
 		 
+		 static $y = 0; //Mega Fix, cast static type 
+		 
+		 
 		 $yearX = date("Y"); //gets the current year, i.e 2019
 	     $may =  array_search($PrevMonth , $MonthList); //search the index of $PrevMonth  in array, i.e index of Jul = 6
 		 $may = $may + 1;
 			
-		 //if current month in loop is 1 (i.e January), for this & next months we use the next year. As it is loop, January here could NOT BE EVER here the current month, if($may == 1 ) it can only be the next or next+1, etc, so the current is always the past year & January is the next
-			
+		 //if current month in loop is 1 (i.e January), for this & next months we use the next year. As it is loop, January here could NOT BE EVER here the current month, if($may == 1 ) it can only be the next or next+1, etc, so the current is always the past year & January is the next	
 		 if($may == 1 ){
+			 $y++;
 		     //$yearX must be declared out of for loop, to save its value for further iteration, in case if($may == 1 )
-		     $yearX++ ; //was = (int)date("Y") + 1; Fix for unlimited future years// gets the current year & adds +1 to get the next year, ie. 2019 + 1 = 2020
+		    // $yearX++ ; //was = (int)date("Y") + 1; Fix for unlimited future years// gets the current year & adds +1 to get the next year, ie. 2019 + 1 = 2020
 			 //$yearX = (string)$yearX;
 			
-		}
+		 }
+		 
+		 $yearX = $yearX + $y; //encrease year
 		 return array('may'=> $may, 'yearX'=> $yearX); //
 	}
  
  
- 
+   
  
  // **************************************************************************************
  // **************************************************************************************

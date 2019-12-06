@@ -241,6 +241,7 @@ $(document).ready(function(){
 				   $("#rbacAdd").show(999); //open the form, change it from hidden to open
 				   scrollResults("#rbacAdd", ".parent().parent()."); //advanced scroll, scrolls to div with form //arg(DivID, levels to go up from DivID)
 				   $("#uniqueIDFrom").val(dayZ); //set clicked in calendar day to form_input_1  
+				   $("#uniqueIDTo").val(dayZ); //set clicked in calendar day to form_input_2 (just to help navigation)
 				   $("#uniqueIDTo").focus(); //set focus to input_2
 				   //$("#uniqueIDFrom").datepicker("setDate", new Date(2018, 8, 1));
 				   

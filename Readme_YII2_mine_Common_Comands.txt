@@ -564,7 +564,7 @@ How to:
  
 =====================================================
 15.Multilanguages
-(see live example at MultilanguageController/public function actionIndex())
+(see live example at MultilanguageController/public function actionIndex()=> https://github.com/account931/yii2_REST_and_Rbac_2019/blob/master/views/multilanguage/index.php)
 NB: setting is reset to null on reload, u should save selected language to Session or Cookie)
 When using Cookie keep in mind MEGA FIX : {Yii::$app->request->cookies} is for READ ONLY, to add a new cookie use {Yii::$app->response->cookies->}
 How to add multilanguages:
@@ -616,7 +616,7 @@ How to add multilanguages:
 	  $session->set('language', $someValue);
  
  
- 
+ 6. Use => echo \Yii::t('app', 'This is a string to translate!');
  
  
  
@@ -1053,6 +1053,7 @@ JS=>
    # click for for newly generated => $(document).on("click", '.subfolder', function() {      //for newly generated 
    #get the clicked id=> //alert(this.id); // this.attr("id");   vs  var b = $(this);
    #to work on mobile only  => if(screen.width <= 640){ 
+   #data-attribute =>  <div data-myUnix=''> =>  this.getAttribute("data-myUnix");
    
 
 CSS=>

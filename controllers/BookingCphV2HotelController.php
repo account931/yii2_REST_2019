@@ -1,5 +1,5 @@
 <?php
-//Controller for CPH_2_Booking_Hotel (with multiple rooms)
+//Controller for CPH_2_Booking_Hotel (created based on BookingCPH but it is a version with multiple rooms)
 namespace app\controllers;
 
 use Yii;
@@ -207,8 +207,8 @@ class BookingCphV2HotelController extends Controller
        $array_All_sqlData = array();//will store all sql results
 	   $array_All_CountDays = array();//will store counts of booked days for every month (for badges)
 	   
-	   
-	   for ($i = 0; $i < 9; $i++){
+	   $nextMonthQuantity = 9;
+	   for ($i = 0; $i < $nextMonthQuantity; $i++){
 		   
 		   //gets next 9 months list & adds it to array $array_All_Month, i.e $array_All_Month = ["Nov 2019", "Dec 2019", etc] 
 		   $thisMonth = $model->get_All_Next_Months_List($i);  //this methods return=> array(Jul 2019, Jul) //pass {$i} as arg is a must
@@ -221,7 +221,7 @@ class BookingCphV2HotelController extends Controller
 		   array_push($array_All_Unix, $unix['array_tempo']); //will store all Unix start & stop time for all 6 month, will be in format [[CurrentUnixStart, CurrentUnixEnd], [start-1, end-1], [start-2, end-2]]
 		   
 		   //gets next 9 months booked dates info & adds them to array $array_All_sqlData, i.e $array_All_sqlData = [[{book_id: 55, booked_by_user: "Dima", book_from: "2019-12-27", book_to: "2019-12-28"], [], []];
-		   $sqlResult = $model->findBooked_Dates_In_Month($i, $unix['first1'], $unix['last1']); //Find SQL data for a specific NEXT month//$unix['first1']=> gets the first day of the current month, i.e "2019-05-01" //this methods returns=> ${'monthData'.$i}
+		   $sqlResult = $model->findBooked_Dates_In_Month($i, $unix['first1'], $unix['last1'], $_POST['serverRoomId']); //Find SQL data for a specific NEXT month//$unix['first1']=> gets the first day of the current month, i.e "2019-05-01" //this methods returns=> ${'monthData'.$i}
 		   array_push($array_All_sqlData, $sqlResult);//Find SQL data for a specific NEXT month (+ this current month in first iteration) (from 6-months range) one by one in a loop
 		   
 		   //count the quantity of booked days for every next 9 months & adds them to array $array_All_CountDays, i.e $array_All_CountDays = [0,2,4,0]
@@ -390,7 +390,7 @@ class BookingCphV2HotelController extends Controller
 		 
 		 //Var with general info, ie "In June u have 2 guests. Overal amount of days are 22."
 		 $generalBookingInfo = "<br><h3>In <b>" . date("F", $start).  //i.e June*
-		                       "</b> the amount of guests you have: <i class='fa fa-calendar-check-o'></i><b>&nbsp;" . count($thisMonthData) . "</b>. <br><br>" .
+		                       "</b> the amount of booking ranges you have: <i class='fa fa-calendar-check-o'></i><b>&nbsp;" . count($thisMonthData) . "</b>. <br><br>" .
 		                       "Overall amount of booked days are: <i class='fa fa-area-chart'></i>" . $overallBookedDays;
 							   
 		 $generalBookingInfo.= "<hr><p><b>Guest list:</b></p>" . $guestList;

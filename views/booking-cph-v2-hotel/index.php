@@ -1,5 +1,5 @@
 <?php
-//View for  CPH_2_Booking_Hotel (with multiple rooms)
+//View for  CPH_2_Booking_Hotel (created based on BookingCPH but it is a version with multiple rooms)
 //USES ajax, ALL JS IS IN -> web/js/BookingCPH_2_Hotel/booking_cph_2.js!!!!
 
 use yii\helpers\Html;
@@ -75,7 +75,7 @@ JS;
 	<!----------------------- START all Rooms  ----------------------------->
 	 <div class="col-sm-12 col-xs-12 rooms">
 	      <?php
-		  $rooms = 12;
+		  $rooms = 6;
 		  for($i = 0; $i < $rooms; $i++){ 
 		                $roomID = $i + 1;
 					    //$name = $dirs[$i]; //returns  images/corps_many_folder/Spring_19
