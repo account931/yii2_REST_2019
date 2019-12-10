@@ -33,6 +33,8 @@ $(document).ready(function(){
 	 $(document).on("click", '.subfolder', function(event) {      //for newly generated 
 	     
 		  event.preventDefault(); //not to react to <a href>
+		  
+		  $(".single-clicked-month").html(''); //hide calendar if was activated prev
 	 
 	      //clickedThis = this; //to use in fucntion that deletes  a booking and needs to renew the view
 		  //alert(this.id); // thisObjZ.attr("id"); //get the clicked id;
@@ -159,6 +161,8 @@ $(document).ready(function(){
 		
 		$(".all-6-month").stop().fadeOut("slow",function(){ $(this).html(finalText)}).fadeIn(2000);
 		
+		$("#roomSelected").html(dataX.selectedRoom); //html() room selected number in form <p> in  index.php
+		$("#roomNumberrr").val(dataX.selectedRoom); //val the form input "Room number" 
 		
 		
 		
@@ -186,6 +190,9 @@ $(document).ready(function(){
 	 function get_1_single_month(thisX){
 		 $(".loader").show(200); //show the loader
 		 
+		 var roomZ = $("#roomSelected").html(); //selected room, take it from <p>
+		 //alert(roomZ);
+		 
 		 var Unix = thisX.getAttribute("data-myUnix");
 		 var firstDayUnix = Unix.split("/")[0];
 		 var lastDayUnix = Unix.split("/")[1];
@@ -206,6 +213,7 @@ $(document).ready(function(){
             data: { 
 			    serverFirstDayUnix:firstDayUnix,
 				serverLastDayUnix: lastDayUnix,
+				serverRoom: roomZ  //selected room
 			},
             success: function(data) {
                 // do something;

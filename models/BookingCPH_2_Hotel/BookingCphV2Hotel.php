@@ -33,7 +33,7 @@ class BookingCphV2Hotel extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['booked_guest', 'book_from', 'book_to',], 'required'], // 'booked_by_user', 'booked_guest_email',  'book_room_id', 'book_from_unix', 'book_to_unix',
+            [['booked_by_user', 'booked_guest', 'book_from', 'book_to',  'booked_guest_email',  'book_room_id', ], 'required'], // 'booked_by_user', 'booked_guest_email',  'book_room_id', 'book_from_unix', 'book_to_unix',
             [['book_from_unix', 'book_to_unix', 'book_room_id'], 'integer'],
             [['booked_by_user', 'booked_guest', 'booked_guest_email'], 'string', 'max' => 77],
             [['book_from', 'book_to'], 'string', 'max' => 33],
@@ -49,14 +49,14 @@ class BookingCphV2Hotel extends \yii\db\ActiveRecord
     {
         return [
             'book_id' => Yii::t('app', 'Book ID'),
-            'booked_by_user' => Yii::t('app', 'Guest name'),
+            'booked_by_user' => Yii::t('app', 'Booked by'),
             'booked_guest' => Yii::t('app', 'Booked Guest'),
-            'booked_guest_email' => Yii::t('app', 'Booked Guest Email'),
+            'booked_guest_email' => Yii::t('app', 'Email'),
             'book_from' => Yii::t('app', 'Book From'),
             'book_to' => Yii::t('app', 'Book To'),
             'book_from_unix' => Yii::t('app', 'Book From Unix'),
             'book_to_unix' => Yii::t('app', 'Book To Unix'),
-            'book_room_id' => Yii::t('app', 'Book Room ID'),
+            'book_room_id' => Yii::t('app', 'Room number'),
         ];
     }
 	
@@ -185,7 +185,7 @@ class BookingCphV2Hotel extends \yii\db\ActiveRecord
 		 //var with year, used for creating Unix for next years, must be declared out of for loop, to save its value for further iteration, in case if($may == 1 )
 		 $MonthList= array("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"); //General array for all click actions
 		 
-		 static $y = 0; //Mega Fix, cast static type 
+		 static $y = 0; //Mega Fix, cast static type to ++ next year. Don't need this fix in old procedure version as $year there is global
 		 
 		 $yearX = date("Y"); //gets the current year, i.e 2019
 	     $may =  array_search($PrevMonth , $MonthList); //search the index of $PrevMonth  in array, i.e index of Jul = 6
@@ -224,7 +224,7 @@ class BookingCphV2Hotel extends \yii\db\ActiveRecord
  
  
  
-  //!!!!!!!! ERROR HERE
+
  // **************************************************************************************
  // **************************************************************************************
  //                                                                                     **
@@ -232,13 +232,18 @@ class BookingCphV2Hotel extends \yii\db\ActiveRecord
     function findBooked_Dates_In_Month($i, $first1, $last1, $postD ){ 
 		//Find SQL data for a specific NEXT month (+ this current month in first iteration) (from 6-months range) one by one in a loop
          //creating array {SmonthData1,SmonthData2,}
-         /*${'monthData'.$i}*/ $m = /*BookingCphV2Hotel*/self::find()-> orderBy ('book_id DESC')  /*->limit('5')*/ 
-	             ->where([ 'booked_by_user' => 'Yii::$app->user->identity->username' , /*'mydb_id'=>1*/ ]) //if this line uncommented, each user has its own private booking(many users-> each user has own private booking appartment, other users cannot book it). Comment this if u want that booking is general, ie many users->one booking appartment(many users can book 1 general appartment)  
-			     ->andWhere( 'book_room_id =:status', [':status' => $postD] ) //room ID $postD //     !!!!!!!! ERROR HERE
-				->andWhere(['between', 'book_from_unix', strtotime($first1), strtotime($last1) ])   /*->andFilterWhere(['like', 'supp_date', $PrevMonth])  ->andFilterWhere(['like', 'supp_date', $PrevYear])*/    
-				->orWhere (['between', 'book_to_unix',   strtotime($first1), strtotime($last1) ])  //(MARGIN MONTHS fix, when booking include margin months, i.e 28 Aug - 3 Sept) //strtotime("12-Aug-2019") returns unixstamp
-				->all(); 
-				
+         /*${'monthData'.$i}*/ $m = /*BookingCphV2Hotel*/self::find() //->  orderBy ('book_id DESC')  /*->limit('5')*/ 
+	            // ->where([ 'booked_by_user' => Yii::$app->user->identity->username , /*'mydb_id'=>1*/ ]) //if this line uncommented, each user has its own private booking(many users-> each user has own private booking appartment, other users cannot book it). Comment this if u want that booking is general, ie many users->one booking appartment(many users can book 1 general appartment)  
+			     ->andWhere( 'book_room_id =:status', [':status' => $postD] ) //room ID $postD //   
+				 ->andWhere([ 'or',
+				             ['between', 'book_from_unix', strtotime($first1), strtotime($last1) ],
+							 ['between', 'book_to_unix',   strtotime($first1), strtotime($last1) ] ])
+				  //->andWhere(['between', 'book_from_unix', strtotime($first1), strtotime($last1) ])   /*->andFilterWhere(['like', 'supp_date', $PrevMonth])  ->andFilterWhere(['like', 'supp_date', $PrevYear])*/    
+			      // ->orWhere (['between', 'book_to_unix',   strtotime($first1), strtotime($last1) ])  //(MARGIN MONTHS fix, when booking include margin months, i.e 28 Aug - 3 Sept) //strtotime("12-Aug-2019") returns unixstamp
+				 ->all(); 
+				 
+				 
+			
 		return $m; //${'monthData'.$i};	  
           //array_push($array_All_sqlData, ${'monthData'.$i}); //adds current month booking data to array $array_All_sqlData
 		  //END DATE for Previous month  ONLY (+ this current month in first iteration)-------------------------------

@@ -1,4 +1,10 @@
 <?php
+//MUST BE FIXED with!!!!! =>
+      /*->andWhere([ 'or',
+				             ['between', 'book_from_unix', strtotime($first1), strtotime($last1) ],
+							 ['between', 'book_to_unix',   strtotime($first1), strtotime($last1) ]
+				 ])*/
+//Booking 1 room
 //More OOP complicated version of BookingCPH, to view the same but in procedure style, view controllers/BookingCphController_RESERVED_PROCEDURE_STYLE
 namespace app\controllers;
 
@@ -101,7 +107,7 @@ class BookingCphController extends Controller
 	 //if ($model->load(\Yii::$app->request->post()) && $model->save()) {
 	 if ($model->load(\Yii::$app->request->post())) {
 		 
-		 //check if selected in form dates are not booked yet(not yet in DB BOOKINGCPH)
+		 //check if selected in form dates are not booked yet(not yet in DB BOOKINGCPH) //MUST FIX HERE!!!!!!!!!!!!!!!!!!!
 		 $checkIf_free = BookingCph::find() 
 		          ->where(['book_user' => Yii::$app->user->identity->username]) //if this line uncommented, each user has its own private booking(many users-> each user has own private booking appartment, other users cannot book it). Comment this if u want that booking is general, ie many users->one booking appartment(many users can book 1 general appartment) 
 		          ->andWhere(['between', 'book_from_unix', strtotime($model->book_from), strtotime($model->book_to) ])  //strtotime("12-Aug-2019") returns unixstamp

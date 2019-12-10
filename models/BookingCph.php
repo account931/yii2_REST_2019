@@ -326,7 +326,7 @@ class BookingCph extends \yii\db\ActiveRecord
 		 //var with year, used for creating Unix for next years, must be declared out of for loop, to save its value for further iteration, in case if($may == 1 )
 		 $MonthList= array("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"); //General array for all click actions
 		 
-		 static $y = 0; //Mega Fix, cast static type 
+		 static $y = 0;  //Mega Fix, cast static type to ++ next year. Don't need this fix in old procedure version as $year there is global
 		 
 		 
 		 $yearX = date("Y"); //gets the current year, i.e 2019

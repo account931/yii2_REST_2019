@@ -28,13 +28,18 @@ $this->params['breadcrumbs'][] = $this->title;
   </div>
 
 
+
   <div class="row" id="all">
     <div class="col-sm-12 col-xs-12 animate-bottom ">
     <h3><?php echo "Today: " . date('j-M-D-Y');  // today day ?></h3>
 	<hr>
  
  
- 
+ <?php
+   //test Url --------
+   echo \yii\helpers\Url::previous() . "<br>";
+   //echo \yii\helpers\Url . "<br>";
+ ?>
  
     
 	
@@ -113,7 +118,7 @@ JS;
            <?php 
 		    
 			echo "<p class='alert-danger'>You are logged as <i class='fa fa-address-book-o' style='font-size:1.3em;'></i> <b>" . Yii::$app->user->identity->username . "</b></p>";
-			
+			echo "<p class='alert-success'>Room <i class='fa fa-hotel' style='font-size:1.3em;'></i> <b><span id='roomSelected'></span></b></p>"; //html()-ed in booking_cph_2.js- > getAjaxAnswer_andBuild_6_month(dataX)
 			
 		
 		    $form = ActiveForm::begin (/*[
@@ -128,16 +133,20 @@ JS;
 
            <?php 
 		    //$model->booked_by_user = Yii::$app->user->identity->username; //set default value for $model->booked_by_user with current username 
+			
             //echo $form->field($model, 'booked_by_user')->textInput(['maxlength' => true, /*'value'=> $d*/ ]); //Current logged user
-            echo $form->field($model, 'booked_guest' /*,  ['enableAjaxValidation' => true]*/)->textInput();
+            echo $form->field($model, 'booked_guest' /*,['enableAjaxValidation' => true]*/  )->textInput();
 		   /* echo $form->field($model, 'book_from'); */ 
 		   /* echo $form->field($model, 'book_to');  */ ?>
 		   <!--<lable> from &nbsp;</lable><input type="date" value="" id="calendarPick_from"/> 
 		   <lable>&nbsp;&nbsp;&nbsp;to </lable><input type="date" value="" id="calendarPick_to"/><hr>-->
 		   
-		   
-		   <?= $form->field($model, 'book_from' ,['inputOptions' => ['id' => 'uniqueIDFrom',],]) ->input('date') ; //FROM datepicker, html5 inject ?>
-		   <?= $form->field($model, 'book_to',   ['inputOptions' => ['id' => 'uniqueIDTo',],])->input('date'); //TO datepicker,html5 inject, can use "color" ?>
+		   <?php
+		   echo $form->field($model, 'book_room_id', ['inputOptions' => ['id' => 'roomNumberrr',],])->textInput(['type' => 'number']);  //val()-ed in booking_cph_2.js-> getAjaxAnswer_andBuild_6_month(dataX)
+		   echo $form->field($model, 'booked_guest_email' )->input('email');
+		   echo $form->field($model, 'book_from' ,['inputOptions' => ['id' => 'uniqueIDFrom',],]) ->input('date') ; //FROM datepicker, html5 inject 
+		   echo $form->field($model, 'book_to',   ['inputOptions' => ['id' => 'uniqueIDTo',],])->input('date'); //TO datepicker,html5 inject, can use "color" 
+		   ?>
 		   	   
            
 		   

@@ -15,6 +15,7 @@ use yii\filters\AccessControl;
  */
 class BookingCphV2HotelController extends Controller
 {
+	public $roomX;
     /**
      * @inheritdoc
      */
@@ -102,16 +103,19 @@ class BookingCphV2HotelController extends Controller
 	
 	
 	
-	
+	//MAIN-CORE action (sends ajaxes)
     public function actionIndex() //uses web/js/booking_cph.js!!!! //Includes adding to SQL from form
  // **************************************************************************************
  // **************************************************************************************
  // **                                                                                  **
  // **                                                                                  **
     {
+	 //global $roomX;
 	 date_default_timezone_set('UTC');  //use ('UTC') to avoid -1 day result    //('europe/kiev')	('UTC')
 		
 	 $model = new BookingCphV2Hotel(); //model of SQL table{booking_cph},  models/BookingCphV2Hotel. Used pass to view to create a form.
+	 
+			 
 	 
 	 //just for test, gets all record from SQL table{booking_cph}
 	 //$all_records = BookingCphV2Hotel::find()->where(['booked_by_user' => Yii::$app->user->identity->username])->all();
@@ -140,9 +144,14 @@ class BookingCphV2HotelController extends Controller
 		 
 		 if(empty($checkIf_free)){ //i.e if these form dates are not in DB, meaning free
 		     if($model->save()){
-                 \Yii::$app->session->setFlash("successX", "Successfully booked with guest <i class='fa fa-address-book-o' style='font-size:1.2em;'></i> <b> $model->booked_guest</b>");
+                 \Yii::$app->session->setFlash("successX", "Successfully booked with guest <i class='fa fa-address-book-o' style='font-size:1.2em;'></i> <b> {$model->booked_guest}</b>. 
+				              <b>Room <i class='fa fa-hotel' style='font-size:1.3em;'></i>:{$model->book_room_id}, from {$model->book_from} to {$model->book_to} </b>. 
+							  Details are sent to your mail <i class='fa fa-envelope-ol' style='font-size:1.3em;'></i>");
+							  
+							  	
 			     return $this->refresh(); //prevent  F5  resending	
              } else {
+				 //var_dump($model->errors);
 				 //will fire if model validation fails
 		        \Yii::$app->session->setFlash('failedX', 'Booking Failed, Please click  <button data-target="#rbacAdd" data-toggle="collapse">&darr;&darr;</button> button to see details. &nbsp;&nbsp;<i class="fa fa-asterisk fa-spin" style="font-size:24px"></i>');
 				//\Yii::$app->session->setFlash('failedX', null);
@@ -172,9 +181,10 @@ class BookingCphV2HotelController extends Controller
             'current3' => $current3, // Act Record only- for Previous month summary
             'current4' => $current4, 
             'current5' => $current5, 
-           //'current6' => $current6, 
-		    'all_records' => $all_records //just for test, gets all record from SQL table{booking_cph}
+            'current6' => $current6, 
 			*/
+		    //'roomX' => $roomX //just for test,
+			
         ]);
     }
     
@@ -197,6 +207,9 @@ class BookingCphV2HotelController extends Controller
     // ** 
     public function actionAjax_get_6_month() 
     {	
+	   global $roomX;
+	   $roomX = $_POST['serverRoomId'];
+	   
        $model = new BookingCphV2Hotel(); 
 	   
 	   date_default_timezone_set('UTC');  //use ('UTC') to avoid -1 day result    //('europe/kiev')	('UTC')
@@ -206,6 +219,8 @@ class BookingCphV2HotelController extends Controller
 	   $array_All_Unix = array();//will store all Unix start & stop time for all 6 month, will be in format [[CurrentStart, Currentend], [start-1, end-1], [start-2, end-2]]
        $array_All_sqlData = array();//will store all sql results
 	   $array_All_CountDays = array();//will store counts of booked days for every month (for badges)
+	   
+	   
 	   
 	   $nextMonthQuantity = 9;
 	   for ($i = 0; $i < $nextMonthQuantity; $i++){
@@ -241,8 +256,8 @@ class BookingCphV2HotelController extends Controller
 			 //'dayofweekFirst' => $r[2]['weekdays']['dayofweek_first'], //.$weekdays[$dayofweek_first], //returns Sun, Mond, Tue.... 	=>empty as NOT USED(???)
 			 'array_All_sqlData' => $array_All_sqlData, //$r[4]['array_All_sqlData'], // $array_All_sqlData,    //will all sql DB booking RESULTS,
 			 'array_All_Unix' => $array_All_Unix, // $r[5]['array_All_Unix'], //$array_All_Unix,     //will store all Unix start & stop time for all 6 month, will be in format [[CurrentStart, Currentend], [start-1, end-1], [start-2, end-2]]
-			 'array_All_CountDays' => $array_All_CountDays //$r[6] //$array_All_CountDays //will store counts of booked days for every month (for badges)
-          				 
+			 'array_All_CountDays' => $array_All_CountDays, //$r[6] //$array_All_CountDays //will store counts of booked days for every month (for badges)
+             'selectedRoom' => $_POST['serverRoomId'] //number of selected room, passing to html(0 it in views/index.php to id='roomSelected' 
           ]; 
 	}
     
@@ -302,13 +317,19 @@ class BookingCphV2HotelController extends Controller
 		 $start = (int)$_POST['serverFirstDayUnix']; //1561939200 - 1st July;  //var is from ajax, 1st day of the month in Unix 
 		 $end = (int)$_POST['serverLastDayUnix']; //1564531200 - 31 July; //var is from ajax, the last day in this month, i.e amount of days in this month, i.e 31
 		 
-		 //SQL ActiveRecord:find all this 1 single month data
+		 //SQL ActiveRecord:find all this 1 single month data  
 		 $thisMonthData = BookingCphV2Hotel::find() ->orderBy ('book_id DESC')  /*->limit('5')*/ 
-		                ->where([ 'booked_by_user' => Yii::$app->user->identity->username, /* 'mydb_id'=>1*/])   //if this line uncommented, each user has its own private booking(many users-> each user has own private booking appartment, other users cannot book it). Comment this if u want that booking is general, ie many users->one booking appartment(many users can book 1 general appartment) 
-						->andWhere(['between', 'book_from_unix', $start, $end  ])   /*->andFilterWhere(['like', 'supp_date', $PrevMonth])  ->andFilterWhere(['like', 'supp_date', $PrevYear])*/    
-						->orWhere (['between', 'book_to_unix',   $start, $end ])  //Start MARGIN MONTHS fix, when booking include margin months, i.e 28 Aug - 3 Sept)**********
+		               // ->where([ 'booked_by_user' => Yii::$app->user->identity->username, /* 'mydb_id'=>1*/])   //if this line uncommented, each user has its own private booking(many users-> each user has own private booking appartment, other users cannot book it). Comment this if u want that booking is general, ie many users->one booking appartment(many users can book 1 general appartment) 
+						->andWhere( 'book_room_id =:status', [':status' => $_POST['serverRoom']] ) //room ID $postD //   
+						//->andWhere(['between', 'book_from_unix', $start, $end  ])   /*->andFilterWhere(['like', 'supp_date', $PrevMonth])  ->andFilterWhere(['like', 'supp_date', $PrevYear])*/    
+						//->orWhere (['between', 'book_to_unix',   $start, $end ])  //Start MARGIN MONTHS fix, when booking include margin months, i.e 28 Aug - 3 Sept)**********
+						 ->andWhere([ 'or',
+				             ['between', 'book_from_unix', $start, $end  ], //$start, $end => is Unix
+							 ['between', 'book_to_unix',   $start, $end ] ])
 						->all(); 
 	     
+		 //var_dump($thisMonthData);
+		 
 		 $text = "<br><br><br><br><div><h2>" .date("F-Y", $start) . "</h2> <p><span class='example-taken'></span> - means booked dates</p></div><br>"; //header: month-year //returns July 2019 + color sample explain
 		 $text.="<table class='table table-bordered'>";
 		 $text.= "<tr><th> Mon </th><th> Tue </th><th> Wed </th><th> Thu </th><th> Fri </th><th> Sat </th><th> Sun </th></tr>";
@@ -359,7 +380,7 @@ class BookingCphV2HotelController extends Controller
 				   array_push/*array_unshift*/($array_allGuests, $a->booked_guest); //adds to array a guest name to display as titile in calnedar on hover //use array_unshift() to add to begging(not end) of array
 		        } 
 				
-			
+			    //!!!!! MUST BE OUT THIS foreach ($thisMonthData, MAKE FOR IT A SEPERATE SQL WITH {->where([ 'booked_by_user' => Yii::$app->user->identity->username,}
 			    //generating guest list var $guestList  for $generalBookingInfo, i.e(guest/start/end/duration/delete)
 			    $singleGuestDuration = (( $a->book_to_unix - $a->book_from_unix)/60/60/24) + 1; //amount of booked days for every guest
 			    $guestList.= "<div class='row border guestList'>" . 
@@ -393,7 +414,7 @@ class BookingCphV2HotelController extends Controller
 		                       "</b> the amount of booking ranges you have: <i class='fa fa-calendar-check-o'></i><b>&nbsp;" . count($thisMonthData) . "</b>. <br><br>" .
 		                       "Overall amount of booked days are: <i class='fa fa-area-chart'></i>" . $overallBookedDays;
 							   
-		 $generalBookingInfo.= "<hr><p><b>Guest list:</b></p>" . $guestList;
+		 $generalBookingInfo.= "<hr><p><b>Guest list (must be fixed with USER SQL select):</b></p>" . $guestList;
 		 
 		 
 		 
@@ -448,6 +469,7 @@ class BookingCphV2HotelController extends Controller
 		 $text.= "</table><hr><hr>" . $generalBookingInfo . "<h4>Booked days array=>" .
 		          implode("-", $array_1_Month_days) ."</h4>"; //implode("-", $array_1_Month_days)-> just to display array with booked days, i.e [4,5,6,18,19]
 		 
+	
 		 return $text;
 		 //return "OK <br>";
 	 }

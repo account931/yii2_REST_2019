@@ -188,11 +188,15 @@ $config = [
 	
     'params' => $params,
 	
-	//create return Url to be redirected to prev page after login. NOT WORKING!!!!
-    /*'on afterAction' => function (yii\base\ActionEvent $e) {
-        if($e->action->id !== 'login' && $e->action->controller->id !== 'site')
-            Yii::$app->user->setReturnUrl(Yii::$app->request->url);
-    },*/
+	//create return Url to be redirected to prev page after login. RUNS after any Action in any Controller //NOT WORKING!!!!
+    'on afterAction' => function (yii\base\ActionEvent $e) {  //afterRender  //afterAction
+	    if( $e->action->id !== 'login' && $e->action->controller->id !== 'site' ){ //|| $e->action->id !== 'error'|| $e->action->id !== 'debug' 
+		   if( $e->action->id !== 'default'){
+            //Yii::$app->user->setReturnUrl(Yii::$app->request->url);
+		   \yii\helpers\Url::remember();    //Url::remember(['product/view', 'id' => 42], 'product');
+		   }
+	   }
+    },
 	//create return Url
 	
 	

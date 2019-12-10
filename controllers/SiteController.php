@@ -130,11 +130,17 @@ class SiteController extends Controller
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
 			//return $this->goBack((!empty(Yii::$app->request->referrer) ? Yii::$app->request->referrer : null));
-            //return $this->goBack();
-			return $this->redirect(Yii::$app->request->referrer);
+            return $this->goBack();
+			//return $this->redirect(Yii::$app->request->referrer);
 			/*if(isset(Yii::app()->session['beforelogin'])) {
                $this->redirect(Yii::app()->session['beforelogin']);
             }*/
+			
+			/*
+			$backUrl = \yii\helpers\Url::previous();
+			echo $backUrl;
+			$this->redirect($backUrl);
+			*/
         }
 
         $model->password = '';

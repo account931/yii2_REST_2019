@@ -934,6 +934,7 @@ dropdown
 98.V.A Yii (ActRec,create URL, redirect, get $_POST[''], etc)
 
 #To get name/id of currently logged user => Yii::$app->user->identity->username; Yii::$app->user->identity->id;
+#To get current user's DB fields info    => echo Yii::$app->user->identity->table_field;
 
 #Create URL link  => $infoLink = Html::a( "more  info", ["/site/about", "period" => "",   ] /* $url = null*/, $options = ["title" => "more  info",] ); 
 #Create URL2 link  =>  use yii\helpers\Url; $url = Url::to(['message/view', 'id' => 100]);
@@ -942,13 +943,26 @@ dropdown
 
 #Redirect =>  return $this->redirect(['support-data/index']);
 
-#To get $_GET['some'] => if (Yii::$app->getRequest()->getQueryParam('traceURL')=="supp_kbase"){}
+#To get $_GET['some'] => if (Yii::$app->getRequest()->getQueryParam('traceURL')=="supp_kbase"){} //Yii::$app->request->get('id');
  
 #To check if user has logged=> if(!Yii::$app->user->isGuest){ 
 
 #Access to components, models, etc in 2 ways: use app\models\User; ==> \app\models\User::find()...       use yii\web\Controller; ==> \yii\web\Controller::EVENT_BEFORE_ACTION.....
 
 #Active Record (in view use simple foreach(){})=> $activeRec = Mydbstart::find() ->orderBy ('mydb_id DESC') ->limit('5') ->where(['mydb_user' => Yii::$app->user->identity->username]) ->all();
+#Active Recored, WHERE statements, var 2=>
+     $model = BookingCphV2Hotel::find()->  orderBy ('book_id DESC')  ->limit('5')
+	             ->where([ 'booked_by_user' => Yii::$app->user->identity->username , /*'mydb_id'=>1*/ ]) 
+			     ->andWhere( 'book_room_id =:status', [':status' => $postD] )
+				 ->andWhere([ 'or',
+				             ['between', 'book_from_unix', strtotime($first1), strtotime($last1) ],
+							 ['between', 'book_to_unix',   strtotime($first1), strtotime($last1) ]
+				 ])
+				 ->andWhere(['between', 'book_from_unix', strtotime($first1), strtotime($last1) ])   /*->andFilterWhere(['like', 'supp_date', $PrevMonth])  ->andFilterWhere(['like', 'supp_date', $PrevYear])*/    
+			     ->orWhere (['between', 'book_to_unix',   strtotime($first1), strtotime($last1) ])  //(MARGIN MONTHS fix, when booking include margin months, i.e 28 Aug - 3 Sept) //strtotime("12-Aug-2019") returns unixstamp
+				 // ->andWhere(['OR',['AND',[$a=>1],[$b=>1]],['AND',[$c=>1],[$d=>1]]]) //useful example
+				 ->all(); 
+
 #Render=>  return $this->render('registration' , ['model' => $model, 'data' => $data]  );
  
 #Safe Echo text in view. To display as text only(dropping html, i.e  htmlspecialchars())=>  echo Html::encode($user->name);  To display with thml => echo HtmlPurifier::process($model->mydb_g_am ." geo  per  ") ; 
@@ -969,7 +983,7 @@ dropdown
 #Form url with JS for ajax: var loc = window.location.pathname; var dir = loc.substring(0, loc.lastIndexOf('/'));  var urlX = dir + '/ajax_get_6_month';
 #Form url with Php for ajax: $URL = Yii::$app->request->baseUrl . "/site/ajax-rbac-insert-update";
 
-#Add id to form input => 	<?= $form->field($model, 'book_from' ,['inputOptions' => ['id' => 'uniqueID',],]) ->input('date') ;
+
 
 
 
@@ -983,8 +997,7 @@ if($_SERVER['REMOTE_ADDR'] == '127.0.0.1') {
 #Render partial => pass $model from controller to view and then pass this $model again in view => echo $this->render('render_partial/myCommentForm', ['model'=> $model]); 
 (see example at => https://github.com/account931/Laravel-Yii2_Comment_Vote_widgets/blob/master/Yii2_comment_widget/frontend/views/site/voteComment.php)
 
-				
-#Hidden input field + default value + hide lable =>  $form->field($model, 'entity')-> hiddenInput(['value'=> ''])->label(false);
+
 		
 #cancel last migration => yii migrate/down  
 #GII => first generate model, then based on model generate CRUD (controller + view folder)
@@ -1007,6 +1020,8 @@ if($_SERVER['REMOTE_ADDR'] == '127.0.0.1') {
 	
 	
 #form hidden input=> $form->field($model, 'wpBlog_author')->hiddenInput(['value'=> Yii::$app->user->identity->id])->label(false); //
+#Hidden input field + default value + hide lable =>  $form->field($model, 'entity')-> hiddenInput(['value'=> ''])->label(false);
+#Add id to form input => 	<?= $form->field($model, 'book_from' ,['inputOptions' => ['id' => 'uniqueID',],]) ->input('date')->label(false);
 
 #dropdown <select><option> with URL links => https://github.com/account931/portal_v2/blob/master/controllers/SiteController.php  -> function actionPortal()  + /js/autocomplete.js
 #inner Join => https://github.com/account931/iShop_Yii2_Gitted_from_LocalHost/blob/master/basic/controllers/ProductsController.php   ->  function actionPlaced()
@@ -1023,6 +1038,14 @@ if($_SERVER['REMOTE_ADDR'] == '127.0.0.1') {
 
 #count AR result => $found ->count();
 
+# to implement any your code beforeAction/afterAction  for any action in any Controller => go to config/web.php =>  
+        $config = [ ...
+		'on afterAction' => function (yii\base\ActionEvent $e) {
+	       if( $e->action->id !== 'login' && $e->action->controller->id !== 'site' || $e->action->id !== 'error')
+		      \yii\helpers\Url::remember();
+        },
+
+# see form errors if not save==> if(!$model->save(){var_dump($model->errors);}
 
 
 
@@ -1045,6 +1068,10 @@ if($_SERVER['REMOTE_ADDR'] == '127.0.0.1') {
 #function return mulitple values => https://github.com/account931/yii2_REST_and_Rbac_2019/blob/master/models/BookingCph.php
     function some(){return array($a, $b);}  $r = some(); $value1 = $r[0]; $value2 = $r[1];  
     function some(){return array('a'=> $a, 'b'=> $b);}  $r = some(); $value1 = $r['a']; $value2 = $r['b'];
+#Php constructor =>
+               class Human{ var $name; function  __construct($nameofperson){ $this -> name= $nameofperson; }  function set_name($newname){$this ->name=$newname;}
+			   $firstObject = new Human("Joseph"); //calling constructor
+
 	 
 JS=>
    # IOS, safari JS click fix => add empty {onClick}  => <span onClick="" id="someID"></span>   OR => cursor: pointer;
@@ -1054,6 +1081,12 @@ JS=>
    #get the clicked id=> //alert(this.id); // this.attr("id");   vs  var b = $(this);
    #to work on mobile only  => if(screen.width <= 640){ 
    #data-attribute =>  <div data-myUnix=''> =>  this.getAttribute("data-myUnix");
+   #js ptototype (constructor) =>
+         function Person(name, age) { this.name = name; this.age = age; }
+         const me = new Person('Joe', 20);
+		 Person.prototype.greet = function() { console.log('Hi', this.name); }
+         me.greet(); // Hi Joe
+   #callback => 
    
 
 CSS=>
