@@ -119,7 +119,7 @@ JS;
 		    
 			echo "<p class='alert-danger'>You are logged as <i class='fa fa-address-book-o' style='font-size:1.3em;'></i> <b>" . Yii::$app->user->identity->username . "</b></p>";
 			echo "<p class='alert-success'>Room <i class='fa fa-hotel' style='font-size:1.3em;'></i> <b><span id='roomSelected'></span></b></p>"; //html()-ed in booking_cph_2.js- > getAjaxAnswer_andBuild_6_month(dataX)
-			
+		
 		
 		    $form = ActiveForm::begin (/*[
            'id' => 'login-form',

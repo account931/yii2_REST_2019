@@ -112,7 +112,7 @@ $(document).ready(function(){
                 // do something;
                 //$(".all-6-month").stop().fadeOut("slow",function(){ $(this).html("OK")}).fadeIn(2000);
 				console.log(data);
-				getAjaxAnswer_andBuild_6_month(data);
+				getAjaxAnswer_andBuild_6_month(data, idX); //data => return from php script //idX => id of clicked room
 				$(".loader").hide(3000); //hide the loader
 				
             },  //end success
@@ -141,7 +141,7 @@ $(document).ready(function(){
     // **************************************************************************************
     //                                                                                     ** 
 	
-	function getAjaxAnswer_andBuild_6_month(dataX){ //dataX is an ajax result from a BookingCphControler/public function actionAjax_get_6_month() //ajax
+	function getAjaxAnswer_andBuild_6_month(dataX, idXZ){ //dataX is an ajax result from a BookingCphControler/public function actionAjax_get_6_month() //idXZ => id of clicked room
 		//alert(dataX.array_All_CountDays);
 		
 		//HTML This 1 current month
@@ -152,6 +152,7 @@ $(document).ready(function(){
 			finalText+= '<div class="col-sm-3 col-xs-5 my-month badge badge1 iphoneX"' + 
 			            'data-badge="' + dataX.array_All_CountDays[i][0] + "/" + dataX.array_All_CountDays[i][1] + //data badge (amount of booked days in month (round red circle)), i.e{booked days/all days in month}
 						'" data-myUnix=' + dataX.array_All_Unix[i][0] + '/' + dataX.array_All_Unix[i][1] + //additional "data-myUnix" to keep Unix time of the 1st and last days of the formed month, i.e = 43643483/3647634
+						'" data-myRoom=' + idXZ +  //data with cliked selected room id
 						' id=' + i + '> <span class="v">' + dataX.allMonths[i]  + '</span></div>';
 		}
 		
@@ -190,7 +191,7 @@ $(document).ready(function(){
 	 function get_1_single_month(thisX){
 		 $(".loader").show(200); //show the loader
 		 
-		 var roomZ = $("#roomSelected").html(); //selected room, take it from <p>
+		 var roomZ = thisX.getAttribute("data-myRoom");; //gets selected room ID, take it from <div data-myRoom="">
 		 //alert(roomZ);
 		 
 		 var Unix = thisX.getAttribute("data-myUnix");
@@ -362,6 +363,8 @@ $(document).ready(function(){
 		 var urlX = dir + '/ajax_delete_1_booking';
 		  //alert(urlX);
 		
+		
+		//alert(passedID);
 		 // send  data  to  PHP handler  ************ 
          $.ajax({
             url: urlX,

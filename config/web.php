@@ -193,7 +193,7 @@ $config = [
 	    if( $e->action->id !== 'login' && $e->action->controller->id !== 'site' ){ //|| $e->action->id !== 'error'|| $e->action->id !== 'debug' 
 		   if( $e->action->id !== 'default'){
             //Yii::$app->user->setReturnUrl(Yii::$app->request->url);
-		   \yii\helpers\Url::remember();    //Url::remember(['product/view', 'id' => 42], 'product');
+		    // \yii\helpers\Url::remember();    //Url::remember(['product/view', 'id' => 42], 'product');
 		   }
 	   }
     },
