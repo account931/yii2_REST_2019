@@ -18,7 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 	
 	 <div class="alert alert-success">
-        <?= nl2br("<h4><span class='glyphicon glyphicon-flag' style='font-size:38px;'></span> Your email is new to us. Continue to register your account</h4><br>"); ?>
+        <?= nl2br("<h4><span class='glyphicon glyphicon-flag' style='font-size:38px;'></span> Your email was new to us. But you successfully confirmed your registration. Continue to register your account</h4><br>"); ?>
     </div>
 	
 	
@@ -36,7 +36,10 @@ $this->params['breadcrumbs'][] = $this->title;
   
   
   
-    <?php echo "<p class='alert-success'>Email:  <i class='fa fa-coffee' style='font-size:1.3em;'></i> <b>" . Yii::$app->request->get('emailZ')  ." </b></p>"; ?>
+    <?php 
+	    echo "<p class='alert-success'>Email:  <i class='fa fa-coffee' style='font-size:1.3em;'></i> <b>" . Yii::$app->request->get('emailZ')  ." </b></p>"; 
+	    echo "<p class='alert-success'>Token:  <i class='fa fa-coffee' style='font-size:1.3em;'></i> <b>" . $token  ." </b></p>";
+	?>
 
 	
 	

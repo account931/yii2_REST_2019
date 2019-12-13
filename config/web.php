@@ -134,10 +134,10 @@ $config = [
 			
 		    'transport' => [
                'class' => 'Swift_SmtpTransport',
-               'host' => 'imap.ukr.net',
-               'username' => 'account931@ukr.net',
-               'password' => '****',
-               'port' => '993',
+               'host' => 'smtp.ukr.net',   //imap.ukr.net
+               'username' => 'acc**@ukr.net',
+               'password' => '**',
+               'port' => '465', /*993*/ //465
                'encryption' => 'ssl',
            ],
 		 //END E-MAIL settings

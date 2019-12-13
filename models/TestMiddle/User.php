@@ -72,6 +72,13 @@ class User extends ActiveRecord implements IdentityInterface, \yii\filters\RateL
  
  
  
+   //Mine edit for authentication by email, not username
+   public static function findByEmail($email)
+   {
+    return static::findOne(['email' => $email, 'status' => self::STATUS_ACTIVE]);
+   }
+   //Mine edit for authentication by email, not username
+ 
  
  
     /**

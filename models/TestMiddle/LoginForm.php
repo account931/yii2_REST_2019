@@ -13,12 +13,15 @@ use yii\base\Model;
  */
 class LoginForm extends Model
 {
-    public $username;
+    //public $username;
+	public $email;  //Mine edit for authentication by email, not username
     public $password;
     public $rememberMe = true;
 
     private $_user = false;
 
+	
+	
 
     /**
      * @return array the validation rules.
@@ -27,7 +30,9 @@ class LoginForm extends Model
     {
         return [
             // username and password are both required
-            [['username', 'password'], 'required'],
+            [['email', 'password'], 'required'],      //Mine edit for authentication by email, not username
+			[['email'], 'email'], //validate email   //Mine edit for authentication by email, not username
+			
             // rememberMe must be a boolean value
             ['rememberMe', 'boolean'],
             // password is validated by validatePassword()
@@ -65,17 +70,40 @@ class LoginForm extends Model
         return false;
     }
 
+	
+	
+	
     /**
      * Finds user by [[username]]
      *
      * @return User|null
      */
+	 //Mine edit for authentication by email, not username
     public function getUser()
     {
         if ($this->_user === false) {
-            $this->_user = User::findByUsername($this->username);
+			$this->_user = User::findByEmail($this->email);
+            //$this->_user = User::findByUsername($this->username);
         }
 
         return $this->_user;
     }
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+	
+	
+	
+	
 }

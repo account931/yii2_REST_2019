@@ -18,14 +18,12 @@ $this->params['breadcrumbs'][] = $this->title;
 
 	
 	 <div class="alert alert-success">
-        <?= nl2br("<h4><span class='glyphicon glyphicon-flag' style='font-size:38px;'></span>Acoount with email exists. Sign in. .....</h4><br>"); ?>
-    </div>
+        <?= nl2br("<h4><span class='glyphicon glyphicon-flag' style='font-size:38px;'></span></h4>Account with email <b>" . Yii::$app->request->get('emailZ') . "</b> exists. Sign in using your password."); ?>
+   </div>
 	
 	
 	
-	
-	
-   <!------ FLASH Success from BookingCpg/actionIndex() ----->
+   <!------NOT USED!!!! FLASH Success from BookingCpg/actionIndex() ----->
    <?php if( Yii::$app->session->hasFlash('successX') ): ?>
     <div class="alert alert-success alert-dismissible" role="alert">
         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -52,7 +50,7 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
         ]); ?>
 
-        <?= $form->field($model, 'username')->textInput(['autofocus' => true]) ?>
+        <?= $form->field($model, 'email')->hiddenInput([ 'value'=> Yii::$app->request->get('emailZ') ])->label(false) ?>  
 
         <?= $form->field($model, 'password')->passwordInput() ?>
 
@@ -63,6 +61,8 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="form-group">
             <div class="col-lg-offset-1 col-lg-11">
                 <?= Html::submitButton('Login', ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>
+				<?=Html::a('&#60;&#60; Go back', ['test-middle/index'], ['class'=>'btn btn-small btn-success']);?>
+				
             </div>
         </div>
 
@@ -71,6 +71,8 @@ $this->params['breadcrumbs'][] = $this->title;
 	
 	</div>
 	<!----------------- FORM  ---------------------->
+	
+	
 	
 	
 

@@ -15,7 +15,7 @@ class StartForm extends Model
 {
     public $emailX;
 
-
+    public $password_reset_token; //mine for register by email
  
  
  
@@ -39,6 +39,69 @@ class StartForm extends Model
 
             ];
         }
+		
+		
+		
+		
+		
+	  public function generatePasswordResetToken()
+      {
+          $this->password_reset_token = Yii::$app->security->generateRandomString() . '_' . time();
+      }
+		
+		
+		/**
+     * Sends an email with a link, for resetting the password.
+     *
+     * @return bool whether the email was send
+     */
+    public function sendEmail($_emailX)
+    {
+        /* @var $user User */
+		/*
+        $user = User::findOne([
+            'status' => User::STATUS_ACTIVE,
+            'email' => $this->email,
+        ]);
+ 
+        if (!$user) {
+            return false;
+        }
+ 
+        if (!User::isPasswordResetTokenValid($user->password_reset_token)) {
+            $user->generatePasswordResetToken();
+            if (!$user->save()) {
+                return false;
+            }
+        }
+		*/
+ 
+      
+	  
+	  $this->generatePasswordResetToken();
+	  
+  
+      $GLOBALS['myToken'] = $this->password_reset_token; //just for test in flash, must be DELETED in Production
+	   
+        return Yii::$app
+            ->mailer
+            ->compose(
+                ['html' => 'register-by-email/register_by_email-html', 'text' => 'register-by-email/register_by_email-text'], //taken from /mail/
+                ['user' => $_emailX/*$user*/ , 'code' => $this->password_reset_token])
+            ->setFrom('account931@ukr.net' /*[Yii::$app->params['supportEmail'] => Yii::$app->name . ' robot']*/)
+            ->setTo($_emailX /*$this->email*/)
+            ->setSubject('Confirm registration by email ' /*. Yii::$app->name*/)
+            ->send();
+    }
+	
+	
+	
+	
+
+
+
+
+	
 		
 
 }

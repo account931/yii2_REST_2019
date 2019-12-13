@@ -466,6 +466,15 @@ if (Yii::$app->session->hasFlash('searchFail'))
    }
    
  
+ 11.2 Variant 2
+   <!------ FLASH Success from BookingCpg/actionIndex() ----->
+   <?php if( Yii::$app->session->hasFlash('successX') ): ?>
+    <div class="alert alert-success alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <?php echo Yii::$app->session->getFlash('successX'); ?>
+    </div>
+    <?php endif;?>
+  <!------ END FLASH Successfrom BookingCpg/actionIndex() ----->
    
    
    
@@ -938,10 +947,13 @@ dropdown
 
 #Create URL link  => $infoLink = Html::a( "more  info", ["/site/about", "period" => "",   ] /* $url = null*/, $options = ["title" => "more  info",] ); 
 #Create URL2 link  =>  use yii\helpers\Url; $url = Url::to(['message/view', 'id' => 100]);
+#Create URL3 => $resetLink = Yii::$app->urlManager->createAbsoluteUrl(['password-reset/reset-password', 'token' => $user->password_reset_token]);
+
 #Create URL link in button => Html::a('Reset It', ['password-reset/request-password-reset'], ['class'=>'btn btn-small btn-info']);
 #Create URL link in <image><img> => echo Html::a(Html::img(Yii::$app->getUrlManager()->getBaseUrl().'/images/'. $model->avatar), [ 'view3', 'id' => $model->id], ['class'=>'lightboxed'] ); 
 
-#Redirect =>  return $this->redirect(['support-data/index']);
+
+#Redirect =>  return $this->redirect(['support-data/index']);   // return $this->redirect(['support-data/index', 'getX'=> 'someText']);
 
 #To get $_GET['some'] => if (Yii::$app->getRequest()->getQueryParam('traceURL')=="supp_kbase"){} //Yii::$app->request->get('id');
  
@@ -1019,7 +1031,7 @@ if($_SERVER['REMOTE_ADDR'] == '127.0.0.1') {
         ],])
 	
 	
-#form hidden input=> $form->field($model, 'wpBlog_author')->hiddenInput(['value'=> Yii::$app->user->identity->id])->label(false); //
+#form hidden input=> $form->field($model, 'wpBlog_author')->hiddenInput(['autofocus' => true, 'value'=> Yii::$app->user->identity->id])->label(false); //
 #Hidden input field + default value + hide lable =>  $form->field($model, 'entity')-> hiddenInput(['value'=> ''])->label(false);
 #Add id to form input => 	<?= $form->field($model, 'book_from' ,['inputOptions' => ['id' => 'uniqueID',],]) ->input('date')->label(false);
 
@@ -1072,6 +1084,7 @@ if($_SERVER['REMOTE_ADDR'] == '127.0.0.1') {
                class Human{ var $name; function  __construct($nameofperson){ $this -> name= $nameofperson; }  function set_name($newname){$this ->name=$newname;}
 			   $firstObject = new Human("Joseph"); //calling constructor
 
+# Enable error reporting for NOTICES => 	 ini_set('display_errors', 1);  error_reporting(E_NOTICE);
 	 
 JS=>
    # IOS, safari JS click fix => add empty {onClick}  => <span onClick="" id="someID"></span>   OR => cursor: pointer;
@@ -1093,6 +1106,7 @@ CSS=>
    #Bootstrap grid => <div class="col-lg-3 col-md-3 col-sm-3">
    # css animation smoothly=> transition: 1.25s; -webkit-animation: fadeIn 1s;animation: fadeIn 1s;
    # media query => @media screen and (max-width: 480px) { }
+   # shadow => .shadowX, {box-shadow: 0 1px 4px rgba(0, 0, 0, .3), -23px 0 20px -23px rgba(0, 0, 0, .6), 23px 0 20px -23px rgba(0, 0, 0, .6), inset 0 0 40px rgba(0, 0, 0, .1); }
  
 
 

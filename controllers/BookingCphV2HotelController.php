@@ -135,11 +135,21 @@ class BookingCphV2HotelController extends Controller
 		 $checkIf_free = BookingCphV2Hotel::find() 
 		          //->where(['booked_by_user' => Yii::$app->user->identity->username]) //if this line uncommented, each user has its own private booking(many users-> each user has own private booking appartment, other users cannot book it). Comment this if u want that booking is general, ie many users->one booking appartment(many users can book 1 general appartment) 
 		          ->where( 'book_room_id =:status', [':status' => $model->book_room_id] ) //room ID from Form, form is in views/idex.php. Value to this form field is set in booking_cph-2.js by ID // 
-				   ->andWhere([ 'or',
+				  //More complicated query
+				  ->andWhere([ 'or',
+				                 ['or', 
+							         ['between', 'book_from_unix', strtotime($model->book_from), strtotime($model->book_to) ], ['between', 'book_to_unix',   strtotime($model->book_from), strtotime($model->book_to) ] ],
+							     ['and', 
+							         ['<','book_from_unix',strtotime($model->book_from)], ['>', 'book_to_unix', strtotime($model->book_to) ] ],
+							   ])
+				  
+				  /*
+				  ->andWhere([ 'or',
 				             ['between', 'book_from_unix', strtotime($model->book_from), strtotime($model->book_to) ],
 							 ['between', 'book_to_unix',   strtotime($model->book_from), strtotime($model->book_to) ] 
 					        ])
 				  ->orWhere (['and', ['<','book_from_unix',strtotime($model->book_from)], ['>', 'book_to_unix', strtotime($model->book_to) ] ]) //Fix situation when in DB we have 21-28Aug and user's input is 22-23Aug
+				  */
 				  //->andWhere(['between', 'book_from_unix', strtotime($model->book_from), strtotime($model->book_to) ])  //strtotime("12-Aug-2019") returns unixstamp
 				  //->orWhere (['between', 'book_to_unix',   strtotime($model->book_from), strtotime($model->book_to) ])  //(MARGIN MONTHS fix, when booking include margin months, i.e 28 Aug - 3 Sept) //strtotime("12-Aug-2019") returns unixstamp
 				  //->orWhere (['and', ['<','book_from_unix',strtotime($model->book_from)], ['>', 'book_to_unix', strtotime($model->book_to) ] ]) //Fix situation when in DB we have 21-28Aug and user's input is 22-23Aug
@@ -151,7 +161,7 @@ class BookingCphV2HotelController extends Controller
 				  ->all(); 
 				  
 				  
-		var_dump($checkIf_free);
+		//var_dump($checkIf_free);
 		 
 		 if(empty($checkIf_free)){ //i.e if these form dates are not in DB, meaning free
 		     if($model->save()){
