@@ -1,11 +1,11 @@
 <?php
-//Test for middle
+//Test for middle (from Net vacancies)=> task: user should login by email not username.
 // How should work: user at {test-middle/index} enters email -> if email in SQL DB -> redirect to {test-middle/existed-account} with entered email as S_GET[''] to login
 //  -> if email in NOT SQL DB -> redirect to {test-middle/new-account} that sends email confirmation
 
-//Copied to \models\TestMiddle following models (& thus edited):  LoginForm, SignupForm, User.
+//Uses its own Copied models, copied to \models\TestMiddle following models (& thus edited):  LoginForm, SignupForm, User.
 
-//To login by email not username: 
+//How to login by email not username: 
     //in models\TestMiddle\User added => public static function findByEmail($email){return static::findOne(['email' => $email, 'status' => self::STATUS_ACTIVE]); }
     //in models\TestMiddle\LoginForm =>  {$username} change to  {$email} + adds to rules()  [['email'], 'email'] +  in getUser() change {User::findByUsername($this->username)} to {User::findByEmail($this->email)}
 	//in \views\test-middle\password change username field to => echo $form->field($model, 'email')->hiddenInput([ 'value'=> Yii::$app->request->get('emailZ') ])->label(false);
@@ -22,7 +22,7 @@ use app\models\TestMiddle\StartForm;
 use app\models\TestMiddle\SignupForm; //copied from site
 use app\models\TestMiddle\User;      //copied from site
 use app\models\TestMiddle\LoginForm; //copied from site
-
+use app\models\TestMiddle\TestForMiddle_Resister_Token; //stores register tokens
 
 
 class TestMiddleController extends Controller
@@ -108,13 +108,25 @@ class TestMiddleController extends Controller
 			
 			$userModel = User::find()-> where( 'email =:status', [':status' => $model->emailX])-> one(); 
 			
-			if($userModel ){ //if email exists in DB
+			if($userModel){ //if email exists in DB
 				return $this->redirect(['test-middle/existed-account' , 'emailZ' => $model->emailX ]); //passing {emailZ} as $_GET['emailZ'] in the URL
 			
 			} else { //if a user is NEW, email is not in DB
-				
 				//return $this->redirect(['test-middle/new-account', 'emailZ' => $model->emailX ]);
 				if ($model->sendEmail($model->emailX)) {
+					
+					//if user tried to register previously, but didn't complete the register, delete that entry
+					$isMailWasUsed = TestForMiddle_Resister_Token::find()-> where( 'test_middle_email =:status', [':status' => $model->emailX])-> one();
+					if($isMailWasUsed){
+						$isMailWasUsed->delete();
+				    }
+					//save register token to db {test_for_middle}
+					$db = new TestForMiddle_Resister_Token();
+					$db->test_middle_email = $model->emailX;
+					$db->test_middle_regist_token = $GLOBALS['myToken'];
+					$db->save();
+					
+					
 				    $resetLink = Yii::$app->urlManager->createAbsoluteUrl(['test-middle/new-account', 'token' => $GLOBALS['myToken']]); //just for test in flash, must be DELETED in Production
 				    $text = "Your email is new to us. We sent you an activation letter.<br> Follow the link below to comfirm your registration: <a href = $resetLink >$resetLink</a> "; //just for test in flash, must be DELETED in Production
                     Yii::$app->session->setFlash('successX', '<i class="fa fa-envelope-o" style="font-size:36px"></i><br><b>TEST FLASH -> in PRODUCTION it should not contain Link as it is Classified </b><br>Check your email <b>' .$model->emailX . ' </b> for further instructions.<br> '. $text ); //$text is just for test in flash, must be DELETED in Production
@@ -149,11 +161,25 @@ class TestMiddleController extends Controller
 		 
 		 $model = new SignupForm();
 		 
-		 //copy from Site
+		 //Checks if Token in DB
+		 $row = $model->checkToken($token); 
+		 
+		 
+		 if ($model->load(Yii::$app->request->post())) {
+            if ($user = $model->signup()) {
+                if (Yii::$app->getUser()->login($user)) {
+					 $model->clearToken_fromTest_for_middle_DB($token);
+					 Yii::$app->session->setFlash('successX2', '<i class="fa fa-envelope-o" style="font-size:36px"></i><br>Successfully registered <b>' .$row->test_middle_email  );
+                     //return $this->goBack();
+					 return $this->redirect(['test-middle/index']); 
+				}
+            }
+		 }
 		 
 		 return $this->render('new-account' , [
             'model' => $model,
-            'token' => $token			
+            'token' => $token, //or can get it from $row->test_middle_regist_token
+            '_account' => $row	 //db row from db {test_for_middle} that contains email/token found in {checkToken($token)} by $_GET['token']	
         ]);
 	 }
 	

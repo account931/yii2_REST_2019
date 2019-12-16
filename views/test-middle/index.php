@@ -19,6 +19,8 @@ $this->params['breadcrumbs'][] = $this->title;
 	
 	 <div class="alert alert-success">
         <?= nl2br("<h4><span class='glyphicon glyphicon-flag' style='font-size:38px;'></span> This page is .....</h4>" .
+		             "<p><b>Authentication/sign up by email.</b></p>" .
+		             "<hr>" .
 		             "<p>Pease enter your email and we will check if you a new or already registered user.</p>" .
 					 "<p>If you are in our DB, you'll be redirected to login page, otherwise you will get an activation letter to your email address.</p>" .
 					 "<br>"); 
@@ -39,7 +41,21 @@ $this->params['breadcrumbs'][] = $this->title;
   <!------ END FLASH Successfrom BookingCpg/actionIndex() ----->
   
   
-  <?="<p class='alert-success'>Yoy mail  <i class='fa fa-laptop' style='font-size:1.3em;'></i> <b></b></p>";?>
+  
+  
+  
+  
+   <!------ FLASH Success from BookingCpg/actionIndex() ----->
+   <?php if( Yii::$app->session->hasFlash('successX2') ): ?>
+    <div class="alert alert-info alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <?php echo Yii::$app->session->getFlash('successX2'); ?>
+    </div>
+    <?php endif;?>
+  <!------ END FLASH Successfrom BookingCpg/actionIndex() ----->
+  
+  
+  <?="<p class='alert-success'>Your mail  <i class='fa fa-laptop' style='font-size:1.3em;'></i> <b></b></p>";?>
 	
 	
 	

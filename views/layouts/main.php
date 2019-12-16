@@ -77,9 +77,11 @@ $menuItems = [
 			['label' => 'Dektrium/Yii2_User Module(N/A)', 'url' => ['#']],
 			['label' => 'WPress alternative', 'url' => ['/wpress-blog/show-all-blogs']],
 			['label' => 'Bot chat', 'url' => ['/bot/bot-chat']],
-			['label' => 'Bus booking', 'url' => ['#']],
-			['label' => 'Send mail', 'url' => ['#']],
-			['label' => 'Test for middle level', 'url' => ['/test-middle/index']],
+			['label' => 'Bus booking (N/A)', 'url' => ['#']],
+			['label' => 'Send mail (N/A)', 'url' => ['#']],
+			['label' => 'Test for middle(auth via email)', 'url' => ['/test-middle/index']],
+			['label' => 'Shop Liq E-pay Cozastore (amado cart)(N/A)', 'url' => ['/shop-liqpay/index']],
+			['label' => 'Distance radius(N/A)', 'url' => ['#']],
 			
             //submenu with image,(won't  work  without  {encodeLabels' => false,}  ,  it  is  inserted  below)   /*/yii/basic_download/web*/
             ['label' => Html::img(Yii::$app->request->baseUrl.'/images/system_key.jpg' , $options = ["id"=>"sx","margin-left"=>"","class"=>"s","width"=>"16%","title"=>"my title"]) . ' My login(no use)',  'url' => ['/site/login'],     ],  

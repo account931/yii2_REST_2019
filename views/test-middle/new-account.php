@@ -12,7 +12,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-       Continue to register your account
+       Continue/Finish to register your account
     </p>
 
 
@@ -37,7 +37,7 @@ $this->params['breadcrumbs'][] = $this->title;
   
   
     <?php 
-	    echo "<p class='alert-success'>Email:  <i class='fa fa-coffee' style='font-size:1.3em;'></i> <b>" . Yii::$app->request->get('emailZ')  ." </b></p>"; 
+	    echo "<p class='alert-success'>Email:  <i class='fa fa-coffee' style='font-size:1.3em;'></i> <b>" . $_account->test_middle_email  ." </b></p>"; 
 	    echo "<p class='alert-success'>Token:  <i class='fa fa-coffee' style='font-size:1.3em;'></i> <b>" . $token  ." </b></p>";
 	?>
 
@@ -49,7 +49,7 @@ $this->params['breadcrumbs'][] = $this->title;
           
 			 <?php $form = ActiveForm::begin(['id' => 'form-signup']); ?>
                 <?= $form->field($model, 'username')->textInput(['autofocus' => true]) ?>
-                <?= $form->field($model, 'email') ?>
+                <?= $form->field($model, 'email')-> hiddenInput(['value'=> $_account->test_middle_email])->label(false); ?>
                 <?= $form->field($model, 'password')->passwordInput() ?>
 				<?= $form->field($model, 'password_confirm')->passwordInput() ?> 
                 <div class="form-group">

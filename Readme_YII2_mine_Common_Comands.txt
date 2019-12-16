@@ -931,6 +931,12 @@ dropdown
  
  
  
+  ====================================================
+ 30. Login by email not username, see eaxample at => https://github.com/account931/yii2_REST_and_Rbac_2019/blob/master/controllers/TestMiddleController.php
+ How to login by email not username: 
+    //in models\TestMiddle\User added => public static function findByEmail($email){return static::findOne(['email' => $email, 'status' => self::STATUS_ACTIVE]); }
+    //in models\TestMiddle\LoginForm =>  {$username} change to  {$email} + adds to rules()  [['email'], 'email'] +  in getUser() change {User::findByUsername($this->username)} to {User::findByEmail($this->email)}
+	//in \views\test-middle\password change username field to => echo $form->field($model, 'email')->hiddenInput([ 'value'=> Yii::$app->request->get('emailZ') ])->label(false);
  
  
  

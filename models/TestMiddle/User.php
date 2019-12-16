@@ -1,4 +1,6 @@
 <?php
+
+//copied from models/User and edited. 
 namespace app\models\TestMiddle;
  
 use Yii;

@@ -15,6 +15,7 @@ class SignupForm extends Model
     public $email;
     public $password;
 	public $password_confirm;
+	public $_account;
  
     /**
      * @inheritdoc
@@ -59,5 +60,44 @@ class SignupForm extends Model
         $user->generateAuthKey();
         return $user->save() ? $user : null;
     }
+	
+	
+	
+	
+	
+	 /**
+     * Checks if Token in DB
+     *
+     * @
+     */
+    public function checkToken($token)
+    {
+		if (empty($token) || !is_string($token)) {
+            //throw new InvalidParamException('Password reset token cannot be blank.');
+			throw new \yii\web\NotFoundHttpException("Registration token cannot be blank. Check you email box confirmation letter");
+        }
+		
+		 $this->_account = TestForMiddle_Resister_Token::find()-> where( 'test_middle_regist_token =:status', [':status' => $token])-> one();
+ 
+        if (!$this->_account) {
+			throw new \yii\web\NotFoundHttpException("Wrong registration token. Check you email box confirmation letter");
+            //throw new InvalidParamException('Wrong password reset token.');
+        }
+		return $this->_account;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	//
+	public function clearToken_fromTest_for_middle_DB($tokenn)
+	{
+		$i = TestForMiddle_Resister_Token::find()-> where( 'test_middle_regist_token =:status', [':status' => $tokenn])-> one();
+		$i->delete();
+	}
  
 }
