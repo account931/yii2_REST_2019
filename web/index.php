@@ -1,5 +1,8 @@
 <?php
 
+//Enable error reporting for NOTICES => 	 
+ini_set('display_errors', 1);  error_reporting(E_NOTICE);
+
 //Eneable development mode on Local host only
 if($_SERVER['REMOTE_ADDR'] == '127.0.0.1') {
     // comment out the following two lines when deployed to production

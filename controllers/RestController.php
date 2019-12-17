@@ -156,12 +156,32 @@ public function behaviors()
 // **                                                                                  **
    public function actionNew()
     {
-		$result = User::find()
+		//example of custom Rest api with Where Clause
+		 $result = User::find()
             //->where(['>', 'population', 70000000])
-			->where(['email' => 'dima@ukr.net' /*Yii::$app->user->identity->username*/])
+			->where(['email' => 'dima@ukr.net']) //Yii::$app->user->identity->username
             ->all();
         return $result;
 		
+		
+		
+		//example of custom Rest api with pagination-----
+		/* 
+		$query = User::find();
+        $dataProvider = new \yii\data\ActiveDataProvider([
+            'query' => $query,
+             'pagination' => [
+                 'defaultPageSize' => 2,
+				 //'pageSizeLimit' => [1, 1000]
+             ]
+         ]); 
+		 return $dataProvider;
+		 */
+		 //example of custom Rest api with pagination-----
+		 
+		
+		
+		//example of hardcoded array (for testing)
 		/*$items = ['one1', 'two2', 'three' => ['a_sub', 'b_sub', 'c_sub']];
         return $items;*/
 	}

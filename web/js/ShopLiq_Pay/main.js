@@ -1,6 +1,120 @@
 
 (function ($) {
     "use strict";
+	
+	window.id;
+	
+	 /*==================================================================
+    [  onClick Show modal1 & html clicked products details in modal, i.e onClick gets id of clicked that is equal to php $productsX[id]; and $productsX[id] is passed to JS from view/index.php]*/
+    $('.js-show-modal1').on('click',function(e){ 
+        e.preventDefault();
+        $('.js-modal1').addClass('show-modal1');
+		
+		var idX = this.id; //id of clicke product
+		window.id = idX;
+		console.log(urlX);
+		//var productsJS is passed php array with products (from view/index.php)
+		//var urlX is passed php array with products (from view/index.php)
+
+		$("#hiddenModal_Product").stop().fadeOut("slow",function(){ $(this).html(productsJS[idX].name)}).fadeIn(2000); //with animation
+		$("#hiddenModal_Price").html(productsJS[idX].price + " ₴"); //html the price
+		$("#hiddenModal_Description").html(productsJS[idX].description);  
+		$("#hiddenModal_Image").stop().fadeOut("slow",function(){ $(this).attr("src", urlX + "/images/shopLiqPay/" + productsJS[idX].image)}).fadeIn(800); //with animation
+		//$("#hiddenModal_Image").attr("src", urlX + "/images/shopLiqPay/" + productsJS[idX].image);
+    });
+
+	
+	
+    $('.js-hide-modal1').on('click',function(){
+        $('.js-modal1').removeClass('show-modal1');
+    });
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	 /*==================================================================
+    [ Open Cart]*/
+    $('.js-addcart-detail').on('click',function(){ 
+	    alert("open the cart");
+        
+    });
+	
+	
+	
+	
+	
+	
+    /*==================================================================
+    [ Cart ]*/
+    $('.js-show-cart').on('click',function(){ alert(45);
+        $('.js-panel-cart').addClass('show-header-cart');
+    });
+
+    $('.js-hide-cart').on('click',function(){ alert(45);
+        $('.js-panel-cart').removeClass('show-header-cart');
+    });
+
+    /*==================================================================
+    [ Cart ]*/
+    $('.js-show-sidebar').on('click',function(){ alert(45);
+        $('.js-sidebar').addClass('show-sidebar');
+    });
+
+    $('.js-hide-sidebar').on('click',function(){ alert(45);
+        $('.js-sidebar').removeClass('show-sidebar');
+    });
+
+	
+	
+    /*==================================================================
+    [ +/- num product ]*/
+	
+	//Minus
+    $('.btn-num-product-down').on('click', function(){
+        var numProduct = Number($(this).next().val());
+        if(numProduct > 0){
+		   $(this).next().val(numProduct - 1);
+		   //mine
+		   $('#quantX').html(numProduct - 1);
+		   $('#totalX').html( ((numProduct - 1) * productsJS[window.id].price).toFixed(2)); //.toFixed(2) -> rounds 2.005 to 2.01
+		}
+    });
+    
+	//Plus
+    $('.btn-num-product-up').on('click', function(){
+        var numProduct = Number($(this).prev().val());
+        $(this).prev().val(numProduct + 1);
+		//mine
+		
+		$('.totalZ').html('Total for <span id="quantX">0</span> items is <span id="totalX">0</span> ₴');
+		$('#quantX').html(numProduct + 1);
+		$('#totalX').html(((numProduct + 1) * productsJS[window.id].price).toFixed(2));
+    });
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
     /*[ Load page ]
     ===========================================================*/
@@ -169,6 +283,13 @@
         });
     });
 
+	
+	
+	
+	
+	
+	
+	
     /*==================================================================
     [ Filter / Search product ]*/
     $('.js-show-filter').on('click',function(){
@@ -194,38 +315,9 @@
 
 
 
-    /*==================================================================
-    [ Cart ]*/
-    $('.js-show-cart').on('click',function(){
-        $('.js-panel-cart').addClass('show-header-cart');
-    });
-
-    $('.js-hide-cart').on('click',function(){
-        $('.js-panel-cart').removeClass('show-header-cart');
-    });
-
-    /*==================================================================
-    [ Cart ]*/
-    $('.js-show-sidebar').on('click',function(){
-        $('.js-sidebar').addClass('show-sidebar');
-    });
-
-    $('.js-hide-sidebar').on('click',function(){
-        $('.js-sidebar').removeClass('show-sidebar');
-    });
-
-    /*==================================================================
-    [ +/- num product ]*/
-    $('.btn-num-product-down').on('click', function(){
-        var numProduct = Number($(this).next().val());
-        if(numProduct > 0) $(this).next().val(numProduct - 1);
-    });
-
-    $('.btn-num-product-up').on('click', function(){
-        var numProduct = Number($(this).prev().val());
-        $(this).prev().val(numProduct + 1);
-    });
-
+	
+	
+	
     /*==================================================================
     [ Rating ]*/
     $('.wrap-rating').each(function(){
@@ -268,16 +360,8 @@
         });
     });
     
-    /*==================================================================
-    [ Show modal1 ]*/
-    $('.js-show-modal1').on('click',function(e){
-        e.preventDefault();
-        $('.js-modal1').addClass('show-modal1');
-    });
-
-    $('.js-hide-modal1').on('click',function(){
-        $('.js-modal1').removeClass('show-modal1');
-    });
+	
+	
 
 
 

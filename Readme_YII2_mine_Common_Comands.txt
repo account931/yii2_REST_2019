@@ -233,7 +233,7 @@ Yii2 REST  -> http://developer.uz/blog/restful-api-in-yii2/
 
 test URL from Yii2 (if prettyUrl off) -> http://localhost/yii2_REST/yii-basic-app-2.0.15/basic/web/index.php?r=rest
 test URL from Yii2 , Pretty URL, retuns  only ID and email with $_GET specified like this: http://localhost/yii2_REST/yii-basic-app-2.0.15/basic/web/rests?fields=id,email
-test URL from Yii2 (ControllerRest/actionView)(view 1 record)-> http://localhost/yii2_REST/yii-basic-app-2.0.15/basic/web/rest/view/4
+test URL from Yii2 (ControllerRest/actionView)(view 1 record by ID, 4 is db ID)-> http://localhost/yii2_REST/yii-basic-app-2.0.15/basic/web/rest/view/4   
 
 How to test Yii2 Rest Api from from non-Yii2 file, see more at =>  Readme_YII2_mine_This_Project_itself.txt -> 1.HOW TO TEST REST API from non-Yii2 file. 
 
@@ -269,9 +269,12 @@ public function behaviors(){
 
 
 
-			
-			
-			
+#Pagination in Rest Api	=> 
+   1.1 in action use:
+        $query = User::find();
+        $dataProvider = new \yii\data\ActiveDataProvider(['query' => $query,  'pagination' => ['defaultPageSize' => 2,] ]);
+		return $dataProvider;
+	1.2 in Url use -> restURl&page=2		 (restURL?per-page=2  will  returns 2 records per page only)		
 			
 			
 

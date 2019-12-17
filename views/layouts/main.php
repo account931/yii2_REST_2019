@@ -80,7 +80,7 @@ $menuItems = [
 			['label' => 'Bus booking (N/A)', 'url' => ['#']],
 			['label' => 'Send mail (N/A)', 'url' => ['#']],
 			['label' => 'Test for middle(auth via email)', 'url' => ['/test-middle/index']],
-			['label' => 'Shop Liq E-pay Cozastore (amado cart)(N/A)', 'url' => ['/shop-liqpay/index']],
+			['label' => 'Shop Liq E-pay Cozastore (amado cart)', 'url' => ['/shop-liqpay/index']],
 			['label' => 'Distance radius(N/A)', 'url' => ['#']],
 			
             //submenu with image,(won't  work  without  {encodeLabels' => false,}  ,  it  is  inserted  below)   /*/yii/basic_download/web*/
