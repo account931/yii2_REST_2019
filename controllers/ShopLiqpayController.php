@@ -1,5 +1,7 @@
 <?php
+//new version of shop with goods and Liqpay payment check out
 
+//STOPPED=> Do next => onClick "Add to cart" in modal adds id/quantity to LocalStorage. On openening Modal check quantity regarding LocalStorage to display
 namespace app\controllers;
 
 use Yii;

@@ -31,7 +31,7 @@ $(document).ready(function(){
 	        //alert("Validate OK");  /*alert(<?php echo Yii::$app->request->baseUrl?> +"/products/getajaxorderdata" );*/
 		    // runs ajax here
 
-			
+			//alert(urlXX);
 			// Start AJAX $URL = Yii::$app->request->baseUrl . "/site/ajax-rbac-insert-update";   //WORKING,  gets the url to send ajax, defining it in  $ajax causes routing to 404, Not found, as the url address does not render correctly
             $.ajax({
 		        url: urlXX,  //WORKING. Passed from views/bot/bot-view.php

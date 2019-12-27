@@ -180,10 +180,11 @@ How turn Yii2 Basic to resistration/login via DB SQL:
 https://xn--d1acnqm.xn--j1amh/%D0%B7%D0%B0%D0%BF%D0%B8%D1%81%D0%B8/yii2-basic-%D0%B0%D0%B2%D1%82%D0%BE%D1%80%D0%B8%D0%B7%D0%B0%D1%86%D0%B8%D1%8F-%D0%B8-%D1%80%D0%B5%D0%B3%D0%B8%D1%81%D1%82%D1%80%D0%B0%D1%86%D0%B8%D1%8F-%D1%87%D0%B5%D1%80%D0%B5%D0%B7-%D0%B1%D0%B4
 
 1. create migration(creats in /migrations/) -> yii migrate/create create_user_table 
-3. go to /migration/m000000_000000_create_user_table.php and paste code from Advanced template migration or create your own. Paste ONLY methods {up() down()}!!!!! DON"T TOUCH/modify CLASS NAME.
+3. go to /migration/m000000_000000_create_user_table.php and paste code from Advanced template migration or create your own. Paste ONLY methods {up() down()}!!!!! DON"T TOUCH/modify original CLASS NAME.
 2. apply migration-> php yii migrate
-3. modify code in /models/User.php. (see /Files/Yii2_basic/models/Users.php)
-4. create model for registration in /models/SignupForm.php (see /Files/Yii2_basic/models/SignupForm.php)
+3. modify code in /models/User.php. (see => https://github.com/account931/yii2_REST_and_Rbac_2019/blob/master/models/User.php)
+   Next methods should be added: findIdentity($id), findIdentityByAccessToken($token, $type = null), findByUsername($username), getId(), getAuthKey(), validateAuthKey($authKey), validatePassword($password), setPassword($password), generateAuthKey()
+4. create model for registration in /models/SignupForm.php (see => https://github.com/account931/yii2_REST_and_Rbac_2019/blob/master/models/SignupForm.php)
 5. add {use app\models\SignupForm} + {function actionSignup()} in /controller/SiteController
 6. create  /views/site/signup.php
 7. add registration URL to menu in /views/layouts/main.php 
@@ -992,7 +993,7 @@ dropdown
 #Url name rule for Controllers like {BookingCphController}  => {['/booking-cph/index']]}. Views/booking-cph/index.php
 
 #gets array with current user all roles rights=> $myRoles = Yii::$app->authManager->getRolesByUser(Yii::$app->user->identity->id); 
-#Image  echo Html::img(Yii::$app->getUrlManager()->getBaseUrl().'/images/addarrow.gif' , $options = ["id"=>"sx","margin-left"=>"3%","class"=>"sunimg","width"=>"12%","title"=>"click to add a  new  one"] ); ?>
+#Image  echo \yii\helpers\Html::img(Yii::$app->getUrlManager()->getBaseUrl().'/images/addarrow.gif' , $options = ["id"=>"sx","margin-left"=>"3%","class"=>"sunimg","width"=>"12%","title"=>"click to add a  new  one"] ); ?>
 
 #How to write Method inside model-> $rbac = self::find()->where(['name' => $roleName])->one(); To use in Controller=>  if(AuthItem::checkIfRoleExist('adminX'))
 #Gii(prettyUrl):   yii-basic-app-2.0.15/basic/web/gii  Non-pretty:  yii-basic-app-2.0.15/basic/web/index.php?r=gii
@@ -1001,8 +1002,12 @@ dropdown
 #Throw yii exception -> throw new \yii\web\NotFoundHttpException("This exception is hand made.");
 #Gii (access Gii with prettyUrl)-> http://localhost/yii2_REST_and_Rbac_2019/yii-basic-app-2.0.15/basic/web/gii
 
-#Form url with JS for ajax: var loc = window.location.pathname; var dir = loc.substring(0, loc.lastIndexOf('/'));  var urlX = dir + '/ajax_get_6_month';
-#Form url with Php for ajax: $URL = Yii::$app->request->baseUrl . "/site/ajax-rbac-insert-update";
+#Generate Form url with Php for ajax: $URL = Yii::$app->request->baseUrl . "/site/ajax-rbac-insert-update";
+#Generate Form url with JS for ajax: var loc = window.location.pathname; var dir = loc.substring(0, loc.lastIndexOf('/'));  var urlX = dir + '/ajax_get_6_month';
+#Generate Form url with JS for ajax(var 2(in view)):
+                            $urll = Yii::$app->getUrlManager()->getBaseUrl();
+		                    $this->registerJs( "var urlX = ".Json::encode($urll).";",   yii\web\View::POS_HEAD,  'myproduct2-events-script' );
+
 
 
 
@@ -1053,7 +1058,7 @@ if($_SERVER['REMOTE_ADDR'] == '127.0.0.1') {
 		 $this->registerJs(
             "var calenderEvents = ".Json::encode($model).";",  //"var urlXX ='" . $urlZ . "';",
              yii\web\View::POS_HEAD, 
-            'calender-events-script'
+            'name-of-script'
      );
 
 
@@ -1068,8 +1073,11 @@ if($_SERVER['REMOTE_ADDR'] == '127.0.0.1') {
 
 # see form errors if not save==> if(!$model->save(){var_dump($model->errors);}
 
+#menu visble for ! Guest only => ['label' => 'Personal cabin', 'url' => [''] ,'visible' => (!Yii::$app->user->isGuest)],
+# collapse widget => https://github.com/account931/Yii2_2018_SP_Knowledge_DB_and_DayBook/blob/master/views/site/login.php
 
-
+# use diffrent alyout => $this->layout = 'mainHome'; //layout with NO navbar menu
+# form save => if ($model->load(\Yii::$app->request->post()) && $model->save()) {}
 
 ========================================================
 98.2.V.A(php)
@@ -1108,15 +1116,27 @@ JS=>
          const me = new Person('Joe', 20);
 		 Person.prototype.greet = function() { console.log('Hi', this.name); }
          me.greet(); // Hi Joe
-   #callback => 
+   #callback js => function doHomework(subject, callback) {alert('someText ${subject} '); callback(); } => function someFunct(){} => doHomework('math', someFunct);
+   
+   	
+   #dropping zzz.com.ua Adss => //drop div sign with money donut, deployed in /countdown18/
+	    $('div:contains("Ця сторінка розміщена безкоштовно ")').css('display', 'none'); $('div:contains("is hosted for free by zzz.com.ua, if you are owner of this page")').css('display', 'none'); 
+	   //droping Mint.me banner (in /countdown18/)
+	   setTimeout(function(){ 
+	      $('div').each(function() {
+             if ($(this).find('img').length) { var a_href = $(this).find('div a').attr('href'); if( a_href == "https://www.mintme.com/"){  $(this).find('div').css('display', 'none');}}
+         });  }, 2000);
+	#  myVar = setInterval(countUserRegisterRequests, 1000 );
+
    
 
 CSS=>
-   #Bootstrap grid => <div class="col-lg-3 col-md-3 col-sm-3">
+   #Bootstrap grid => <div class="col-lg-3 col-md-3 col-sm-3">  <div class="col-sm-6 col-xs-12">
    # css animation smoothly=> transition: 1.25s; -webkit-animation: fadeIn 1s;animation: fadeIn 1s;
    # media query => @media screen and (max-width: 480px) { }
-   # shadow => .shadowX, {box-shadow: 0 1px 4px rgba(0, 0, 0, .3), -23px 0 20px -23px rgba(0, 0, 0, .6), 23px 0 20px -23px rgba(0, 0, 0, .6), inset 0 0 40px rgba(0, 0, 0, .1); }
- 
+   # div shadow => .shadowX {box-shadow: 0 1px 4px rgba(0, 0, 0, .3), -23px 0 20px -23px rgba(0, 0, 0, .6), 23px 0 20px -23px rgba(0, 0, 0, .6), inset 0 0 40px rgba(0, 0, 0, .1); }
+   # div shadow 2 => .shadowX22 {-moz-box-shadow: inset 0px 0px 47px 3px #4c3f37; -webkit-box-shadow: inset 0px 0px 47px 3px #4c3f37; box-shadow: inset 0px 0px 277px 3px #4c3f37; }
+   # text shadow => https://html-css-js.com/css/generator/text-shadow/
 
 
    
