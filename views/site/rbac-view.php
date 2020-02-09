@@ -200,7 +200,7 @@ $this->params['breadcrumbs'][] = $this->title;
        //if validation is OK	   
 	   } else { 
 	   
-	        alert("Validate OK");  /*alert(<?php echo Yii::$app->request->baseUrl?> +"/products/getajaxorderdata" );*/
+	        alert("Validate OK");  
 		    // runs ajax here
 			//var userInput = $(this).serialize();  //user form input-FAILS
 			//alert("form " + userInput);
@@ -220,7 +220,7 @@ $this->params['breadcrumbs'][] = $this->title;
 			    //passing the data to ajax
 				data: {
                     controller : '$Controller ',
-				    //_csrf : '<?= Yii::$app->request->csrfToken; ?>',
+				    
 				    selectValue : $(this).closest("form").find(":selected").val(), // $(this).find(":selected").val(),  //value of nearest <select> to clicked button
 					userID: $(this).attr('id'), //$(this).find("input[type=submit]").attr('id'),  //user ID
 

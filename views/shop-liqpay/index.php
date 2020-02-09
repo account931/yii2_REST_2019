@@ -8,11 +8,17 @@ use yii\bootstrap\ActiveForm;
 use app\assets\Shop_LiqPay_AssertOnly;   // use your custom asset
 Shop_LiqPay_AssertOnly::register($this); // register your custom asset to use this js/css bundle in this View only(1st name-> is the na
 
-$this->title = 'Shop Liq E-pay + ADD LAZY LOAD ';
+$this->title = 'Shop Liq E-pay';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="site-about">
     <h1><?= Html::encode($this->title) ?></h1>
+	
+	<hr>
+	<p class="text-danger">Stopped: to continue with do => </p>
+	<p class="text-danger">#onModal window click - add product to Session Cart</p>
+	<p class="text-danger">#implement Cart (amado template), check-out and LiqPay billing + add lazyLoad</p>
+	<hr>
 
  <?php 
   //all products array, as if we get from DB

@@ -965,7 +965,7 @@ dropdown
 
 #Redirect =>  return $this->redirect(['support-data/index']);   // return $this->redirect(['support-data/index', 'getX'=> 'someText']);
 
-#To get $_GET['some'] => if (Yii::$app->getRequest()->getQueryParam('traceURL')=="supp_kbase"){} //Yii::$app->request->get('id');
+#To get $_GET['some'] => if (Yii::$app->getRequest()->getQueryParam('traceURL')=="supp_kbase"){} //Yii::$app->request->get('id'); //Yii::$app->request->post('id')
  
 #To check if user has logged=> if(!Yii::$app->user->isGuest){ 
 
@@ -997,7 +997,7 @@ dropdown
 
 #How to write Method inside model-> $rbac = self::find()->where(['name' => $roleName])->one(); To use in Controller=>  if(AuthItem::checkIfRoleExist('adminX'))
 #Gii(prettyUrl):   yii-basic-app-2.0.15/basic/web/gii  Non-pretty:  yii-basic-app-2.0.15/basic/web/index.php?r=gii
-#Refresh(prevent from sending form on the reload of page)=> //setflash & then; return $this->refresh(); FALSE=> It will disable flash messages. In this case, after saving u can simply set form fields to empty value, like $model->field="";
+#Refresh(prevent from sending form on the reload of page)=> TRUE -> setflash & then; return $this->refresh();       FALSE=> It will disable flash messages. In this case, after saving u can simply set form fields to empty value, like $model->field="";
 
 #Throw yii exception -> throw new \yii\web\NotFoundHttpException("This exception is hand made.");
 #Gii (access Gii with prettyUrl)-> http://localhost/yii2_REST_and_Rbac_2019/yii-basic-app-2.0.15/basic/web/gii
@@ -1005,6 +1005,7 @@ dropdown
 #Generate Form url with Php for ajax: $URL = Yii::$app->request->baseUrl . "/site/ajax-rbac-insert-update";
 #Generate Form url with JS for ajax: var loc = window.location.pathname; var dir = loc.substring(0, loc.lastIndexOf('/'));  var urlX = dir + '/ajax_get_6_month';
 #Generate Form url with JS for ajax(var 2(in view)):
+                            use yii\helpers\Json;
                             $urll = Yii::$app->getUrlManager()->getBaseUrl();
 		                    $this->registerJs( "var urlX = ".Json::encode($urll).";",   yii\web\View::POS_HEAD,  'myproduct2-events-script' );
 
@@ -1045,9 +1046,10 @@ if($_SERVER['REMOTE_ADDR'] == '127.0.0.1') {
         ],])
 	
 	
-#form hidden input=> $form->field($model, 'wpBlog_author')->hiddenInput(['autofocus' => true, 'value'=> Yii::$app->user->identity->id])->label(false); //
-#Hidden input field + default value + hide lable =>  $form->field($model, 'entity')-> hiddenInput(['value'=> ''])->label(false);
-#Add id to form input => 	<?= $form->field($model, 'book_from' ,['inputOptions' => ['id' => 'uniqueID',],]) ->input('date')->label(false);
+#form hidden input / add id to form input=> $form->field($model, 'wpBlog_author')->hiddenInput(['autofocus' => true, 'id' => 'some_id', 'value'=> Yii::$app->user->identity->id])->label(false); //
+#Hidden input field + default value + hide lable =>  $form->field($model, 'entity')-> hiddenInput(['value'=> '', 'id' => 'some_id'])->label(false);
+#Add id to form input => 	<?= $form->field($model, 'book_from') ->input('date')->label(false);
+# horizontal form => <?php $form = ActiveForm::begin( [ 'options' => ['class' => 'form-inline'] ]);  See details => https://github.com/account931/kernel/blob/master/modules/views/invoice-load-in/_form.php
 
 #dropdown <select><option> with URL links => https://github.com/account931/portal_v2/blob/master/controllers/SiteController.php  -> function actionPortal()  + /js/autocomplete.js
 #inner Join => https://github.com/account931/iShop_Yii2_Gitted_from_LocalHost/blob/master/basic/controllers/ProductsController.php   ->  function actionPlaced()
@@ -1078,7 +1080,17 @@ if($_SERVER['REMOTE_ADDR'] == '127.0.0.1') {
 
 # use diffrent alyout => $this->layout = 'mainHome'; //layout with NO navbar menu
 # form save => if ($model->load(\Yii::$app->request->post()) && $model->save()) {}
+# datestamp to date => Yii::$app->formatter->asDate($b->created_at,'php:d.m.Y')  Yii::$app->formatter->asDate($i->date_to_load_out, 'dd-MM-yyyy H:i'); /*31-12-2019 16:20*/  Yii::$app->formatter->format($i->date_to_load_out, 'date')
 
+# relations in dropdown =>    echo $form->field($model, 'product_id')->dropDownList(ArrayHelper::map(DB1::find()->where(['balance_user_id' => Yii::$app->user->identity->id])->joinWith(['RELATION_FUNCTION_FROM_DB1_model'])->all(),'balance_productName_id', 'productname.pr_name_name'),['prompt'=>'choose product']);?>
+                       => https://github.com/account931/kernel/blob/master/views/invoice-load-out/load-out-index.php
+
+# in controller check validation errors => var_dump($model->getErrors());					   
+# use personal function /place-to-define-common-function => https://stackoverflow.com/questions/37648935/in-yii2-framework-better-place-to-define-common-function-which-is-accessible-ev
+  1. namespace app\components; Class MyComponent extends Component { public static function unwind(){
+  2. echo \app\components\Mycomponent::unwind();
+  
+  
 ========================================================
 98.2.V.A(php)
 #Use CLI in full screen =>   mode 800
@@ -1089,6 +1101,7 @@ if($_SERVER['REMOTE_ADDR'] == '127.0.0.1') {
 #Time => date_default_timezone_set('Europe/Kiev'); date('m/d/Y h:i:s a', time()); // 11/21/2019 03:51:50 pm
 #Today date => date('j-M-D-Y'); //21-Nov-Thu-2019
 #Unix to normal => date('d M Y H:i:s Z', $Unix) ;
+# get unix => php => {time() === strtotime("now"); strtotime("3 October 2005")} vs js => new Date().getTime()
 
 
 #create Enum SQL => choose enum + in Length/Values column put there : '0' ,'1'
@@ -1102,6 +1115,12 @@ if($_SERVER['REMOTE_ADDR'] == '127.0.0.1') {
 			   $firstObject = new Human("Joseph"); //calling constructor
 
 # Enable error reporting for NOTICES => 	 ini_set('display_errors', 1);  error_reporting(E_NOTICE);
+#ternary =. $x = $valid ? 'yes' : 'no';
+# arguments by default => function crop($text, $tLenght=33){}; crop("text");
+
+# php even odd css class => echo '<div class="row list-group-item cursorX ' .($i%2 ? 'evenX':''). '">'; . See Css => https://github.com/account931/kernel/blob/master/web/css/myCss.css
+# variable in for loop => ${'current'.$i} 
+
 	 
 JS=>
    # IOS, safari JS click fix => add empty {onClick}  => <span onClick="" id="someID"></span>   OR => cursor: pointer;
@@ -1133,10 +1152,11 @@ JS=>
 CSS=>
    #Bootstrap grid => <div class="col-lg-3 col-md-3 col-sm-3">  <div class="col-sm-6 col-xs-12">
    # css animation smoothly=> transition: 1.25s; -webkit-animation: fadeIn 1s;animation: fadeIn 1s;
-   # media query => @media screen and (max-width: 480px) { }
+   # media query mobile => @media screen and (max-width: 480px) { }
    # div shadow => .shadowX {box-shadow: 0 1px 4px rgba(0, 0, 0, .3), -23px 0 20px -23px rgba(0, 0, 0, .6), 23px 0 20px -23px rgba(0, 0, 0, .6), inset 0 0 40px rgba(0, 0, 0, .1); }
    # div shadow 2 => .shadowX22 {-moz-box-shadow: inset 0px 0px 47px 3px #4c3f37; -webkit-box-shadow: inset 0px 0px 47px 3px #4c3f37; box-shadow: inset 0px 0px 277px 3px #4c3f37; }
    # text shadow => https://html-css-js.com/css/generator/text-shadow/
+   # text not to overlap the div => word-wrap: break-word;
 
 
    
