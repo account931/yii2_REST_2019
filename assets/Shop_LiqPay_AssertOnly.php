@@ -23,6 +23,10 @@ class Shop_LiqPay_AssertOnly extends AssetBundle
     public $css = [
         'css/ShopLiq_Pay/main.css',
 		'css/ShopLiq_Pay/util.css', //
+		'css/ShopLiq_Pay/core-cart-style.css',
+		'https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.css', //Sweet Alert CSS
+		
+		
 
     ];
 	
@@ -30,6 +34,7 @@ class Shop_LiqPay_AssertOnly extends AssetBundle
 	     'js/ShopLiq_Pay/main.js',
 		 'js/ShopLiq_Pay/vendor/isotope/isotope.pkgd.min.js',
 		//'https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert-dev.min.js',
+		 'https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js', //Sweet Alert JS
     ];
 	
     public $depends = [

@@ -5,8 +5,8 @@
 	window.id;
 	
 	 /*==================================================================
-    [  onClick Show modal1 & html clicked products details in modal, i.e onClick gets id of clicked that is equal to php $productsX[id]; and $productsX[id] is passed to JS from view/index.php]*/
-    $('.js-show-modal1').on('click',function(e){ 
+    [  onClick "Quick View" Show modal1 & html clicked products details in modal, i.e onClick gets id of clicked that is equal to php $productsX[id]; and $productsX[id] is passed to JS from view/index.php]*/
+    $('.js-show-modal1' /*, .my-one*/).on('click',function(e){ 
         e.preventDefault();
         $('.js-modal1').addClass('show-modal1');
 		
@@ -19,8 +19,10 @@
 		$("#hiddenModal_Product").stop().fadeOut("slow",function(){ $(this).html(productsJS[idX].name)}).fadeIn(2000); //with animation
 		$("#hiddenModal_Price").html(productsJS[idX].price + " ₴"); //html the price
 		$("#hiddenModal_Description").html(productsJS[idX].description);  
-		$("#hiddenModal_Image").stop().fadeOut("slow",function(){ $(this).attr("src", urlX + "/images/shopLiqPay/" + productsJS[idX].image)}).fadeIn(800); //with animation
+		$("#hiddenModal_Image").attr("src", urlX + "/images/shopLiqPay/" + productsJS[idX].image); //with animation
 		//$("#hiddenModal_Image").attr("src", urlX + "/images/shopLiqPay/" + productsJS[idX].image);
+		//adding id to button
+		 $(".assign-id ").attr("id",productsJS[idX].id);
     });
 
 	
@@ -39,11 +41,14 @@
 	
 	
 	 /*==================================================================
-    [ Open Cart]*/
+    [ Adds product to cart via ajax]*/
     $('.js-addcart-detail').on('click',function(){ 
-	    alert("open the cart");
+	    sendAjaxAddProduct($(this));
         
     });
+	
+	
+	
 	
 	
 	
@@ -56,20 +61,23 @@
         $('.js-panel-cart').addClass('show-header-cart');
     });
 
-    $('.js-hide-cart').on('click',function(){ alert(45);
+    $('.js-hide-cart').on('click',function(){ alert(46);
         $('.js-panel-cart').removeClass('show-header-cart');
     });
 
     /*==================================================================
     [ Cart ]*/
-    $('.js-show-sidebar').on('click',function(){ alert(45);
+    $('.js-show-sidebar').on('click',function(){ alert(47);
         $('.js-sidebar').addClass('show-sidebar');
     });
 
-    $('.js-hide-sidebar').on('click',function(){ alert(45);
+    $('.js-hide-sidebar').on('click',function(){ alert(48);
         $('.js-sidebar').removeClass('show-sidebar');
     });
 
+	
+	
+	
 	
 	
     /*==================================================================
@@ -106,9 +114,42 @@
 	
 	
 	
+		     
+  // **************************************************************************************
+  // **************************************************************************************
+  // **                                                                                  **
+  // **                                                                                  **
 	
+	 function sendAjaxAddProduct(thisX){
+          
+		  var url = urlX + '/shop-liqpay/add-product-to-cart'; //url from view/admin-panel
+	      //alert(url);
+		   // send  data  to  PHP handler  ************ 
+           $.ajax({
+              url: url,
+              type: 'POST',
+			  dataType: 'JSON', 
+			  data: {
+				  serverID: thisX.attr('id'), //product ID
+				  serverQuantity: $('#productQuantity').val() //product quantity
+				  },
 	
-	
+              success: function(data) {
+				
+				  swal("!", "Added ID => " + data.id + " => " + data.quantity, "success"); //sweet alert
+				  if(data.count > 0){
+			          $('.bb:eq(0)').attr('data-badge', data.count); //$('.badge1:eq(0)').stop().fadeOut("slow",function(){ $(this).attr('data-badge', data.count) }).fadeIn(2000);   
+		         } else {
+		             $('.bb:eq(0)').attr('data-badge', -0);
+		         }
+              },  //end success
+			  error: function (error) {
+				   alert(JSON.stringify(error, null, 4));
+				  alert('messages ajax failed');
+				  //$(".all-6-month").stop().fadeOut("slow",function(){ $(this).html("Failed")}).fadeIn(2000);
+              }	
+          });
+	 }
 	
 	
 	

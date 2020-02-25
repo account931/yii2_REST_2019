@@ -6,13 +6,39 @@ use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 
 use app\assets\Shop_LiqPay_AssertOnly;   // use your custom asset
-Shop_LiqPay_AssertOnly::register($this); // register your custom asset to use this js/css bundle in this View only(1st name-> is the na
+Shop_LiqPay_AssertOnly::register($this); // register your custom asset to use this js/css bundle in this View only(1st name-> is the name
+?>
+
+
+<!-- <div class="panel panel-primary">
+      <div class="panel-heading">Panel with panel-primary class</div>
+ </div>-->
+	
+	
+	
+<?php	
+	
+
 
 $this->title = 'Shop Liq E-pay';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="site-about">
-    <h1><?= Html::encode($this->title) ?></h1>
+
+    <div class="row">
+	    <div class="col-sm-9 col-lg-10">
+            <h1><?= Html::encode($this->title) ?></h1>
+		</div>	
+		
+		<!-- Cart icon with badge -->
+		<?php if (isset($_SESSION['cart'])) { $c = count($_SESSION['cart']); } else { $c = 0; } ?>
+		<div class="col-sm-2 col-lg-1 badge1 bb" data-badge='<?php echo $c; ?> '>
+		    <?php echo Html::a( '<i class="fa fa-cart-plus fa-4x" aria-hidden="true"></i>', ["/shop-liqpay/cart", "period" => "",], $options = ["title" => "Cart",]); ?>
+		</div>		
+	</div>
+	
+	
+	
 	
 	<hr>
 	<p class="text-danger">Stopped: to continue with do => </p>
@@ -34,6 +60,9 @@ $this->params['breadcrumbs'][] = $this->title;
 	  ['id'=> 7, 'name'=> 'T-Shirt with Sleeve',     'price' => 18.49, 'image' => 'product-08.jpg', 'description' => 'some text'],
   ];
  
+  
+  $_SESSION['productCatalogue'] = $productsX; //all products from DB to session
+  
   
   
   //passing PHP object variable to javascript -> 
@@ -70,7 +99,7 @@ $this->params['breadcrumbs'][] = $this->title;
 						<div class="block2-pic hov-img0">
 						
 							<!--<img src="images/shopLiqPay/product-01.jpg" alt="IMG-PRODUCT">-->
-							<?=Html::img(Yii::$app->getUrlManager()->getBaseUrl().'/images/shopLiqPay/' . $productsX[$i]['image'] , $options = ["id"=>"","margin-left"=>"","class"=>"","width"=>"","title"=>"product"]); ?>
+							<?=Html::img(Yii::$app->getUrlManager()->getBaseUrl().'/images/shopLiqPay/' . $productsX[$i]['image'] , $options = ["id"=>"","margin-left"=>"","class"=>"my-one","width"=>"","title"=>"product"]); ?>
 
 							<a href="#" class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1" id= <?=$productsX[$i]['id']?> >
 								Quick View
@@ -391,7 +420,7 @@ $this->params['breadcrumbs'][] = $this->title;
 												<i class="fs-16 zmdi zmdi-minus">-</i>
 											</div>
 
-											<input class="mtext-104 cl3 txt-center num-product" type="number" name="num-product" value="1">
+											<input class="mtext-104 cl3 txt-center num-product" id="productQuantity" type="number" name="num-product" value="1">
                                             
 											<!-- + button -->
 											<div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
@@ -399,7 +428,7 @@ $this->params['breadcrumbs'][] = $this->title;
 											</div>
 										</div>
 
-										<button class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 js-addcart-detail">
+										<button class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 js-addcart-detail assign-id" >
 											Add to cart
 										</button>
 									</div>

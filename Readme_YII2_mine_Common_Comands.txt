@@ -1192,7 +1192,7 @@ CSS=>
   
   
   
-  
+ 99.3 While on Ipad, bootstrap navbar menu does not collapse => see SECTION {if iPad Portrait do collapse navbar menu always} at https://github.com/account931/yii2_REST_and_Rbac_2019/blob/master/web/css/site.css
   
   
   

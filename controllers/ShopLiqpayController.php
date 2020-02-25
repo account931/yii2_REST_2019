@@ -120,6 +120,72 @@ class ShopLiqpayController extends Controller
 	
 
 
+	
+	
+	 /**
+     * Displays Cart.
+     *
+     */
+	     
+  // **************************************************************************************
+  // **************************************************************************************
+  // **                                                                                  **
+  // **                                                                                  **
+    public function actionCart()
+    {
+		//$cart = $_SESSION['cart'];
+        return $this->render('cart', [
+            //'model' => $cart,
+        ]);
+    }
+
+	
+	
+	
+	/**
+     * Add product to cart via ajax
+     *
+     */     
+  // **************************************************************************************
+  // **************************************************************************************
+  // **                                                                                  **
+  // **                                                                                  **
+    public function actionAddProductToCart()
+    {
+        //$found = Messages::find()->where(['m_status_read' => self::STATUS_NOT_READ])->andWhere(['m_receiver_id' => Yii::$app->user->identity->id]);
+		//$count = $found->count();
+		
+		$id = $_POST['serverID'];//get product ID from ajax
+
+        //session_start();
+        if (!isset($_SESSION['cart'])) {//если сесия корзины не существует
+            $temp[$id] = (int)$_POST['serverQuantity'];//в масив заносим количество тавара 
+        } else {//если в сесии корзины уже есть товары
+            $temp = $_SESSION['cart'];//заносим в масив старую сесию
+            if (!array_key_exists($id, $temp)) {//проверяем есть ли в корзине уже такой товар
+                $temp[$id] = (int)$_POST['serverQuantity']; //в масив заносим количество тавара 1
+            } else {
+				$temp[$id] = (int)$_POST['serverQuantity'];
+			}				
+        }
+        $count = count($temp);//считаем товары в корзине
+        $_SESSION['cart'] = $temp;//записывае в сесию наш масив
+        //echo $count; //возвращаем количество товаров
+		
+		
+		
+		
+		//RETURN JSON DATA
+         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;  
+          return [
+             'result_status' => "OK",
+			 'id' => $_POST['serverID'], 
+			 'quantity' => $_POST['serverQuantity'],
+             'count' => $count ,			 
+          ]; 
+    }
+	
+	
 
 
 }
