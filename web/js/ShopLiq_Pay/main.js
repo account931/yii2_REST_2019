@@ -10,7 +10,7 @@
         e.preventDefault();
         $('.js-modal1').addClass('show-modal1');
 		
-		var idX = this.id; //id of clicke product
+		var idX = this.id; //id of clicked product
 		window.id = idX;
 		console.log(urlX);
 		//var productsJS is passed php array with products (from view/index.php)
@@ -23,6 +23,12 @@
 		//$("#hiddenModal_Image").attr("src", urlX + "/images/shopLiqPay/" + productsJS[idX].image);
 		//adding id to button
 		 $(".assign-id ").attr("id",productsJS[idX].id);
+		 
+		//html the quanity in modal window, based on $_SESSION['cart']. On success calculate and html Total price {Total for 4 items is 300.00 ₴}
+		sendAjaxToGetQuantity(idX); 
+
+		 
+		
     });
 
 	
@@ -150,6 +156,63 @@
               }	
           });
 	 }
+	
+	
+	
+	
+	
+	
+	
+  //html the quanity in modal window, based on $_SESSION['cart']. On success calculate and html Total price {Total for 4 items is 300.00 ₴}
+  // **************************************************************************************
+  // **************************************************************************************
+  // **                                                                                  **
+  // **                                                                                  **
+	
+	 function sendAjaxToGetQuantity(idX){
+          
+		  $('#productQuantity').val("");
+		  
+		  var url = urlX + '/shop-liqpay/get-quantity-for-modal'; //url from view/admin-panel
+	      //alert(url);
+		   // send  data  to  PHP handler  ************ 
+           $.ajax({
+              url: url,
+              type: 'POST',
+			  dataType: 'JSON', 
+			  data: {
+                  serverID: idX, //product ID				  
+				  },
+	
+              success: function(data) {
+				  //alert(data.quantityX);
+				  $("#productQuantity").stop().fadeOut(200, function(){ $(this).val(data.quantityX)}).fadeIn(400); //html quantity with animation
+
+				  
+				  //html Total price {Total for 4 items is 300.00 ₴}
+		          var q = data.quantityX;
+		          var amount =(data.quantityX * productsJS[idX].price).toFixed(2);
+		          $('.totalZ').stop().fadeOut(200, function(){ $(this).html('Total for <span id="quantX">' + q + '</span> items is <span id="totalX">' + amount + '</span> ₴')}).fadeIn(400); //with animation
+	 
+	
+	
+              },  //end success
+			  error: function (error) {
+				   alert(JSON.stringify(error, null, 4));
+				  alert('sendAjaxToGetQuantity ajax failed');
+				  //$(".all-6-month").stop().fadeOut("slow",function(){ $(this).html("Failed")}).fadeIn(2000);
+              }	
+          });
+		   
+	 }
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	

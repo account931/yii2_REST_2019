@@ -88,7 +88,7 @@ $this->params['breadcrumbs'][] = $this->title;
   
    <div class="row isotope-grid">
     <?php
-	  //generate shop products
+	  //generate shop products, Loop ----------------------------------------------------------
 	  for($i = 0; $i < count($productsX); $i++){
     ?>
 	
@@ -406,12 +406,10 @@ $this->params['breadcrumbs'][] = $this->title;
 									</div>
 								</div>
 
-								<!--  Mine => Totall for {4} items is {457 UAH} -->
-								<div class="totalZ">
-								   <!--Total for <span id="quantX">0</span> items is <span id="totalX">0</span> ₴-->
-								</div>
 								
 								
+								
+								<!----------------------- ++/-- buttons ------------------------>
 								<div class="flex-w flex-r-m p-b-10">
 									<div class="size-204 flex-w flex-m respon6-next">
 										<div class="wrap-num-product flex-w m-r-20 m-tb-10">
@@ -420,14 +418,42 @@ $this->params['breadcrumbs'][] = $this->title;
 												<i class="fs-16 zmdi zmdi-minus">-</i>
 											</div>
 
-											<input class="mtext-104 cl3 txt-center num-product" id="productQuantity" type="number" name="num-product" value="1">
+											<?php
+											/*
+											// Description is FALSE, all is dine in main.js
+											//check if product already exist in $_SESSION['cart'], i.e was selected previously, so html quanity from $_SESSION['cart']
+											$keyN = array_key_exists(0, $_SESSION['cart']); //array_search($i, $_SESSION['cart']);
+											if($keyN){
+												$valueX = $_SESSION['cart'][0];
+											} else {
+											    $valueX = 1;
+											}
+                                            */
+											?>
+											
+											<!----------------------- Quantity ------------------------>
+											<input class="mtext-104 cl3 txt-center num-product" id="productQuantity" type="number" name="num-product" value="">
                                             
+											
 											<!-- + button -->
 											<div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
 												<i class="fs-16 zmdi zmdi-plus">+</i>
 											</div>
 										</div>
 
+										
+										
+										
+										
+										<!-------------------  Mine => Totall for {4} items is {457 UAH}, htmled in main.js ----------------------->
+								        <div class="totalZ col-sm-12">
+								            <!--Total for <span id="quantX">0</span> items is <span id="totalX">0</span> ₴-->
+								        </div><br>
+										<!---------------- END Mine => Totall for {4} items is {457 UAH}, htmled in main.js ----------------------->
+										
+										
+										
+										
 										<button class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 js-addcart-detail assign-id" >
 											Add to cart
 										</button>

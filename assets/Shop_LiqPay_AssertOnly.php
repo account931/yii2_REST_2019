@@ -32,6 +32,7 @@ class Shop_LiqPay_AssertOnly extends AssetBundle
 	
     public $js = [
 	     'js/ShopLiq_Pay/main.js',
+		 'js/ShopLiq_Pay/cart.js',
 		 'js/ShopLiq_Pay/vendor/isotope/isotope.pkgd.min.js',
 		//'https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert-dev.min.js',
 		 'https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js', //Sweet Alert JS

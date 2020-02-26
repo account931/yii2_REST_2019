@@ -155,21 +155,22 @@ class ShopLiqpayController extends Controller
         //$found = Messages::find()->where(['m_status_read' => self::STATUS_NOT_READ])->andWhere(['m_receiver_id' => Yii::$app->user->identity->id]);
 		//$count = $found->count();
 		
+
 		$id = $_POST['serverID'];//get product ID from ajax
 
         //session_start();
-        if (!isset($_SESSION['cart'])) {//если сесия корзины не существует
+        if (!isset($_SESSION['cart'])) {//if Session['cart'] does not exist yet
             $temp[$id] = (int)$_POST['serverQuantity'];//в масив заносим количество тавара 
-        } else {//если в сесии корзины уже есть товары
-            $temp = $_SESSION['cart'];//заносим в масив старую сесию
+        } else {//if if Session['cart'] already contains some products, ie. was prev added to cart
+            $temp = $_SESSION['cart'];//save Session to temp var
             if (!array_key_exists($id, $temp)) {//проверяем есть ли в корзине уже такой товар
                 $temp[$id] = (int)$_POST['serverQuantity']; //в масив заносим количество тавара 1
-            } else {
+            } else { //if product was not prev selected (added to cart)
 				$temp[$id] = (int)$_POST['serverQuantity'];
 			}				
         }
-        $count = count($temp);//считаем товары в корзине
-        $_SESSION['cart'] = $temp;//записывае в сесию наш масив
+        $count = count($temp);//count products in cart
+        $_SESSION['cart'] = $temp;//write temp var to Cart
         //echo $count; //возвращаем количество товаров
 		
 		
@@ -181,11 +182,48 @@ class ShopLiqpayController extends Controller
              'result_status' => "OK",
 			 'id' => $_POST['serverID'], 
 			 'quantity' => $_POST['serverQuantity'],
-             'count' => $count ,			 
+             'count' => $count,	
+            			 
           ]; 
     }
 	
 	
 
+	
+	
+	
+	
+	//works with ajax, returns the quantity of product for modal in shop main page based on $_SESSION['cart']
+  // **************************************************************************************
+  // **************************************************************************************
+  // **                                                                                  **
+  // **                                                                                  **
+    public function actionGetQuantityForModal()
+    {
+
+		$id = $_POST['serverID'];//get product ID from ajax
+
+        //session_start();
+        if (isset($_SESSION['cart'])) {//if Session cart exists
+           $keyN = array_key_exists($_POST['serverID'], $_SESSION['cart']); //array_search($i, $_SESSION['cart']);
+		   if($keyN){
+		       $valueX = $_SESSION['cart'][$id];
+			} else {
+			   $valueX = 1;
+			}
+        } else {
+          	$valueX = 1;			
+        }
+
+
+		
+		//RETURN JSON DATA
+         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;  
+          return [
+             'result_status' => "OK",
+			 'quantityX' => $valueX,
+            			 
+          ]; 
+    }
 
 }

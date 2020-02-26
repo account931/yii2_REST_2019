@@ -14,8 +14,10 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 	<?php
 	if (isset($_SESSION['cart'])){
-        echo "<p>Cart contains <b>" . count($_SESSION['cart']) . "</b>products</p>";
+        echo "<p>Cart contains <b>" . count($_SESSION['cart']) . "</b> products</p>";
 		var_dump($_SESSION['cart']);
+		
+		
 	}
     ?>
 	
@@ -34,10 +36,6 @@ $this->params['breadcrumbs'][] = $this->title;
     <!-- ##### Main Content Wrapper Start ##### -->
     <div class="main-content-wrapper d-flex clearfix">
 
-      
-
-       
-
         <div class="cart-table-area section-padding-100">
             <div class="container-fluid">
                 <div class="row">
@@ -47,7 +45,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         </div>
 
                         <div class="cart-table clearfix">
-                            <table class="table table-responsive">
+                            <table class="table table-responsive table-bordered">
                                 <thead>
                                     <tr>
                                         <th></th>
@@ -59,7 +57,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 <tbody>
 								
 								
-								    <!------------------- Foreach ------------>
+	<!-------------------------------------- Foreach $_SESSION['cart'] to dispaly all cart products --------------------------------------------->
 									<?php
 									$i = 0;
 									//for ($i = 0; $i < count($_SESSION['cart']); $i++) {
@@ -67,35 +65,52 @@ $this->params['breadcrumbs'][] = $this->title;
 									    $i++;
 									?>
 									
-                                    <tr>
+                                    <tr class="list-group-item">
                                         <td class="cart_product_img">
-                                            <a href="#"><img src="img/bg-img/cart1.jpg" alt="Product"></a>
+										<?php
+										    //find in $_SESSION['productCatalogue'] index the product by id
+										    $keyN = array_search($key, array_keys($_SESSION['productCatalogue'])); //find in $_SESSION['productCatalogue'] index the product by id
+										    
+											//echo image
+											echo Html::img(Yii::$app->getUrlManager()->getBaseUrl().'/images/shopLiqPay/' . $_SESSION['productCatalogue'][$keyN]['image'] , $options = ["id"=>"","margin-left"=>"","class"=>"my-one","width"=>"","title"=>"product"]); 
+                                            ?>
+											<!--<a href="#"><img src="img/bg-img/cart1.jpg" alt="Product"></a>-->
                                         </td>
                                         <td class="cart_product_desc">
                                             <h5> 
+											
 											    <?php
-												$keyN = array_search($key, array_keys($_SESSION['productCatalogue'])); //find in $_SESSION['productCatalogue'] index the product by id
-											    //echo "=> " .$keyN . " --- ";
+												//echo product name from $_SESSION['productCatalogue']		
 											    echo $_SESSION['productCatalogue'][$keyN]['name'];
 											    ?> 
+												
+												
 											</h5>
                                         </td>
+										<!-----  1 product Price column --------->
                                         <td class="price">
-                                            <span> <?=$_SESSION['productCatalogue'][$keyN]['price'];?> </span>
+                                            <span class="priceX"> <?=$_SESSION['productCatalogue'][$keyN]['price'];?> </span>
                                         </td>
-                                        <td class="qty">
+                                        <td class="qty border">
                                             <div class="qty-btn d-flex">
                                                 <p>Qty</p>
                                                 <div class="quantity">
-                                                    <span class="qty-minus" onclick='var effect = document.getElementById("qty<?=$i?>"); var qty = effect.value; if( !isNaN( qty ) &amp;&amp; qty &gt; 1 ) effect.value--;return false;'><i class="fa fa-minus" aria-hidden="true"></i></span>
-                                                    <input type="number" class="qty-text" id="qty<?=$i?>" step="1" min="1" max="300" name="quantity" value="<?=$value;?>" />
+												
+												    <!-------------- CART -- minus operation --------->
+                                                    <span class="qty-minus my-cart-minus" onclick='var effect = document.getElementById("qty<?=$i?>"); var qty = effect.value; if( !isNaN( qty ) &amp;&amp; qty &gt; 0 ) effect.value--;return false;'><i class="fa fa-minus" aria-hidden="true"></i></span>
                                                     
-                                                     <span class="qty-plus" onclick='var effect = document.getElementById("qty<?=$i?>"); var qty = effect.value; if( !isNaN( qty )) effect.value++;return false;'><i class="fa fa-plus" aria-hidden="true"></i></span>
-                                                </div>
+													<!--------------    Quantity    --------->
+													<input type="number" class="qty-text my-quantity-field" id="qty<?=$i?>" step="1" min="1" max="300" name="quantity" value="<?=$value;?>" />
+                                                    
+													<!-------------- CART ++ plus operation --------->
+                                                    <span class="qty-plus  my-cart-plus" onclick='var effect = document.getElementById("qty<?=$i?>"); var qty = effect.value; if( !isNaN( qty )) effect.value++;return false;'><i class="fa fa-plus" aria-hidden="true"></i></span>
+                                                
+												</div>
                                             </div>
                                         </td>
                                     </tr>
-									<!--------------- END Foreach ------------------>
+									
+									<!---------------------- END Foreach -------------------------->
 									<?php
 									}
 									?>
@@ -108,14 +123,14 @@ $this->params['breadcrumbs'][] = $this->title;
                     </div>
 					
 					
-					<!-- fianl cart -->
+					<!----------- final general sum in cart ----------------------->
                     <div class="col-12 col-lg-4">
                         <div class="cart-summary">
                             <h5>Cart Total</h5>
-                            <ul class="summary-table">
-                                <li><span>subtotal:</span> <span>$140.00</span></li>
-                                <li><span>delivery:</span> <span>Free</span></li>
-                                <li><span>total:</span> <span>$140.00</span></li>
+                            <ul class="summary-table list-group">
+                                <!--<li><span>subtotal:</span> <span>$140.00</span></li>-->
+                                <li class="list-group-item"><span>delivery:</span> <span>Free</span></li>
+                                <li class="list-group-item"><span>total:</span> <span  id="finalSum"> 0 </span></li>
                             </ul>
                             <div class="cart-btn mt-100">
                                 <a href="cart.html" class="btn amado-btn w-100">Checkout</a>
