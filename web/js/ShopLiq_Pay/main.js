@@ -1,4 +1,4 @@
-
+//Js operation with front (main) part of the shop (page with goods)
 (function ($) {
     "use strict";
 	

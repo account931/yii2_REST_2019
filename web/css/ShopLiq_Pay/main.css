@@ -1,3 +1,4 @@
+/*------ My CSS for Shop front Page (page with all goods)-------------*/
 
 /*------ My CSS -------------*/
 /* round icon with quantity of tickets in cookie */
@@ -5,7 +6,7 @@
    content:attr(data-badge);
    position:absolute;
    top:-10px;
-   right:-1px; /* -10 */
+   right:8.2em; /* -10 */
    font-size:.9em;
    background:red;
    color:white;
@@ -19,7 +20,12 @@
 
 
 
-
+/* ---------------------------------------- Mobile */
+@media screen and (max-width: 480px) { 
+   .badge1[data-badge]:after { right:-0.8em;}
+   .badge1 {right:2em;}
+}
+/* ---------------------------------------- Mobile */
 
 
 

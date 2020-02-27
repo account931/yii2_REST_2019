@@ -97,13 +97,15 @@ $this->params['breadcrumbs'][] = $this->title;
                                                 <div class="quantity">
 												
 												    <!-------------- CART -- minus operation --------->
-                                                    <span class="qty-minus my-cart-minus" onclick='var effect = document.getElementById("qty<?=$i?>"); var qty = effect.value; if( !isNaN( qty ) &amp;&amp; qty &gt; 0 ) effect.value--;return false;'><i class="fa fa-minus" aria-hidden="true"></i></span>
+                                                    <span class="qty-minus my-cart-minus"><i class="fa fa-minus" aria-hidden="true"></i></span>
                                                     
+													
 													<!--------------    Quantity    --------->
-													<input type="number" class="qty-text my-quantity-field" id="qty<?=$i?>" step="1" min="1" max="300" name="quantity" value="<?=$value;?>" />
+													<input type="number" class="qty-text my-quantity-field qtyXX" id="qty<?=$i?>" step="1" min="1" max="300" name="quantity" value="<?=$value;?>" />
                                                     
+													
 													<!-------------- CART ++ plus operation --------->
-                                                    <span class="qty-plus  my-cart-plus" onclick='var effect = document.getElementById("qty<?=$i?>"); var qty = effect.value; if( !isNaN( qty )) effect.value++;return false;'><i class="fa fa-plus" aria-hidden="true"></i></span>
+                                                    <span class="qty-plus  my-cart-plus"><i class="fa fa-plus" aria-hidden="true"></i></span>
                                                 
 												</div>
                                             </div>
@@ -133,7 +135,8 @@ $this->params['breadcrumbs'][] = $this->title;
                                 <li class="list-group-item"><span>total:</span> <span  id="finalSum"> 0 </span></li>
                             </ul>
                             <div class="cart-btn mt-100">
-                                <a href="cart.html" class="btn amado-btn w-100">Checkout</a>
+							    <?=Html::a( "Checkoutt", ["/shop-liqpay/check-out"], $options = ["title" => "Checkout", "class" => "btn amado-btn w-100"]); ?>
+                                <!--<a href="cart.html" class="btn amado-btn w-100">Checkout</a>-->
                             </div>
                         </div>
                     </div>

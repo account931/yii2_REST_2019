@@ -26,15 +26,26 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="site-about">
 
     <div class="row">
-	    <div class="col-sm-9 col-lg-10">
+	
+	    <div class="col-sm-10 col-xs-10">
             <h1><?= Html::encode($this->title) ?></h1>
 		</div>	
 		
-		<!-- Cart icon with badge -->
-		<?php if (isset($_SESSION['cart'])) { $c = count($_SESSION['cart']); } else { $c = 0; } ?>
-		<div class="col-sm-2 col-lg-1 badge1 bb" data-badge='<?php echo $c; ?> '>
+		<!-------- Cart icon with badge ----------->
+		<?php 
+		//get the car quantity
+		if (isset($_SESSION['cart'])) { 
+		    $c = count($_SESSION['cart']); 
+		} else { 
+			    $c = 0; 
+		} ?>
+		
+		<div class="col-sm-2 col-xs-2 badge1 bb" data-badge="<?php echo $c; ?> ">
 		    <?php echo Html::a( '<i class="fa fa-cart-plus fa-4x" aria-hidden="true"></i>', ["/shop-liqpay/cart", "period" => "",], $options = ["title" => "Cart",]); ?>
-		</div>		
+
+		</div>
+        <!-------- Cart icon with badge ----------->	
+		
 	</div>
 	
 	
