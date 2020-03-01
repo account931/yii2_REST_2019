@@ -2,6 +2,11 @@
 
 /* @var $this yii\web\View */
 
+// shop uses 2 $_SESSION vars =>  
+//   a.) $_SESSION['productCatalogue'] => contains array of all products (extracted from DB table) (see example at viws/shop-liqpay/index)
+//   b.) $_SESSION['cart'] => contains all products a user selected to buy (in format of assoc array('PRODUCR_ID1'=> 5, 'PRODUCR_ID2'=> 3, ))
+
+
 use yii\helpers\Html;
 
 use app\assets\Shop_LiqPay_AssertOnly;   // use your custom asset
@@ -14,10 +19,18 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 	<?php
 	if (isset($_SESSION['cart'])){
-        echo "<p>Cart contains <b>" . count($_SESSION['cart']) . "</b> products</p>";
+        echo "<p>Cart contains <b><span id='countCart'>" . count($_SESSION['cart']) . "</span></b> products</p>";
 		var_dump($_SESSION['cart']);
-		
-		
+
+	/*
+      //passing PHP variable {$_SESSION['cart']} to javascript -> 
+        use yii\helpers\Json; 
+		$this->registerJs(
+            "var cartJS = ".Json::encode($_SESSION['cart']).";",  
+             yii\web\View::POS_HEAD, 
+            'myproduct-events-script55'
+        ); 
+	*/
 	}
     ?>
 	

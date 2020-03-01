@@ -1,8 +1,19 @@
-//Js operation with front (main) part of the shop (page with goods)
+//Js for front SHOP (main) part of the shop (page with products)
 (function ($) {
     "use strict";
 	
 	window.id;
+	var temporaryJSCartArray; //temp array to hold in JS $_SESSION['cart']
+	
+	//check if $_SESSION['cart'] exists, i.e was passed from views/cart to Js var cartJS
+	if (typeof cartJS != 'undefined') { 
+	    temporaryJSCartArray = cartJS; 
+		console.log(cartJS);
+	} else {
+		temporaryJSCartArray = [];
+	}
+	
+	
 	
 	 /*==================================================================
     [  onClick "Quick View" Show modal1 & html clicked products details in modal, i.e onClick gets id of clicked that is equal to php $productsX[id]; and $productsX[id] is passed to JS from view/index.php]*/
@@ -25,7 +36,7 @@
 		 $(".assign-id ").attr("id",productsJS[idX].id);
 		 
 		//html the quanity in modal window, based on $_SESSION['cart']. On success calculate and html Total price {Total for 4 items is 300.00 ₴}
-		sendAjaxToGetQuantity(idX); 
+		GetQuantity(idX); 
 
 		 
 		
@@ -120,7 +131,7 @@
 	
 	
 	
-		     
+  //send ajax to add a selected product to $_SESSION['cart']	     
   // **************************************************************************************
   // **************************************************************************************
   // **                                                                                  **
@@ -142,12 +153,18 @@
 	
               success: function(data) {
 				
-				  swal("!", "Added ID => " + data.id + " => " + data.quantity, "success"); //sweet alert
+				  swal("!", "Added to cart. ID => " + data.id + " => " + data.quantity + " items", "success"); //sweet alert
 				  if(data.count > 0){
 			          $('.bb:eq(0)').attr('data-badge', data.count); //$('.badge1:eq(0)').stop().fadeOut("slow",function(){ $(this).attr('data-badge', data.count) }).fadeIn(2000);   
 		         } else {
 		             $('.bb:eq(0)').attr('data-badge', -0);
 		         }
+				 
+				 //renew JS var temporaryJSCartArray (otherwise modal window displays old value)
+				 temporaryJSCartArray[thisX.attr('id')] = $('#productQuantity').val();
+				 $("#cartStatus").html('Product was already selected. You picked ' + $('#productQuantity').val() + ' items.');
+				 
+				 
               },  //end success
 			  error: function (error) {
 				   alert(JSON.stringify(error, null, 4));
@@ -169,10 +186,11 @@
   // **                                                                                  **
   // **                                                                                  **
 	
-	 function sendAjaxToGetQuantity(idX){
+	 function GetQuantity(idX){
           
 		  $('#productQuantity').val("");
 		  
+		  /*
 		  var url = urlX + '/shop-liqpay/get-quantity-for-modal'; //url from view/admin-panel
 	      //alert(url);
 		   // send  data  to  PHP handler  ************ 
@@ -199,10 +217,28 @@
               },  //end success
 			  error: function (error) {
 				   alert(JSON.stringify(error, null, 4));
-				  alert('sendAjaxToGetQuantity ajax failed');
+				  alert('GetQuantity ajax failed');
 				  //$(".all-6-month").stop().fadeOut("slow",function(){ $(this).html("Failed")}).fadeIn(2000);
               }	
           });
+		  */
+		  
+		 //new version (without ajax)
+         if (typeof temporaryJSCartArray[idX] != 'undefined'){
+		     var quant = temporaryJSCartArray[idX]; //gets the quantity from $_SESSION
+			 $("#cartStatus").html('Product was already selected. You picked ' + quant + ' items.');
+         } else {
+			 var quant = 1;
+			  $("#cartStatus").html('New product, you did not select it prev');
+		 }
+		
+         $("#productQuantity").stop().fadeOut(200, function(){ $(this).val( quant ) }).fadeIn(400); //html quantity with animation
+		 
+		 //html Total price in Modal{Total for 4 items is 300.00 ₴}
+		 var q = quant;
+		 var amount =(q * productsJS[idX].price).toFixed(2);
+		 $('.totalZ').stop().fadeOut(200, function(){ $(this).html('Total for <span id="quantX">' + q + '</span> items is <span id="totalX">' + amount + '</span> ₴')}).fadeIn(400); //with animation
+	 
 		   
 	 }
 	

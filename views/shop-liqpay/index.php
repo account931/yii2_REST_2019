@@ -41,7 +41,7 @@ $this->params['breadcrumbs'][] = $this->title;
 		} ?>
 		
 		<div class="col-sm-2 col-xs-2 badge1 bb" data-badge="<?php echo $c; ?> ">
-		    <?php echo Html::a( '<i class="fa fa-cart-plus fa-4x" aria-hidden="true"></i>', ["/shop-liqpay/cart", "period" => "",], $options = ["title" => "Cart",]); ?>
+		    <?php echo Html::a( '<i class="fa fa-cart-plus fa-4x" aria-hidden="true"></i>', ["/shop-liqpay/cart"], $options = ["title" => "Cart"]); ?>
 
 		</div>
         <!-------- Cart icon with badge ----------->	
@@ -76,22 +76,30 @@ $this->params['breadcrumbs'][] = $this->title;
   
   
   
-  //passing PHP object variable to javascript -> 
+  //passing PHP variable {$productsX } to javascript -> 
         use yii\helpers\Json; 
 		 $this->registerJs(
-            "var productsJS = ".Json::encode($productsX).";",  
+            "var productsJS = ". Json::encode($productsX).";",  
              yii\web\View::POS_HEAD, 
             'myproduct-events-script'
      );
 	 
-	   //passing PHP object variable to javascript ->  
+	   //passing PHP variable {currentURL} to javascript ->  
 	     $urll = Yii::$app->getUrlManager()->getBaseUrl();
 		 $this->registerJs(
-            "var urlX = ".Json::encode($urll).";",  
+            "var urlX = ". Json::encode($urll).";",  
              yii\web\View::POS_HEAD, 
             'myproduct2-events-script'
      );
-  
+	 
+	 if (isset($_SESSION['cart'])){
+	     //passing PHP variable {$_SESSION['cart']} to javascript -> 
+		 $this->registerJs(
+            "var cartJS = ". Json::encode($_SESSION['cart']).";",  
+             yii\web\View::POS_HEAD, 
+            'myproduct-events-script55'
+         ); 
+	 }
   ?>
   
   
@@ -308,6 +316,7 @@ $this->params['breadcrumbs'][] = $this->title;
 		<div class="container">
 			<div class="bg0 p-t-60 p-b-30 p-lr-15-lg how-pos3-parent">
 				<button class="how-pos3 hov3 trans-04 js-hide-modal1">
+				    
 					<!--<img src="images/icons/icon-close.png" alt="CLOSE">-->
 					<?=Html::img(Yii::$app->getUrlManager()->getBaseUrl().'/images/shopLiqPay/icons/icon-close.png' , $options = ["id"=>"","margin-left"=>"","class"=>"","width"=>"","title"=>"product"]); ?>
 				</button>
@@ -323,6 +332,11 @@ $this->params['breadcrumbs'][] = $this->title;
 								
 								
 									<div class="item-slick3" data-thumb="images/product-detail-01.jpg">
+									    
+										<!-- My Cart status ()was selected prev/was nor selected prev -->
+										<span class="text-danger small" id="cartStatus"></span>
+										<!-- My Cart status -->
+										
 										<div class="wrap-pic-w pos-relative">
 										    
 											<!-- Core modal image!!!!! -->

@@ -4,7 +4,17 @@
 (function ($) {
     "use strict";
 	
-
+	/*
+	//check if $_SESSION['cart'] exists, i.e was passed from views/cart to Js var cartJS
+	if (typeof cartJS != 'undefined') { 
+	    temporaryJSCartArray = cartJS;
+	} else {
+		temporaryJSCartArray = {};
+	}
+	
+	*/
+	
+    //calc and html the general amount of all cart products
 	calcAllSum();	
 	
 	
@@ -59,8 +69,16 @@
            },
            function(isConfirm){
                if (isConfirm){
-				    parentX.remove(); //closest('tr')
-                   swal("Shortlisted!", "Item is removed from your cart", "success");
+				    parentX.remove(); //remove closest('tr') from DOM
+					
+					//show sw alert with delay (in order for user to see remoning the <tr> from DOM firstly)
+					//setTimeout(function(){  
+                       swal("Shortlisted!", "1 Item is removed from your cart", "success");
+					 //}, 4000);
+					 
+				   //re-Count quantity of products in cart in header
+				   $("#countCart").html($(".priceX").length);
+				   
 				   //re-calc all sum amount
 		           calcAllSum(); //do here as swal is async
                } else {
@@ -84,16 +102,21 @@
 
 
 
-
+  //on closing the window or redirecting to check-out => save the cart to SESSION (in /shop-liqpay/cart only)
   // **************************************************************************************
   // **************************************************************************************
   // **                                                                                  **
   // **     
-    //on closing the window or redirecting to check-out => save the cart to SESSION
+   
     $(window).on('beforeunload', function(){
-	   alert ('Bye now');
-	   swal("Leave the browser", "Redirecting", "error");
-	   //save js cart to $_SESSION here.....
+		
+	   var href = location.href;
+	   
+	   //make sure this js works in /shop-liqpay/cart only
+	   if(href.split("/")[ href.split("/").length -1 ] == "cart"){  //gets the text after the last "/" in URL
+	       swal("Leave the browser", "Redirecting", "error");
+	       //save js cart to $_SESSION here.....
+	   }
     });
 	
 

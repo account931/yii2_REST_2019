@@ -22,6 +22,7 @@ TABLE OF CONTENT:
 8. Why should we use {error_reporting(E_ALL & ~E_NOTICE);} on 000web.com hosting //JUST TO FIX 000web HOSTING!!!!!!!!!!!!!!!
 9. Bot Yii
 10. Yii2 Wordpress analogue
+11. Shop Liq E-pay
 
 -------------------------------------------------------------
 1.HOW TO TEST REST API from non-Yii2 file. 
@@ -256,8 +257,8 @@ https://www.yiiframework.com/doc/guide/2.0/ru/tutorial-core-validators
   
   
   
-  ===============================================================
-  10. Yii2 Wordpress analogue
+ ===============================================================
+ 10. Yii2 Wordpress analogue
   Wpress read me
 #Yii2 equivalent of Wordpress blogging.
 #Uses 2 tables-> blogs {WpressBlogPost} and category{WpressCategory}.
@@ -274,4 +275,18 @@ In action {actionShowAllBlogs} we check $_Get ['category'] and make Active Recor
 
 #Views of {WpressBlogController/actionShowAllBlogs & actionMySingleView($id)} use hasMany and hasOne relations.
 #Admin GridView uses hasMany and hasOne relations as well.
+
+
+
+
+
+ ===============================================================
+11. Shop Liq E-pay
+# E-shop with LiqPay payment Api.
+# {shop-liqpay/index} is front page with all products
+  {shop-liqpay/cart} is a cart, where u can ++/-- and proceed to final check-out (fill out out name, address, etc and pay)
+  
+# shop uses 2 $_SESSION vars =>  
+           a.) $_SESSION['productCatalogue'] => contains array of all products (extracted from DB table) (see example at viws/shop-liqpay/index)
+           b.) $_SESSION['cart'] => contains all products a user selected to buy (in format of assoc array('PRODUCR_ID1'=> 5, 'PRODUCR_ID2'=> 3, ))
  
