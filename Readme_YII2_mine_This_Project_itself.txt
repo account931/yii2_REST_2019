@@ -289,4 +289,24 @@ In action {actionShowAllBlogs} we check $_Get ['category'] and make Active Recor
 # shop uses 2 $_SESSION vars =>  
            a.) $_SESSION['productCatalogue'] => contains array of all products (extracted from DB table) (see example at viws/shop-liqpay/index)
            b.) $_SESSION['cart'] => contains all products a user selected to buy (in format of assoc array('PRODUCR_ID1'=> 5, 'PRODUCR_ID2'=> 3, ))
+		   
+
+#Front main shop page ['/shop-liqpay/index'] =>
+Products are artificially fetched from Db to array $productsX, then array value is assigned to $_SESSION['productCatalogue']. Products are displyed if loop { for($i = 0; $i < count($productsX); $i++){ }
+On single product click, a modal window is displayed, modal window is one and the only in view (not created in loop), values to modal is html-ed with JS.
+Script htmls image, name, price from $_SESSION['productCatalogue'] 
+ (it is passed to Js var productsJS[ ])
+ and htmls quantity from Session ['cart'] (it is passed to Js var cartJS[ ]). 
+ 
+
+When u click in modal "Add to cart", an ajax is sent (from js/main.js/ sendAjaxAddProduct())
+to 'shop-liqpay/add-product-to-cart'
+  and product is added to Session ['cart'] (in format 'productID'=> quantity. On ajaxSuccess, local Js cartJS[ ]
+ is updated in order to html correct values to Modal window .
+
+---------------------
+#Cart ["/shop-liqpay/cart"] =>
+On load Session ['cart'] is passed to Js var 
+cartJS[ ], after this all changes in cart are made in this Js var and on this page closure(when user closes browser or redirected to other page), this Js var cartJS[ ]
+ is set via ajax to update Session ['cart'].
  

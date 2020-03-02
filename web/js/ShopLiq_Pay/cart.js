@@ -4,18 +4,20 @@
 (function ($) {
     "use strict";
 	
-	/*
+	var temporaryJSCartArray; //temp array to hold in JS $_SESSION['cart']
+	
 	//check if $_SESSION['cart'] exists, i.e was passed from views/cart to Js var cartJS
 	if (typeof cartJS != 'undefined') { 
-	    temporaryJSCartArray = cartJS;
+	    temporaryJSCartArray = cartJS; 
+		console.log(cartJS);
 	} else {
-		temporaryJSCartArray = {};
-	}
-	
-	*/
+		temporaryJSCartArray = [];
+	}	
 	
     //calc and html the general amount of all cart products
 	calcAllSum();	
+	
+	
 	
 	
    // on click on ++ button in cart => sum all amount. 
@@ -25,11 +27,16 @@
   // **************************************************************************************
   // **                                                                                  **
   // **     
-	 $('.my-cart-plus' ).on('click',function(e){
-		 var curentInput  = $(this).prev(".qtyXX").val(); //gets the quantity input value
+	 $('.my-cart-plus' ).on('click',function(e){    
+	     var thisID = $(this).parent().attr('id'); //id of clicked, equals to id in $_SESSION['productCatalogue'] 
+		 var curentInput  = $(this).prev(".qtyXX").val(); //gets the quantity of input value
 		 //alert(curentInput);
 		 //plus the quantity value ++
 		 $(this).prev(".qtyXX").val( parseInt(curentInput) + 1); 
+		 
+		 //change temporaryJSCartArray
+		 temporaryJSCartArray[parseInt(thisID)] =  parseInt(curentInput) + 1;
+		 //console.log(temporaryJSCartArray);
 		 
 		 //re-calc all sum amount
 	     calcAllSum();	
@@ -79,6 +86,11 @@
 				   //re-Count quantity of products in cart in header
 				   $("#countCart").html($(".priceX").length);
 				   
+				   //change temporaryJSCartArray
+		           temporaryJSCartArray[parseInt($(this).parent().attr('id'))] =  parseInt(curentInput) - 1;
+		           //console.log(temporaryJSCartArray);
+		 
+				   
 				   //re-calc all sum amount
 		           calcAllSum(); //do here as swal is async
                } else {
@@ -91,8 +103,16 @@
 		
 		    //minus the quantity value --
 		    $(this).next(".qtyXX").val( parseInt(curentInput) - 1); 
+			
+			//change temporaryJSCartArray
+		    temporaryJSCartArray[parseInt($(this).parent().attr('id'))] =  parseInt(curentInput) - 1;
+		    //console.log(temporaryJSCartArray);
+		 
 		}
 		
+		
+		 
+		 
 		//re-calc all sum amount
 		calcAllSum();	
 	 });		 
@@ -116,6 +136,30 @@
 	   if(href.split("/")[ href.split("/").length -1 ] == "cart"){  //gets the text after the last "/" in URL
 	       swal("Leave the browser", "Redirecting", "error");
 	       //save js cart to $_SESSION here.....
+		   
+		   //ajax
+		   var url = urlX + '/shop-liqpay/ajax-merge-js-cart-with-session'; //url from view/admin-panel
+	      //alert(url);
+		   // send  data  to  PHP handler  ************ 
+           $.ajax({
+              url: url,
+              type: 'POST',
+			  dataType: 'JSON', 
+			  data: {
+				  serverJSCart: JSON.stringify( temporaryJSCartArray) , //temporaryJSCartArray
+				  },
+	
+              success: function(data) {
+				   //console.log(data.final);
+				 
+              },  //end success
+			  error: function (error) {
+				   alert(JSON.stringify(error, null, 4));
+				   alert('merging JS cart with SEssion["cart"] failed');
+				  //$(".all-6-month").stop().fadeOut("slow",function(){ $(this).html("Failed")}).fadeIn(2000);
+              }	
+          });
+		   //ajax
 	   }
     });
 	

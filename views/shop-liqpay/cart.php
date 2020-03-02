@@ -17,20 +17,32 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="site-about">
     <h1><?= Html::encode($this->title) ?></h1>
-	<?php
+	
+    <?php 
+	echo Html::a( '<i class="fa fa-angle-double-left" style="font-size:19px"></i> Go back', ['/shop-liqpay/index', ], $options = ["title" => "go back",] ); 
+	
+	   //passing PHP variable {currentURL} to javascript ->  
+	     $urll = Yii::$app->getUrlManager()->getBaseUrl();
+		 use yii\helpers\Json; 
+		 $this->registerJs(
+            "var urlX = ". Json::encode($urll).";",  
+             yii\web\View::POS_HEAD, 
+            'myproduct2-events-script'
+     );
+	
 	if (isset($_SESSION['cart'])){
         echo "<p>Cart contains <b><span id='countCart'>" . count($_SESSION['cart']) . "</span></b> products</p>";
 		var_dump($_SESSION['cart']);
 
-	/*
+	
       //passing PHP variable {$_SESSION['cart']} to javascript -> 
-        use yii\helpers\Json; 
+        //use yii\helpers\Json; 
 		$this->registerJs(
             "var cartJS = ".Json::encode($_SESSION['cart']).";",  
              yii\web\View::POS_HEAD, 
             'myproduct-events-script55'
         ); 
-	*/
+	
 	}
     ?>
 	
@@ -107,7 +119,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                         <td class="qty border">
                                             <div class="qty-btn d-flex">
                                                 <p>Qty</p>
-                                                <div class="quantity">
+                                                <div class="quantity" id=" <?php echo $_SESSION['productCatalogue'][$keyN]['id']; ?>  ">
 												
 												    <!-------------- CART -- minus operation --------->
                                                     <span class="qty-minus my-cart-minus"><i class="fa fa-minus" aria-hidden="true"></i></span>

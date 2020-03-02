@@ -131,11 +131,11 @@ $this->params['breadcrumbs'][] = $this->title;
 					<!----------- final general sum in cart ----------------------->
                     <div class="col-12 col-lg-4">
                         <div class="cart-summary">
-                            <h5>Cart Total</h5>
+                            <h5>Cart Total  </h5>
                             <ul class="summary-table list-group">
                                 <!--<li><span>subtotal:</span> <span>$140.00</span></li>-->
                                 <li class="list-group-item"><span>delivery:</span> <span>Free</span></li>
-                                <li class="list-group-item"><span>total:</span> <span> <? echo $sumFinal; ?> ₴</span></li>
+                                <li class="list-group-item"><span>total:</span> <span> <?php echo $sumFinal; ?> ₴</span></li>
                             </ul>
                             <div class="cart-btn mt-100">
 							    <?=Html::a( "Pay", ["/shop-liqpay/check-out"], $options = ["title" => "Checkout", "class" => "btn amado-btn w-100"]); ?>

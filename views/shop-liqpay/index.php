@@ -1,6 +1,9 @@
 <?php
 
 /* @var $this yii\web\View */
+// shop uses 2 $_SESSION vars =>  
+//    a.) $_SESSION['productCatalogue'] => contains array of all products (extracted from DB table) (see example at viws/shop-liqpay/index)
+//    b.) $_SESSION['cart'] => contains all products a user selected to buy (in format of assoc array('PRODUCR_ID1'=> 5, 'PRODUCR_ID2'=> 3, ))
 
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;

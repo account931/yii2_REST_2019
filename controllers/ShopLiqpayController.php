@@ -158,17 +158,26 @@ class ShopLiqpayController extends Controller
 
 		$id = $_POST['serverID'];//get product ID from ajax
 
-        //session_start();
-        if (!isset($_SESSION['cart'])) {//if Session['cart'] does not exist yet
-            $temp[$id] = (int)$_POST['serverQuantity'];//в масив заносим количество тавара 
-        } else {//if if Session['cart'] already contains some products, ie. was prev added to cart
-            $temp = $_SESSION['cart'];//save Session to temp var
-            if (!array_key_exists($id, $temp)) {//проверяем есть ли в корзине уже такой товар
-                $temp[$id] = (int)$_POST['serverQuantity']; //в масив заносим количество тавара 1
-            } else { //if product was not prev selected (added to cart)
-				$temp[$id] = (int)$_POST['serverQuantity'];
-			}				
-        }
+		
+        if((int)$_POST['serverQuantity'] == 0){
+			if (isset($_SESSION['cart']) && isset($_SESSION['cart'][$id]) ){
+				$temp = $_SESSION['cart'];//save Session to temp var
+				unset($temp [$id]);
+			}
+		} else {
+            //session_start();
+            if (!isset($_SESSION['cart'])) {//if Session['cart'] does not exist yet
+                $temp[$id] = (int)$_POST['serverQuantity'];//в масив заносим количество тавара 
+            } else {//if if Session['cart'] already contains some products, ie. was prev added to cart
+                $temp = $_SESSION['cart'];//save Session to temp var
+                if (!array_key_exists($id, $temp)) {//проверяем есть ли в корзине уже такой товар
+                    $temp[$id] = (int)$_POST['serverQuantity']; //в масив заносим количество тавара 1
+                } else { //if product was not prev selected (added to cart)
+				    $temp[$id] = (int)$_POST['serverQuantity'];
+			    }				
+            }
+		}
+		
         $count = count($temp);//count products in cart
         $_SESSION['cart'] = $temp;//write temp var to Cart
         //echo $count; //возвращаем количество товаров
@@ -252,5 +261,29 @@ class ShopLiqpayController extends Controller
 	|
     |
     */
+	
 
+   //when user leaves/closes/redirected from cart, JS ajax is sent here to update SESSION['cart']
+   // **************************************************************************************
+  // **************************************************************************************
+  // **                                                                                  **
+  // **                                                                                  **
+    public function actionAjaxMergeJsCartWithSession()
+    {
+        $arrayDecoded = json_decode(Yii::$app->request->post('serverJSCart'), true);  // Convert ajax string to php Array, should use second parametr {true}, to use as $var['el'], not (4var->el)
+        $_SESSION['cart'] = $arrayDecoded;
+		 
+		 //RETURN JSON DATA
+         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;  
+          return [
+             'result_status' => "OK", 
+             //'final' => $arrayDecoded,		 
+          ]; 
+	}
+	
+	
+	
+	
+	
+	
 }
