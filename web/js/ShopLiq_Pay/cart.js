@@ -17,7 +17,7 @@
     //calc and html the general amount of all cart products
 	calcAllSum();	
 	
-	
+	console.log(typeof temporaryJSCartArray);
 	
 	
    // on click on ++ button in cart => sum all amount. 
@@ -40,6 +40,7 @@
 		 
 		 //re-calc all sum amount
 	     calcAllSum();	
+		 console.log(typeof temporaryJSCartArray);
 	 });		 
 	 
 	
@@ -56,7 +57,7 @@
 	 $('.my-cart-minus' ).on('click',function(e){
 	
 	
-		var curentInput  = $(this).next(".qtyXX").val(); //gets the quantity input value
+		var curentInput  = parseInt($(this).next(".qtyXX").val()); //gets the quantity input value
 		var parentX = $(this).closest('tr'); //gets the parent <tr> to hide if click more than 0
 		if(curentInput == 0 ){return false;} //don't go futher than 0
 		
@@ -87,12 +88,26 @@
 				   $("#countCart").html($(".priceX").length);
 				   
 				   //change temporaryJSCartArray
-		           temporaryJSCartArray[parseInt($(this).parent().attr('id'))] =  parseInt(curentInput) - 1;
-		           //console.log(temporaryJSCartArray);
+		           //temporaryJSCartArray[parseInt($(this).parent().attr('id')) ] =  parseInt(curentInput) - 1; //MEGA FIX here
+				   console.log(typeof temporaryJSCartArray);
+				   // temporaryJSCartArray.splice(parseInt($(this).parent().attr('id')), 1);
+				   var index = parentX.attr('id'); //gets the <tr> id
+				   index = parseInt(index);
+
+				   delete temporaryJSCartArray[index] ;
+				   //temporaryJSCartArray[index] = 0;
+				  //temporaryJSCartArray.splice(0,1);
+				  //temporaryJSCartArray.0 = undefined;
+              
+		           console.log(temporaryJSCartArray);
 		 
 				   
 				   //re-calc all sum amount
 		           calcAllSum(); //do here as swal is async
+				   
+				   //sendAjaxToRenewCart();
+				   
+				   
                } else {
                    swal("Cancelled", "You cancelled.", "error");
                    //e.preventDefault();
@@ -104,9 +119,13 @@
 		    //minus the quantity value --
 		    $(this).next(".qtyXX").val( parseInt(curentInput) - 1); 
 			
+			var index = parentX.attr('id');
+		    index = parseInt(index);
+			temporaryJSCartArray[index] =  parseInt(curentInput) - 1;
+			
 			//change temporaryJSCartArray
-		    temporaryJSCartArray[parseInt($(this).parent().attr('id'))] =  parseInt(curentInput) - 1;
-		    //console.log(temporaryJSCartArray);
+		    //temporaryJSCartArray[parseInt( $(this).parent().attr('id')) ] =  parseInt(curentInput) - 1;
+		    console.log(temporaryJSCartArray);
 		 
 		}
 		
@@ -122,14 +141,18 @@
 
 
 
-  //on closing the window or redirecting to check-out => save the cart to SESSION (in /shop-liqpay/cart only)
+  //FALSE =>on closing the window or redirecting to check-out => save the cart to SESSION (in /shop-liqpay/cart only)
+  //TRUE =>on clicking "Check-out button" => save the cart to SESSION (in /shop-liqpay/cart only)
   // **************************************************************************************
   // **************************************************************************************
   // **                                                                                  **
   // **     
    
-    $(window).on('beforeunload', function(){
-		
+    //$(window).on('beforeunload', function(){  
+	 $('.my-check-out' ).on('click',function(e){
+	   
+	   e.preventDefault();
+	   
 	   var href = location.href;
 	   
 	   //make sure this js works in /shop-liqpay/cart only
@@ -137,9 +160,22 @@
 	       swal("Leave the browser", "Redirecting", "error");
 	       //save js cart to $_SESSION here.....
 		   
+		   sendAjaxToRenewCart();
+	   }
+    });
+	
+
+
+	
+		 
+  // **************************************************************************************
+  // **************************************************************************************
+  // **                                                                                  **
+  // **     
+      function sendAjaxToRenewCart(){
 		   //ajax
 		   var url = urlX + '/shop-liqpay/ajax-merge-js-cart-with-session'; //url from view/admin-panel
-	      //alert(url);
+	      alert(JSON.stringify( temporaryJSCartArray));
 		   // send  data  to  PHP handler  ************ 
            $.ajax({
               url: url,
@@ -151,6 +187,7 @@
 	
               success: function(data) {
 				   //console.log(data.final);
+				   window.location.href = urlX + '/shop-liqpay/check-out'
 				 
               },  //end success
 			  error: function (error) {
@@ -160,11 +197,11 @@
               }	
           });
 		   //ajax
-	   }
-    });
-	
-
-
+	  }
+	  
+	  
+	  
+	  
 	
 	 
   // **************************************************************************************

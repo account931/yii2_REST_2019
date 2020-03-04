@@ -30,7 +30,7 @@
 
 body {
   /*font-family: "helveticaneuemedium";*/
-  font-size: 16px; }
+  /*font-size: 16px;*/ }
 
 h1,
 h2,
@@ -48,22 +48,24 @@ p {
   line-height: 1.9;
   font-weight: 400; }
 
-a {
+ .my-check-out a {  
   -webkit-transition: all 500ms ease 0s;
   transition: all 500ms ease 0s;
   text-decoration: none;
   outline: 0 solid transparent;
   color: #131212;
   font-weight: 400;
-  font-size: 12px; }
-  a:hover, a:focus {
+  font-size: 12px; }  /* Menu font size ISSUE is here  */
+  
+  
+.my-check-out a:hover, .my-check-out a:focus {
     -webkit-transition: all 500ms ease 0s;
     transition: all 500ms ease 0s;
     text-decoration: none;
     outline: 0 solid transparent;
     color: #131212;
     font-weight: 400;
-    font-size: 12px; }
+    font-size: 12px; }  /* Menu font size ISSUE is here  */
 
 ul,
 ol {
@@ -310,7 +312,7 @@ img {
       right: 30px; } }
 
 /* Essence Button */
-.amado-btn {
+.amado-btn,  .my-check-out  {
   display: inline-block;
   min-width: 160px;
   height: 55px;
@@ -322,7 +324,11 @@ img {
   line-height: 56px;
   background-color: #fbb710;
   font-weight: 400; }
-  .amado-btn.active, .amado-btn:hover, .amado-btn:focus {
+  
+  
+
+  
+  .amado-btn.active, .amado-btn:hover, .amado-btn:focus, .my-check-out.active, .my-check-out:hover, .my-check-out:focus {
     font-size: 18px;
     color: #ffffff;
     background-color: #131212; }

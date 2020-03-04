@@ -15,7 +15,7 @@ Shop_LiqPay_AssertOnly::register($this); // register your custom asset to use th
 $this->title = 'Cart';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="site-about">
+<div class="site-about my-cart">
     <h1><?= Html::encode($this->title) ?></h1>
 	
     <?php 
@@ -53,8 +53,9 @@ $this->params['breadcrumbs'][] = $this->title;
 	
 
 	
-	if (!isset($_SESSION['cart'])){
+	if ( !isset($_SESSION['cart']) || (count($_SESSION['cart']) == 0) ){
 		echo "<h2> So far the cart is empty  <i class='fa fa-cart-arrow-down' aria-hidden='true'></i></h2>";
+		echo "<i class='fa fa-question-circle-o' style='font-size:78px;color:red'></i>";
 	} else {
 	?>
 
@@ -88,14 +89,16 @@ $this->params['breadcrumbs'][] = $this->title;
 									//for ($i = 0; $i < count($_SESSION['cart']); $i++) {
 									foreach($_SESSION['cart'] as $key => $value){
 									    $i++;
+										
+										 //find in $_SESSION['productCatalogue'] index the product by id
+										 $keyN = array_search($key, array_keys($_SESSION['productCatalogue'])); //find in $_SESSION['productCatalogue'] index the product by id
+										    
 									?>
 									
-                                    <tr class="list-group-item">
+                                    <tr class="list-group-item" id="<?php echo $_SESSION['productCatalogue'][$keyN]['id']; ?>">
                                         <td class="cart_product_img">
 										<?php
-										    //find in $_SESSION['productCatalogue'] index the product by id
-										    $keyN = array_search($key, array_keys($_SESSION['productCatalogue'])); //find in $_SESSION['productCatalogue'] index the product by id
-										    
+										   
 											//echo image
 											echo Html::img(Yii::$app->getUrlManager()->getBaseUrl().'/images/shopLiqPay/' . $_SESSION['productCatalogue'][$keyN]['image'] , $options = ["id"=>"","margin-left"=>"","class"=>"my-one","width"=>"","title"=>"product"]); 
                                             ?>
@@ -119,7 +122,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                         <td class="qty border">
                                             <div class="qty-btn d-flex">
                                                 <p>Qty</p>
-                                                <div class="quantity" id=" <?php echo $_SESSION['productCatalogue'][$keyN]['id']; ?>  ">
+                                                <div class="quantity"> 
 												
 												    <!-------------- CART -- minus operation --------->
                                                     <span class="qty-minus my-cart-minus"><i class="fa fa-minus" aria-hidden="true"></i></span>
@@ -160,7 +163,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 <li class="list-group-item"><span>total:</span> <span  id="finalSum"> 0 </span></li>
                             </ul>
                             <div class="cart-btn mt-100">
-							    <?=Html::a( "Checkoutt", ["/shop-liqpay/check-out"], $options = ["title" => "Checkout", "class" => "btn amado-btn w-100"]); ?>
+							    <?=Html::a( "Check-out", ["/shop-liqpay/check-out"], $options = ["title" => "Check-out", "class" => "btn amado-btn w-100 my-check-out"]); ?>
                                 <!--<a href="cart.html" class="btn amado-btn w-100">Checkout</a>-->
                             </div>
                         </div>

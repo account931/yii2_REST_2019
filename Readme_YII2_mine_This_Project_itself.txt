@@ -306,7 +306,7 @@ to 'shop-liqpay/add-product-to-cart'
 
 ---------------------
 #Cart ["/shop-liqpay/cart"] =>
-On load Session ['cart'] is passed to Js var 
-cartJS[ ], after this all changes in cart are made in this Js var and on this page closure(when user closes browser or redirected to other page), this Js var cartJS[ ]
- is set via ajax to update Session ['cart'].
+On load, Session ['cart'] is passed to Js var cartJS[ ], after this all changes in cart are made in this Js var cartJS[ ],
+ FALSE => and on this page closure(when user closes browser or redirected to other page), <= FALSE
+ TRUE => on clicking "Check-out", this Js var cartJS[ ]is sent via ajax to update Session ['cart']. Then page redirects to Check-out page.
  

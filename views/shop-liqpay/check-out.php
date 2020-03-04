@@ -26,8 +26,9 @@ $this->params['breadcrumbs'][] = $this->title;
 	
 
 	
-	if (!isset($_SESSION['cart'])){
+	if ( !isset($_SESSION['cart']) || (count($_SESSION['cart']) == 0) ){
 		echo "<h2> So far the cart is empty, nothing to check-out <i class='fa fa-cart-arrow-down' aria-hidden='true'></i></h2>";
+		echo "<i class='fa fa-power-off' style='font-size:78px;color:red'></i>";
 	} else {
 	?>
 		
@@ -138,7 +139,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 <li class="list-group-item"><span>total:</span> <span> <?php echo $sumFinal; ?> ₴</span></li>
                             </ul>
                             <div class="cart-btn mt-100">
-							    <?=Html::a( "Pay", ["/shop-liqpay/check-out"], $options = ["title" => "Checkout", "class" => "btn amado-btn w-100"]); ?>
+							    <?=Html::a( "Pay", ["/shop-liqpay/check-out"], $options = ["title" => "Pay", "class" => "btn amado-btn w-100"]); ?>
                                 <!--<a href="cart.html" class="btn amado-btn w-100">Checkout</a>-->
                             </div>
                         </div>

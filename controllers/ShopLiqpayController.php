@@ -156,13 +156,13 @@ class ShopLiqpayController extends Controller
 		//$count = $found->count();
 		
 
-		$id = $_POST['serverID'];//get product ID from ajax
+		$id = (int)$_POST['serverID'];//get product ID from ajax
 
 		
         if((int)$_POST['serverQuantity'] == 0){
 			if (isset($_SESSION['cart']) && isset($_SESSION['cart'][$id]) ){
 				$temp = $_SESSION['cart'];//save Session to temp var
-				unset($temp [$id]);
+				unset($temp[$id]);
 			}
 		} else {
             //session_start();
