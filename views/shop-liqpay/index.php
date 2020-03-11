@@ -63,15 +63,15 @@ $this->params['breadcrumbs'][] = $this->title;
  <?php 
   //all products array, as if we get from DB
   $productsX = [
-      ['id'=> 0, 'name'=> 'Esprit Ruffle Shirt', 'price' => 16.64, 'image' => 'product-01.jpg', 'description' => 'Esprit Ruffle Shirt.....some text'],
-      ['id'=> 1, 'name'=> 'Herschel supply',     'price' => 35.31, 'image' => 'product-02.jpg', 'description' => 'Herschel supply.........some text'],
-	  ['id'=> 2, 'name'=> 'Classic Trench Coat', 'price' => 75.00, 'image' => 'product-03.jpg', 'description' => 'Classic Trench Coat.....some text'],
-	  ['id'=> 3, 'name'=> 'Front Pocket Jumper', 'price' => 75.00, 'image' => 'product-05.jpg', 'description' => 'some text'],
+      ['id'=> 0, 'name'=> 'Esprit Ruffle Shirt', 'price' => 16.64, 'image' => 'product-01.jpg', 'description' => 'Esprit Ruffle Shirt.....some description'],
+      ['id'=> 1, 'name'=> 'Herschel supply',     'price' => 35.31, 'image' => 'product-02.jpg', 'description' => 'Herschel supply.........some description'],
+	  ['id'=> 2, 'name'=> 'Classic Trench Coat', 'price' => 75.00, 'image' => 'product-03.jpg', 'description' => 'Classic Trench Coat.....some description'],
+	  ['id'=> 3, 'name'=> 'Front Pocket Jumper', 'price' => 75.00, 'image' => 'product-05.jpg', 'description' => 'Front Pocket Jumper.....some description'],
 	  
-	  ['id'=> 4, 'name'=> 'Shirt in Stretch Cotton', 'price' => 2.66,  'image' => 'product-04.jpg', 'description' => 'some text'],
-	  ['id'=> 5, 'name'=> 'Pieces Metallic Printed', 'price' => 18.96, 'image' => 'product-06.jpg', 'description' => 'some text'],
-	  ['id'=> 6, 'name'=> 'Femme T-Shirt In Stripe', 'price' => 25.85, 'image' => 'product-07.jpg', 'description' => 'some text'],
-	  ['id'=> 7, 'name'=> 'T-Shirt with Sleeve',     'price' => 18.49, 'image' => 'product-08.jpg', 'description' => 'some text'],
+	  ['id'=> 4, 'name'=> 'Shirt in Stretch Cotton', 'price' => 2.66,  'image' => 'product-04.jpg', 'description' => 'some description'],
+	  ['id'=> 5, 'name'=> 'Pieces Metallic Printed', 'price' => 18.96, 'image' => 'product-06.jpg', 'description' => 'some description'],
+	  ['id'=> 6, 'name'=> 'Femme T-Shirt In Stripe', 'price' => 25.85, 'image' => 'product-07.jpg', 'description' => 'some description'],
+	  ['id'=> 7, 'name'=> 'T-Shirt with Sleeve',     'price' => 18.49, 'image' => 'product-08.jpg', 'description' => 'some description'],
   ];
  
   

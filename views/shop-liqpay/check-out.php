@@ -7,6 +7,7 @@
 
 
 use yii\helpers\Html;
+use yii\bootstrap\ActiveForm;
 
 use app\assets\Shop_LiqPay_AssertOnly;   // use your custom asset
 Shop_LiqPay_AssertOnly::register($this); // register your custom asset to use this js/css bundle in this View only(1st name-> is the na
@@ -16,9 +17,65 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="site-about">
     <h1> <?= Html::encode($this->title) ?>  <i class="fa fa-cart-arrow-down fa-1x"></i> </h1>
+	<?php echo Html::a( '<i class="fa fa-angle-double-left" style="font-size:19px"></i> Go back', ['/shop-liqpay/cart', ], $options = ["title" => "go back",] ); ?>
+	
+	
+	<!-------------------- Progress Status Icons ----------------->
+	<div class="row">
+	
+		  <center>
+            <h3>Status</h3>
+			<br>
+			
+			<div class="row iconz">
+			
+			  <div class="col-sm-2 col-xs-2 myinactive">
+			         <i class="fa fa-shopping-cart"style="font-size:24px"></i>
+				  <p style="color:black;">Cart</p>
+			  </div>
+			  
+			  <div class="col-sm-1 col-xs-1">
+			     <p class="line"></p>
+			  </div>
+			  
+			
+			  <div class="col-sm-2 col-xs-2">
+			      <span class="badge badge-pill badge-secondary myactive-icon">
+			          <i class="fa fa-tablet" style="font-size:24px"></i>
+			      </span>
+				  <p><b>Place order</b></p>
+			  </div>
+			  
+			  <div class="col-sm-1 col-xs-1">
+			     <p class="line"></p>
+			  </div>
+			
+			  <div class="col-sm-2 col-xs-2 myinactive">
+			    <i class="fa fa-money" style="font-size:24px"></i>
+				<p>Payment</p>
+			  </div>
+			
+			  <div class="col-sm-1 col-xs-1">
+			     <p class="line"></p>
+			  </div>
+			  
+			  <div class="col-sm-2 col-xs-2 myinactive">
+			    <i class="fa fa-check" style="font-size:24px"></i>
+				<p>Complete</p>
+			  </div>
+			
+		
+		</div>
+	  <!--<hr>-->
+	  </center>
+	</div>	
+	<!--------------  END  Progress Status Icons ----------------->
+	
+	
+	
 	<?php
 	if (isset($_SESSION['cart'])){
-        echo "<p>Cart contains <b>" . count($_SESSION['cart']) . "</b> products</p>";
+        echo "<br><p>Cart contains <b>" . count($_SESSION['cart']) . "</b> products</p>";
 		var_dump($_SESSION['cart']);
 
 	}
@@ -32,9 +89,47 @@ $this->params['breadcrumbs'][] = $this->title;
 	} else {
 	?>
 		
+	
+	
+	
+	
+	
+	
+	
+	
+      <!------- Shipping info --------->
+	  <hr>
+      <div class="row shadowX">
+          <h3>&nbsp; &nbsp;<i class="fa fa-cart-arrow-down fa-2x"></i>&nbsp;  Shipping info </h3><hr>
+
+		   
+          <div class="col-sm-12 col-xs-12">
+		       <?php $form = ActiveForm::begin(['id' => 'form-signup']); ?>
+                <?= $form->field($model, 'email')->label('Email')->textInput(['autofocus' => true]); ?>
+				<?= $form->field($model, 'phone_number')->textInput()->label('Phone number'); ?>
+				<?= $form->field($model, 'first_name')->textInput()->label('First name'); ?>
+				<?= $form->field($model, 'last_name')->textInput()->label('Last name'); ?>
+				<?= $form->field($model, 'address')->textInput()->label('Address'); ?>
+				  <?= $form->field($model, 'username'); ?>
+                <div class="form-group">
+                    <?= Html::submitButton('OK', ['class' => 'btn btn-primary', 'name' => 'OK2']) ?>
+                </div>
+            <?php ActiveForm::end(); ?>
+          </div>
+		  
+	  </div>
+      <!------- Shipping info --------->
+
+
+	  
+	  
+	  
+	  
+	  
+	  
+	  
 		
-		
-		<!-- ##### Main Content Wrapper Start ##### -->
+	<!-- ##### Main Content Wrapper Start ##### -->
     <div class="main-content-wrapper d-flex clearfix">
 
         <div class="cart-table-area section-padding-100">
@@ -42,7 +137,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <div class="row">
                     <div class="col-12 col-lg-8">
                         <div class="cart-title mt-50">
-                            <h2>You ordered to buy </h2>
+                            <h2 class="shadowX widthX"> &nbsp;You ordered to buy </h2>
 							
                         </div>
 
@@ -131,7 +226,7 @@ $this->params['breadcrumbs'][] = $this->title;
 					
 					<!----------- final general sum in cart ----------------------->
                     <div class="col-12 col-lg-4">
-                        <div class="cart-summary">
+                        <div class="cart-summary shadowX">
                             <h5>Cart Total  </h5>
                             <ul class="summary-table list-group">
                                 <!--<li><span>subtotal:</span> <span>$140.00</span></li>-->
@@ -154,12 +249,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
     
-   <!------- Shipping info --------->
-   <div class="col-sm-12 col-xs-12">
-       <h3><i class="fa fa-cart-arrow-down fa-2x"></i> Shipping info  </h3>
-        
-   </div>
-   <!------- Shipping info --------->
+ 
 	
 					
 <?php			

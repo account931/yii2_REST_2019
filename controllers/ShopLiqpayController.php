@@ -15,6 +15,8 @@ use app\models\User;
 use app\models\SignupForm;
 use app\models\AuthItem; //table with Rbac roles
 
+use app\models\LiqPay\BuyerForm;
+
 
 use app\models\ChangePasswordForm;
 
@@ -244,8 +246,9 @@ class ShopLiqpayController extends Controller
   // **                                                                                  **
     public function actionCheckOut()
     {
+		$model = new BuyerForm();
 		 return $this->render('check-out', [
-            //'model' => $cart,
+            'model' => $model,
         ]);
 	}
 	

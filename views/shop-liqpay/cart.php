@@ -46,6 +46,62 @@ $this->params['breadcrumbs'][] = $this->title;
 	}
     ?>
 	
+	
+	<!-------------------- Progress Status Icons ----------------->
+	<div class="row">
+	
+		  <center>
+            <h3 class="shadowX widthX">Status</h3>
+			<br>
+			
+			<div class="row">
+			
+			  <div class="col-sm-2 col-xs-2">
+		          <!--<span class="badge badge-pill badge-secondary myactive-icon">-->
+			         <i class="fa fa-shopping-cart" style="font-size:24px; color:black;"></i>
+			     <!-- </span> -->
+				  <p style="color:black;"><b>Cart</b></p>
+			  </div>
+			  
+			  <div class="col-sm-1 col-xs-1">
+			     <p class="line"></p>
+			  </div>
+			  
+			
+			  <div class="col-sm-2 col-xs-2 myinactive">
+			    <i class="fa fa-tablet" style="font-size:24px"></i>
+				<p>Place order</p>
+			  </div>
+			  
+			  <div class="col-sm-1 col-xs-1">
+			     <p class="line"></p>
+			  </div>
+			
+			  <div class="col-sm-2 col-xs-2 myinactive">
+			    <i class="fa fa-money" style="font-size:24px"></i>
+				<p>Payment</p>
+			  </div>
+			
+			  <div class="col-sm-1 col-xs-1">
+			     <p class="line"></p>
+			  </div>
+			  
+			  <div class="col-sm-2 col-xs-2 myinactive">
+			    <i class="fa fa-check" style="font-size:24px"></i>
+				<p>Complete</p>
+			  </div>
+			
+		
+		</div>
+	  <!--<hr>-->
+	  </center>
+	</div>	
+	<!--------------  END  Progress Status Icons ----------------->
+	
+	
+	
+	
+	
 	<?php
 	
 	//var_dump($_SESSION['productCatalogue']);
@@ -67,11 +123,11 @@ $this->params['breadcrumbs'][] = $this->title;
                 <div class="row">
                     <div class="col-12 col-lg-8">
                         <div class="cart-title mt-50">
-                            <h2>Shopping Cart</h2>
+                            <h2 class="shadowX widthX">&nbsp; Shopping Cart</h2>
                         </div>
 
                         <div class="cart-table clearfix">
-                            <table class="table table-responsive table-bordered">
+                            <table class="table table-responsive table-bordered shadowX">
                                 <thead>
                                     <tr>
                                         <th></th>
@@ -155,7 +211,7 @@ $this->params['breadcrumbs'][] = $this->title;
 					
 					<!----------- final general sum in cart ----------------------->
                     <div class="col-12 col-lg-4">
-                        <div class="cart-summary">
+                        <div class="cart-summary shadowX">
                             <h5>Cart Total</h5>
                             <ul class="summary-table list-group">
                                 <!--<li><span>subtotal:</span> <span>$140.00</span></li>-->

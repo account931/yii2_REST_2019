@@ -34,8 +34,15 @@
 		 //plus the quantity value ++
 		 $(this).prev(".qtyXX").val( parseInt(curentInput) + 1); 
 		 
+		 //inject
+		 var parentX = $(this).closest('tr'); //gets the parent <tr> to hide if click more than 0
+		 var index = parentX.attr('id');
+		 index = parseInt(index);
+	     temporaryJSCartArray[index] =  parseInt(curentInput) + 1;
+			
+			
 		 //change temporaryJSCartArray
-		 temporaryJSCartArray[parseInt(thisID)] =  parseInt(curentInput) + 1;
+		 //temporaryJSCartArray[parseInt(thisID)] =  parseInt(curentInput) + 1;
 		 //console.log(temporaryJSCartArray);
 		 
 		 //re-calc all sum amount
