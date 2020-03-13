@@ -52,6 +52,14 @@ $this->params['breadcrumbs'][] = $this->title;
 	</div>
 	
 	
+	<!-------------------- Progress Status Icons by component ----------------->
+	<?php
+	       //display shop timeline progress => Progress Status Icons
+	       echo \app\componentsX\views_components\LiqPay\ShopTimelineProgress::showProgress("Shop");
+	?>
+	
+	<!--------------  END  Progress Status Icons by component ----------------->
+	
 	
 	
 	<hr>

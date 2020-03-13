@@ -164,7 +164,7 @@
 	   
 	   //make sure this js works in /shop-liqpay/cart only
 	   if(href.split("/")[ href.split("/").length -1 ] == "cart"){  //gets the text after the last "/" in URL
-	       swal("Leave the browser", "Redirecting", "error");
+	       swal("Leave the browser, going to check-out", "Redirecting", "error");
 	       //save js cart to $_SESSION here.....
 		   
 		   sendAjaxToRenewCart();

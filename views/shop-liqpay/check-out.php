@@ -20,56 +20,13 @@ $this->params['breadcrumbs'][] = $this->title;
 	<?php echo Html::a( '<i class="fa fa-angle-double-left" style="font-size:19px"></i> Go back', ['/shop-liqpay/cart', ], $options = ["title" => "go back",] ); ?>
 	
 	
-	<!-------------------- Progress Status Icons ----------------->
-	<div class="row">
+	<!-------------------- Progress Status Icons by component ----------------->
+	<?php
+	       //display shop timeline progress => Progress Status Icons
+	       echo \app\componentsX\views_components\LiqPay\ShopTimelineProgress::showProgress("Order");
+	?>
 	
-		  <center>
-            <h3>Status</h3>
-			<br>
-			
-			<div class="row iconz">
-			
-			  <div class="col-sm-2 col-xs-2 myinactive">
-			         <i class="fa fa-shopping-cart"style="font-size:24px"></i>
-				  <p style="color:black;">Cart</p>
-			  </div>
-			  
-			  <div class="col-sm-1 col-xs-1">
-			     <p class="line"></p>
-			  </div>
-			  
-			
-			  <div class="col-sm-2 col-xs-2">
-			      <span class="badge badge-pill badge-secondary myactive-icon">
-			          <i class="fa fa-tablet" style="font-size:24px"></i>
-			      </span>
-				  <p><b>Place order</b></p>
-			  </div>
-			  
-			  <div class="col-sm-1 col-xs-1">
-			     <p class="line"></p>
-			  </div>
-			
-			  <div class="col-sm-2 col-xs-2 myinactive">
-			    <i class="fa fa-money" style="font-size:24px"></i>
-				<p>Payment</p>
-			  </div>
-			
-			  <div class="col-sm-1 col-xs-1">
-			     <p class="line"></p>
-			  </div>
-			  
-			  <div class="col-sm-2 col-xs-2 myinactive">
-			    <i class="fa fa-check" style="font-size:24px"></i>
-				<p>Complete</p>
-			  </div>
-			
-		
-		</div>
-	  <!--<hr>-->
-	  </center>
-	</div>	
-	<!--------------  END  Progress Status Icons ----------------->
+	<!--------------  END  Progress Status Icons by component ----------------->
 	
 	
 	

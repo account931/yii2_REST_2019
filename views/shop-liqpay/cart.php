@@ -31,10 +31,7 @@ $this->params['breadcrumbs'][] = $this->title;
      );
 	
 	if (isset($_SESSION['cart'])){
-        echo "<p>Cart contains <b><span id='countCart'>" . count($_SESSION['cart']) . "</span></b> products</p>";
-		var_dump($_SESSION['cart']);
-
-	
+       
       //passing PHP variable {$_SESSION['cart']} to javascript -> 
         //use yii\helpers\Json; 
 		$this->registerJs(
@@ -42,61 +39,20 @@ $this->params['breadcrumbs'][] = $this->title;
              yii\web\View::POS_HEAD, 
             'myproduct-events-script55'
         ); 
+		
+		echo "<p>Cart contains <b><span id='countCart'>" . count($_SESSION['cart']) . "</span></b> products</p>";
+		var_dump($_SESSION['cart']);
+		echo "<br>";
 	
 	}
     ?>
 	
-	
-	<!-------------------- Progress Status Icons ----------------->
-	<div class="row">
-	
-		  <center>
-            <h3 class="shadowX widthX">Status</h3>
-			<br>
-			
-			<div class="row">
-			
-			  <div class="col-sm-2 col-xs-2">
-		          <!--<span class="badge badge-pill badge-secondary myactive-icon">-->
-			         <i class="fa fa-shopping-cart" style="font-size:24px; color:black;"></i>
-			     <!-- </span> -->
-				  <p style="color:black;"><b>Cart</b></p>
-			  </div>
-			  
-			  <div class="col-sm-1 col-xs-1">
-			     <p class="line"></p>
-			  </div>
-			  
-			
-			  <div class="col-sm-2 col-xs-2 myinactive">
-			    <i class="fa fa-tablet" style="font-size:24px"></i>
-				<p>Place order</p>
-			  </div>
-			  
-			  <div class="col-sm-1 col-xs-1">
-			     <p class="line"></p>
-			  </div>
-			
-			  <div class="col-sm-2 col-xs-2 myinactive">
-			    <i class="fa fa-money" style="font-size:24px"></i>
-				<p>Payment</p>
-			  </div>
-			
-			  <div class="col-sm-1 col-xs-1">
-			     <p class="line"></p>
-			  </div>
-			  
-			  <div class="col-sm-2 col-xs-2 myinactive">
-			    <i class="fa fa-check" style="font-size:24px"></i>
-				<p>Complete</p>
-			  </div>
-			
-		
-		</div>
-	  <!--<hr>-->
-	  </center>
-	</div>	
-	<!--------------  END  Progress Status Icons ----------------->
+	<!-------------------- Progress Status Icons by component ----------------->
+	<?php
+	       //display shop timeline progress => Progress Status Icons
+	       echo \app\componentsX\views_components\LiqPay\ShopTimelineProgress::showProgress("Cart");
+	?>
+	<!-------------------- Progress Status Icons by component ----------------->
 	
 	
 	

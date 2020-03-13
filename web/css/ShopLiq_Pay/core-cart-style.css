@@ -4,28 +4,66 @@
 
 /* --- Status icons: cart, place order, placement, etc -------*/
 
+/* --- Variant 1 (Main/Core) from \app\componentsX\views_components\LiqPay\ShopTimelineProgress::showProgress("Cart"); -------*/
 
- .line{ /* lines between icons */
-width: 6em;
-height: 47px;
-border-bottom: 1px solid black;
+/* current inactive icon */
+.myinactive, .myinactive p, .myinactive a{
+	color:  #acac86;}
+
+/* current active icon */
+.myactive, .myactive p, .myactive a{ 
+    color:black; font-weight:bold; }
+	
+/* lines between icons in variant 1 */
+.line2{
+       display: block;
+       height: 1px;
+       border: 0;
+       border-top: 1px solid #ccc;
+       margin: 1em 0;
+       padding: 0;
 }
 
-.myactive-icon{
-	background:black;padding:0.1em 0.5em;
-}
 
-.myinactive, .myinactive p{
-	color:  #acac86;
-}
+/* Divs with icons and lines */
+.icon-item{display: inline-block; width: 9%;}
 
-.status{}
+.items-list:after { clear: both;}
+
 
 /* ---------------------------------------- Mobile */
 @media screen and (max-width: 480px) { 
  .line {width: 1.1em;}  /* lines between icons */
  .iconz p{font-size:0.7em;}
+ 
+ .icon-item{display: inline-block; width: 8%;}
+ .icon-item p{font-size:0.7em;}
 }
+
+/* ---------------------   END Variant 1 (Main/Core) from \app\componentsX\views_components\LiqPay\ShopTimelineProgress::showProgress("Cart"); -------*/
+
+
+
+
+
+
+/* --- Variant 2(Not used) from \app\componentsX\views_components\LiqPay\ShopTimelineProgress::showProgress("Cart"); -------*/
+ .line{ /* lines between icons in variant 2 */
+width: 6em;
+height: 47px;
+border-bottom: 1px solid black;
+}
+
+
+
+.myactive-icon{
+	background:black;padding:0.1em 0.5em;
+}
+
+
+
+.status{}
+
 /* --- END Status icons: cart, place order, placement, etc -------*/
 
 
@@ -43,6 +81,13 @@ border-bottom: 1px solid black;
 }
 
 .widthX{width:9em; border-radius:13px;}
+
+
+
+
+
+
+
 
 /* [Master Stylesheet v-1.0.0] */
 /* :: :: 1.0 Import Fonts */
