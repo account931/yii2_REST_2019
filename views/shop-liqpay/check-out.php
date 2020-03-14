@@ -30,6 +30,22 @@ $this->params['breadcrumbs'][] = $this->title;
 	
 	
 	
+	
+	
+	
+	
+   <!------ FLASH Message ----->
+   <?php if( Yii::$app->session->hasFlash('statusOK') ): ?>
+    <div class="alert alert-success alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <?php echo Yii::$app->session->getFlash('statusOK'); ?>
+    </div>
+    <?php endif;?>
+   <!------ END FLASH  --------->
+	
+	
+	
+	
 	<?php
 	if (isset($_SESSION['cart'])){
         echo "<br><p>Cart contains <b>" . count($_SESSION['cart']) . "</b> products</p>";
@@ -61,13 +77,14 @@ $this->params['breadcrumbs'][] = $this->title;
 
 		   
           <div class="col-sm-12 col-xs-12">
-		       <?php $form = ActiveForm::begin(['id' => 'form-signup']); ?>
+		  
+		       <?php $form = ActiveForm::begin(['id' => 'form-signup2']); ?>
                 <?= $form->field($model, 'email')->label('Email')->textInput(['autofocus' => true]); ?>
-				<?= $form->field($model, 'phone_number')->textInput()->label('Phone number'); ?>
+				<?= $form->field($model, 'cellar_numb')->textInput()->label('Phone number'); ?>
 				<?= $form->field($model, 'first_name')->textInput()->label('First name'); ?>
 				<?= $form->field($model, 'last_name')->textInput()->label('Last name'); ?>
 				<?= $form->field($model, 'address')->textInput()->label('Address'); ?>
-				  <?= $form->field($model, 'username'); ?>
+				  
                 <div class="form-group">
                     <?= Html::submitButton('OK', ['class' => 'btn btn-primary', 'name' => 'OK2']) ?>
                 </div>

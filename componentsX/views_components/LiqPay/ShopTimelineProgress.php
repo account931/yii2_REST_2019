@@ -26,7 +26,7 @@ class ShopTimelineProgress
 			<div class="row items-list">
 			
 			     <!-- Shop icon -->
-			    <div class="icon-item <? echo ($activeClass == 'Shop' ? 'myactive' : 'myinactive'); ?> "> <!-- assign css class by function argument {$activeClass} -->
+			    <div class="icon-item <?php echo ($activeClass == 'Shop' ? 'myactive' : 'myinactive'); ?> "> <!-- assign css class by function argument {$activeClass} -->
 			        <i class="fa fa-gift" style="font-size:24px;"></i>
 					<p><?=Html::a( "Shop", ["/shop-liqpay/index",] , $options = ["title" => "Shop",] ); ?></p>
 		        </div>
@@ -38,7 +38,7 @@ class ShopTimelineProgress
 				
 				
 			    <!-- Cart icon -->
-			    <div class="icon-item <? echo ($activeClass == 'Cart' ? 'myactive' : 'myinactive'); ?> "> <!-- assign css class by function argument {$activeClass} -->
+			    <div class="icon-item <?php echo ($activeClass == 'Cart' ? 'myactive' : 'myinactive'); ?> "> <!-- assign css class by function argument {$activeClass} -->
 			        <i class="fa fa-shopping-cart" style="font-size:24px;"></i>
 				    <p><?=Html::a( "Cart", ["/shop-liqpay/cart",] , $options = ["title" => "Cart",] ); ?></p>
 		        </div>
@@ -49,7 +49,7 @@ class ShopTimelineProgress
 			    </div>
 				
                 <!-- Order icon -->				
-				<div class="icon-item <? echo ($activeClass == 'Order' ? 'myactive' : 'myinactive'); ?> "> <!-- assign css class by function argument {$activeClass} -->	
+				<div class="icon-item <?php echo ($activeClass == 'Order' ? 'myactive' : 'myinactive'); ?> "> <!-- assign css class by function argument {$activeClass} -->	
 				    <i class="fa fa-tablet" style="font-size:24px;"></i>
 					<p>Order</p>
 				</div>
@@ -60,7 +60,7 @@ class ShopTimelineProgress
 				</div>
 				
                 <!-- Payment icon -->				
-				<div class="icon-item <? echo ($activeClass == 'Payment' ? 'myactive' : 'myinactive'); ?> "> <!-- assign css class by function argument {$activeClass} -->	
+				<div class="icon-item <?php echo ($activeClass == 'Payment' ? 'myactive' : 'myinactive'); ?> "> <!-- assign css class by function argument {$activeClass} -->	
 				    <i class="fa fa-money" style="font-size:24px;"></i>
 					<p>Payment</p>
 				</div>
@@ -70,7 +70,7 @@ class ShopTimelineProgress
 				    <span class="line2">  </span>
 				</div>
 				
-                <div class="icon-item <? echo ($activeClass == 'Complete' ? 'myactive' : 'myinactive'); ?> "> <!-- assign css class by function argument {$activeClass} -->				
+                <div class="icon-item <?php echo ($activeClass == 'Complete' ? 'myactive' : 'myinactive'); ?> "> <!-- assign css class by function argument {$activeClass} -->				
 				    <i class="fa fa-check" style="font-size:24px;"></i>
 					<p>Complete</p>
 			    </div>

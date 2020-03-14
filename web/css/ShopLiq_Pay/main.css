@@ -30,6 +30,23 @@
 
 
 
+/* ----CSS modification for "Quick View button" in shop. In desktop this button appears on hover only & in mobile appears without hover (by default) */
+/* .my-for-mobile {display:none;} */
+
+/* -------------------- Mobile */
+/*
+@media screen and (max-width: 480px) { 
+  .my-for-mobile { position:absolute !important;  bottom:20px !important;}
+  .my-for-desktop {display:none  !important;}
+} */
+/* ------------------- Mobile */
+/* ----END CSS modification for "Quick View button" in shop. In desktop this button appears on hover only & in mobile appears without hover (by default) */
+
+
+
+
+
+
 /* --------- TEMPLATE CSS --------------------*/
 
 
@@ -1906,7 +1923,7 @@ input.num-product::-webkit-inner-spin-button {
 [ Modal1 ]*/
 .wrap-modal1 {
   position: fixed;
-  width: 100%;
+  width: 100%; /* 100% */
   height: 100vh;
   top: 0;
   left: 0;
@@ -3094,7 +3111,7 @@ input.num-product::-webkit-inner-spin-button {
 /*---------------------------------------------*/
 .hov-img0 {
   display: block;
-  overflow: hidden;
+  overflow: hidden; /* hides "Quick view" */
 }
 
 .hov-img0 img{
@@ -3105,6 +3122,7 @@ input.num-product::-webkit-inner-spin-button {
   transition: transform 0.9s ease;
 }
 
+/* Mine=>  On hover change scale of image size */ 
 .hov-img0:hover img {
   -webkit-transform: scale(1.1);
   -moz-transform: scale(1.1);
@@ -3112,6 +3130,10 @@ input.num-product::-webkit-inner-spin-button {
   -o-transform: scale(1.1);
   transform: scale(1.1);
 }
+
+
+
+
 
 /*---------------------------------------------*/
 .hov-btn1:hover {
@@ -3186,7 +3208,7 @@ input.num-product::-webkit-inner-spin-button {
   background-color: #f2f2f2;
 }
 
-/*---------------------------------------------*/
+/*------------- Modal "Close" button--------------------------------*/
 .hov3 {
   opacity: 0.6;
 }

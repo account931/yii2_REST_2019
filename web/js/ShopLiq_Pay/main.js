@@ -2,6 +2,8 @@
 (function ($) {
     "use strict";
 	
+	//array productsJS (js array to contain all DB products) is passed php array with products (from DB) (from view/index.php)
+	
 	window.id;
 	var temporaryJSCartArray; //temp array to hold in JS $_SESSION['cart']
 	
@@ -153,7 +155,7 @@
 	
               success: function(data) {
 				
-				  swal("!", "Added to cart. ID => " + data.id + " => " + data.quantity + " items", "success"); //sweet alert
+				  swal("!", "Added to cart => " + productsJS[data.id].name + " => " + data.quantity + " items", "success"); //sweet alert
 				  if(data.count > 0){
 			          $('.bb:eq(0)').attr('data-badge', data.count); //$('.badge1:eq(0)').stop().fadeOut("slow",function(){ $(this).attr('data-badge', data.count) }).fadeIn(2000);   
 		         } else {
@@ -247,7 +249,23 @@
 	
 	
 	
-	
+	   //onClick on product name do the same as on image hover  !!!! NOT WORKING
+	    $('.my-trigger').on('click', function(event){
+			event.preventDefault();
+        /*
+			var value = 1.1;
+			
+			//$('.hov-img0').find("img").css({   
+			$(this).parent().find('img').css({
+              '-webkit-transform' : 'scale(' + value + ')',
+              '-moz-transform'    : 'scale(' + value + ')',
+              '-ms-transform'     : 'scale(' + value + ')',
+              '-o-transform'      : 'scale(' + value + ')',
+              'transform'         : 'scale(' + value + ')'
+            });
+		*/
+
+		});
 	
 	
 	

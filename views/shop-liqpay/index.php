@@ -131,14 +131,22 @@ $this->params['breadcrumbs'][] = $this->title;
 							<!--<img src="images/shopLiqPay/product-01.jpg" alt="IMG-PRODUCT">-->
 							<?=Html::img(Yii::$app->getUrlManager()->getBaseUrl().'/images/shopLiqPay/' . $productsX[$i]['image'] , $options = ["id"=>"","margin-left"=>"","class"=>"my-one","width"=>"","title"=>"product"]); ?>
 
-							<a href="#" class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1" id= <?=$productsX[$i]['id']?> >
+							<!--  Quick view on hover only -->
+							<a href="#" class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1 my-for-desktop" id= <?=$productsX[$i]['id']?> >
 								Quick View
 							</a>
+							
+							<!-- Constant Quick view, to use more smooth, comment onHover "Quick View" () -->
+							<!--<a href="#" style="position:absolute;bottom:20px" class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1 my-for-mobile" id= <?=$productsX[$i]['id']?> >
+								Quick View(cell)
+							</a>-->
+							
+		
 						</div>
 
 						<div class="block2-txt flex-w flex-t p-t-14">
 							<div class="block2-txt-child1 flex-col-l ">
-								<a href="product-detail.html" class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
+								<a href="#" class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6 my-trigger">
 								
 									<!--Esprit Ruffle Shirt-->
 									<?=$productsX[$i]['name']?>

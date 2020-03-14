@@ -247,6 +247,13 @@ class ShopLiqpayController extends Controller
     public function actionCheckOut()
     {
 		$model = new BuyerForm();
+		
+		if ($model->load(Yii::$app->request->post()) && $model->validate() ) {
+		    Yii::$app->getSession()->setFlash('statusOK', "Form OK!!!!"); 
+		} else {
+			Yii::$app->getSession()->setFlash('statusOK', "Form CRASH"); 
+		}
+		
 		 return $this->render('check-out', [
             'model' => $model,
         ]);

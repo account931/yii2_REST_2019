@@ -5,14 +5,14 @@ use Yii;
 use yii\base\Model;
  
 /**
- * Signup form
+ * 
  */
 class BuyerForm extends Model
 {
  
     public $username;
     public $email;
-    public $phone_number;
+    public $cellar_numb;
 	public $first_name;
 	public $last_name;
 	public $address;
@@ -23,22 +23,24 @@ class BuyerForm extends Model
     public function rules()
     {
         return [
-            ['username', 'trim'],
-            [['username', 'address', 'phone_number', 'email'], 'required', 'message' => 'This field can not be blank.'],
+		    
+            //['username', 'trim'],
+            [['address', 'cellar_numb', 'email', 'first_name', 'last_name'], 'required', 'message' => 'This field can not be blank.'],
             //['username', 'unique', 'targetClass' => '\app\models\User', 'message' => 'This username has already been taken.'],
-            ['username', 'string', 'min' => 2, 'max' => 255],
+            [['first_name', 'last_name', 'address'], 'string', 'min' => 3, 'max' => 22],
             ['email', 'trim'],
             ['email', 'email'],
             ['email', 'string', 'max' => 255],
-			['phone_number', 'validatePhoneX'], //my validation
+			//['cellar_numb', 'number', 'max' => 14], 
+			['cellar_numb', 'validateDatesX'], //my validation
 			
             /*
 			['email', 'unique', 'targetClass' => '\app\models\User', 'message' => 'This email address has already been taken.'],
             ['password', 'required'],
             ['password', 'string', 'min' => 6],
 			['password_confirm','required'],
-            //my compare passwords  & confirm
 			*/
+			//my compare passwords  & confirm
             //['password_confirm', 'compare', 'compareAttribute'=>'password', 'message'=>"Passwords don't match", /*'on' => 'update' */ ],
 			
         ];
@@ -53,15 +55,25 @@ class BuyerForm extends Model
      */
     //my validation
 	
-	 public function validatePhoneX(){
+	 //my validation
+	 public function validateDatesX($attribute, $params){
 		  //$RegExp_Phone = '/^[+]380\([\d]{1,4}\)[0-9]+$/';
 		  $RegExp_Phone = '/^[+]380[\d]{1,4}[0-9]+$/';
-		  if (!preg_match($RegExp_Phone, $this->phone_number)){
-			  $this->addError('phone_number','Телефон має бути у форматі +380********* ');
+		  if (!preg_match($RegExp_Phone, $this->$attribute)){
+			  $this->addError($attribute,'phone number must be in format +380********* ');
+
+              //return false;
 		  }
+		 
      }
 	 
 	 
 	 
+	 
+	 
+	 
+	
+	
+	
  
 }
