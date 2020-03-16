@@ -165,7 +165,7 @@ class ShopLiqpayController extends Controller
 			if (isset($_SESSION['cart']) && isset($_SESSION['cart'][$id]) ){
 				$temp = $_SESSION['cart'];//save Session to temp var
 				unset($temp[$id]);
-			}
+			} else {}
 		} else {
             //session_start();
             if (!isset($_SESSION['cart'])) {//if Session['cart'] does not exist yet

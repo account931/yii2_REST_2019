@@ -11,7 +11,7 @@
 	    temporaryJSCartArray = cartJS; 
 		console.log(cartJS);
 	} else {
-		temporaryJSCartArray = [];
+		temporaryJSCartArray = []; //will never fire & will never be array type, as if $_SESSION['cart'] does not exist, it will display "So far, no products in cart"
 	}	
 	
     //calc and html the general amount of all cart products
@@ -84,7 +84,7 @@
            },
            function(isConfirm){
                if (isConfirm){
-				    parentX.remove(); //remove closest('tr') from DOM
+				    //parentX.remove(); //remove closest('tr') from DOM
 					
 					//show sw alert with delay (in order for user to see remoning the <tr> from DOM firstly)
 					//setTimeout(function(){  
@@ -100,13 +100,24 @@
 				   // temporaryJSCartArray.splice(parseInt($(this).parent().attr('id')), 1);
 				   var index = parentX.attr('id'); //gets the <tr> id
 				   index = parseInt(index);
-
-				   delete temporaryJSCartArray[index] ;
+                   alert(index + " " + temporaryJSCartArray[index]); 
+					
+				   delete temporaryJSCartArray[index] ; //temporaryJSCartArray is object
+				   //mega fix
+				   if(temporaryJSCartArray.length == 1){
+					   temporaryJSCartArray = {};
+				   }
+				   
+				   //delete temporaryJSCartArray['0'];
+				   
 				   //temporaryJSCartArray[index] = 0;
 				  //temporaryJSCartArray.splice(0,1);
 				  //temporaryJSCartArray.0 = undefined;
               
+			       parentX.remove(); //remove closest('tr') from DOM
+				   
 		           console.log(temporaryJSCartArray);
+				   console.log(temporaryJSCartArray.length);
 		 
 				   
 				   //re-calc all sum amount
@@ -238,6 +249,17 @@
 		
 		
 	 }
+	 
+	 
+	 
+	 //!!!!!!! STOPPED HERE
+	 //Don't let  cart quantity input change from keyboard pressing, only by ++/--
+	 /*
+	$('input[type="text"]#productQuantity').keydown(function(e) {
+        e.preventDefault();
+    });
+	*/
+	
 	 
 
 })(jQuery);

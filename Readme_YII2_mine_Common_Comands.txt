@@ -1129,7 +1129,7 @@ JS=>
    # click for for newly generated => $(document).on("click", '.subfolder', function() {      //for newly generated 
    #get the clicked id=> //alert(this.id); // this.attr("id");   vs  var b = $(this);
    #to work on mobile only  => if(screen.width <= 640){ 
-   #data-attribute =>  <div data-myUnix=''> =>  this.getAttribute("data-myUnix");
+   #data-attribute =>  <div data-myUnix=''> =>  this.getAttribute("data-myUnix"); OR  $(".my-minus").attr("data-idd")). To set => $(".my-minus").attr('data-idd', this.id);
    #js ptototype (constructor) =>
          function Person(name, age) { this.name = name; this.age = age; }
          const me = new Person('Joe', 20);

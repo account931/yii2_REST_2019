@@ -24,6 +24,7 @@
 @media screen and (max-width: 480px) { 
    .badge1[data-badge]:after { right:-0.8em;}
    .badge1 {right:2em;}
+   .totalZ{font-size:0.9em;}
 }
 /* ---------------------------------------- Mobile */
 

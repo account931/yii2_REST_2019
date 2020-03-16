@@ -1,4 +1,4 @@
-//Js for front SHOP (main) part of the shop (page with products)
+//Js for front SHOP, (main) part of the shop (page with products)
 (function ($) {
     "use strict";
 	
@@ -35,12 +35,16 @@
 		$("#hiddenModal_Image").attr("src", urlX + "/images/shopLiqPay/" + productsJS[idX].image); //with animation
 		//$("#hiddenModal_Image").attr("src", urlX + "/images/shopLiqPay/" + productsJS[idX].image);
 		//adding id to button
-		 $(".assign-id ").attr("id",productsJS[idX].id);
+		 $(".assign-id").attr("id",productsJS[idX].id);
 		 
-		//html the quanity in modal window, based on $_SESSION['cart']. On success calculate and html Total price {Total for 4 items is 300.00 ₴}
-		GetQuantity(idX); 
-
+		 //sets ID of product to <i> with minus -- (in modal window)
+		 $(".my-minus").attr('data-idd', this.id);
 		 
+		 //return normal text, bg and attribute to "Add to cart" button if it was changed by -- for instance when you  -- last item in modal window
+		 normalizeAddToCartButton();
+		 
+		//html the quanity/amount of product in modal pop-up window, based on $_SESSION['cart']. On success calculate and html Total price {Total for 4 items is 300.00 ₴}
+		GetQuantity(idX);  
 		
     });
 
@@ -50,8 +54,6 @@
         $('.js-modal1').removeClass('show-modal1');
     });
 
-	
-	
 	
 	
 	
@@ -105,13 +107,30 @@
 	//Minus
     $('.btn-num-product-down').on('click', function(){
         var numProduct = Number($(this).next().val());
+		
+		if(numProduct == 1){ 
+			if (typeof temporaryJSCartArray[ parseInt($(".my-minus").attr("data-idd")) ] != 'undefined'){
+			    swal("Last item!", "Careful, you are about do delete this product from cart", "warning");
+				$('.my-button-x').html('Remove from cart'); $('.my-button-x').css('background', 'red'); //change button style 
+			} else {
+				swal("Stop!", "Can't select zero items", "warning");
+				return false;
+			    //disableAddToCartButton();
+				
+			}
+		}
+		
         if(numProduct > 0){
 		   $(this).next().val(numProduct - 1);
 		   //mine
 		   $('#quantX').html(numProduct - 1);
 		   $('#totalX').html( ((numProduct - 1) * productsJS[window.id].price).toFixed(2)); //.toFixed(2) -> rounds 2.005 to 2.01
 		}
+		
+		
     });
+	
+	
     
 	//Plus
     $('.btn-num-product-up').on('click', function(){
@@ -122,13 +141,16 @@
 		$('.totalZ').html('Total for <span id="quantX">0</span> items is <span id="totalX">0</span> ₴');
 		$('#quantX').html(numProduct + 1);
 		$('#totalX').html(((numProduct + 1) * productsJS[window.id].price).toFixed(2));
+		
+		//return normal text, bg and attribute to "Add to cart" button if it was changed by --
+		normalizeAddToCartButton();
+		
     });
 
 	
 	
 	
-	
-	
+   
 	
 	
 	
@@ -142,7 +164,7 @@
 	 function sendAjaxAddProduct(thisX){
           
 		  var url = urlX + '/shop-liqpay/add-product-to-cart'; //url from view/admin-panel
-	      //alert(url);
+	      alert(thisX.attr('id') + " " + $('#productQuantity').val() );
 		   // send  data  to  PHP handler  ************ 
            $.ajax({
               url: url,
@@ -154,8 +176,15 @@
 				  },
 	
               success: function(data) {
-				
-				  swal("!", "Added to cart => " + productsJS[data.id].name + " => " + data.quantity + " items", "success"); //sweet alert
+				  if(parseInt($('#productQuantity').val()) > 0 ){
+				      swal("!", "Added to cart => " + productsJS[data.id].name + " => " + data.quantity + " items", "success"); //sweet alert
+				  } else {
+					  swal("!", "Removed from cart", "warning"); //sweet alert
+					  $('.js-modal1').removeClass('show-modal1'); //hide the modal
+					  
+				  }
+				  
+				  //if php script {add-product-to-cart} returns length of Session['cart'] more than zero
 				  if(data.count > 0){
 			          $('.bb:eq(0)').attr('data-badge', data.count); //$('.badge1:eq(0)').stop().fadeOut("slow",function(){ $(this).attr('data-badge', data.count) }).fadeIn(2000);   
 		         } else {
@@ -266,6 +295,54 @@
 		*/
 
 		});
+	
+	
+	
+	
+	
+	
+	
+	//return normal text, bg and attribute to "Add to cart" button if it was changed by -- for instance when you  -- last item in modal window
+  // **************************************************************************************
+  // **************************************************************************************
+  // **                                                                                  **
+  // **                                                                                  **
+	function normalizeAddToCartButton(){
+		$('.my-button-x').prop('disabled', false);
+		$('.my-button-x').html('Add to cart');
+		$('.my-button-x').css('background', '#717fe0');
+    }
+	
+	
+	
+	
+   //disable the  "Add to cart" button, for instance when you  -- last item in modal window
+  // **************************************************************************************
+  // **************************************************************************************
+  // **                                                                                  **
+  // **                                                                                  **
+	function disableAddToCartButton(){
+		$('.my-button-x').prop('disabled', true);
+		$('.my-button-x').html('Disabled');
+		$('.my-button-x').css('background', 'red');
+    }
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	
