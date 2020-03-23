@@ -109,7 +109,7 @@
         var numProduct = Number($(this).next().val());
 		
 		if(numProduct == 1){ 
-			if (typeof temporaryJSCartArray[ parseInt($(".my-minus").attr("data-idd")) ] != 'undefined'){
+			if (typeof temporaryJSCartArray[ parseInt($(".my-minus").attr("data-idd")) ] != 'undefined'){ //if it is in cart
 			    swal("Last item!", "Careful, you are about do delete this product from cart", "warning");
 				$('.my-button-x').html('Remove from cart'); $('.my-button-x').css('background', 'red'); //change button style 
 			} else {
@@ -120,6 +120,7 @@
 			}
 		}
 		
+		//if current quantity more than zero
         if(numProduct > 0){
 		   $(this).next().val(numProduct - 1);
 		   //mine
@@ -191,6 +192,9 @@
 		             $('.bb:eq(0)').attr('data-badge', -0);
 		         }
 				 
+				 
+				 //!!!!!!FIX HERE !!!!!!!!!!!!!!!!
+				 //if if(parseInt($('#productQuantity').val()) > 0 ){} else { REMOVE FROM temporaryJSCartArray[]}
 				 //renew JS var temporaryJSCartArray (otherwise modal window displays old value)
 				 temporaryJSCartArray[thisX.attr('id')] = $('#productQuantity').val();
 				 $("#cartStatus").html('Product was already selected. You picked ' + $('#productQuantity').val() + ' items.');

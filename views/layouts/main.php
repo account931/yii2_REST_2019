@@ -81,6 +81,7 @@ $menuItems = [
 			['label' => 'Send mail (N/A)', 'url' => ['#']],
 			['label' => 'Test for middle(auth via email)', 'url' => ['/test-middle/index']],
 			['label' => 'Shop Liq E-pay Cozastore (amado cart)', 'url' => ['/shop-liqpay/index']],
+			['label' => 'Shop Liq E-pay {SIMPLE}', 'url' => ['/shop-liqpay-simple/index']],
 			['label' => 'Distance radius(N/A)', 'url' => ['#']],
 			
             //submenu with image,(won't  work  without  {encodeLabels' => false,}  ,  it  is  inserted  below)   /*/yii/basic_download/web*/
