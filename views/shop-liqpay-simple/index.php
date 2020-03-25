@@ -87,6 +87,8 @@ $this->params['breadcrumbs'][] = $this->title;
 	      for($i = 0; $i < count($productsX); $i++){
           
 		       
+			
+		       
 			   	
 			echo '<div id="' . $productsX[$i]['id'] . '" class="col-sm-5 col-xs-12  list-group-item bg-success cursorX" data-toggle="modal" data-target="#myModal' . $i . '">' .  //data-toggle="modal" data-target="#myModal' . $i .   for modal
 			       '<div class="col-sm-2 col-xs-3">' . $productsX[$i]['name'] . '</div>' . 
@@ -122,13 +124,19 @@ $this->params['breadcrumbs'][] = $this->title;
 						  
 						  <div class="row list-group-item">
 						      <div class="col-sm-1 col-xs-3">Price</div>
-						      <div class="col-sm-4 col-xs-9"><?=$productsX[$i]['price'];?> ₴</div> <!-- has one -->
+						      <div class="col-sm-4 col-xs-9"><span class="price-x"><?=$productsX[$i]['price'];?></span> ₴</div> 
 						  </div>
 						  
 						  <div class="row list-group-item">
 						      <div class="col-sm-1 col-xs-3">Info</div>
-						      <div class="col-sm-4 col-xs-9"><?=$productsX[$i]['description'];?></div> <!-- has one -->
+						      <div class="col-sm-4 col-xs-9"><?=$productsX[$i]['description'];?></div> 
 						  </div>
+						  
+						   <div class="row list-group-item">
+						      <div class="col-sm-1 col-xs-3">Total</div>
+						      <div class="col-sm-4 col-xs-9 shadowX"><span class="sum"></span></div> 
+						  </div>
+						  
 						  
 						  <div class="row list-group-item">
 						      <div class="col-sm-1 col-xs-3">Image</div>
@@ -136,6 +144,52 @@ $this->params['breadcrumbs'][] = $this->title;
 						  </div>  
 					 
                      </div>
+					 
+					 <!---------- Section ++button /form input/--button ------->
+					 <div class="row">
+					 
+					     <!--- Empty div to keep distance -->
+					     <div class="col-sm-4 col-xs-2"> 
+						 </div>
+					    
+						
+						<!--- Plus button -->
+					     <div class="col-sm-1 col-xs-2"> 
+						     <button type="button" class="btn btn-primary button-plus">+</button>
+						 </div>
+						 
+						 
+						 <!-- form with input -->
+						 <div class="col-sm-2 col-xs-3">
+					         <?php 
+					         $form = ActiveForm::begin(['action' => ['shop-liqpay-simple/add-to-cart'],'options' => ['method' => 'post', 'id' => 'formX'],]); 
+                                 echo $form->field($myInputModel, 'yourInputValue')->textInput(['maxlength' => true,'value' => 4, 'class' => 'item-quantity form-control'])->label(false); //product quantity input
+                                 echo $form->field($myInputModel, 'productID')->hiddenInput(['value' => $productsX[$i]['id'],])->label(false); //product ID hidden input
+
+							 ?>
+								 
+ 	                             <div class="form-group">
+                                    <?= Html::submitButton(Yii::t('app', 'Add to cart'), ['class' => 'btn btn-primary shadowX' , 'id'=>'']) ?>
+                                 </div>
+                             <?php ActiveForm::end(); ?>
+						  </div>
+						  
+						  <!-- End form with input -->
+						  
+						  
+						  <!--- Minus button -->
+						  <div class="col-sm-1 col-xs-2"> 
+						     <button type="button" class="btn btn-danger button-minus">-</button>
+						 </div>
+						 
+                         <!--- Empty div to keep distance -->						 
+						 <div class="col-sm-3 col-xs-3">
+						 </div>
+						  
+					 </div>
+					 <!---------- END Section ++button /form input/--button ------->
+					 
+					 
 					  
                       <div class="modal-footer">
                           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -144,7 +198,6 @@ $this->params['breadcrumbs'][] = $this->title;
               </div>
            </div>
           <!------------ End Modal ---------------> 
-		  
 		  
 		  <?php
 		  }

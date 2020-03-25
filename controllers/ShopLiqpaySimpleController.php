@@ -1,5 +1,6 @@
 <?php
 // LiqPay Shop => Simple version, more simple version of ShopLiqpay but without ajax, just php operating
+//Uses DB, Liqpay does not
 namespace app\controllers;
 
 use Yii;
@@ -7,11 +8,8 @@ use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\Response;
 use yii\filters\VerbFilter;
-use app\models\LoginForm;
-use app\models\ContactForm;
-use app\models\User;
-use app\models\SignupForm;
-use app\models\AuthItem; //table with Rbac roles
+use app\models\AuthItem; //table with Rbac roles, NOT USED???
+use app\models\LiqPay_2_Simple\InputModel;
 
 ;
 
@@ -33,10 +31,10 @@ class ShopLiqpaySimpleController extends Controller
 				 //END To show message to unlogged users. Without this unlogged users will be just redirected to login page
 				 
 				//following actions are available to logged users only 
-                'only' => ['logout', 'add-admin', 'get-token', 'change-password'], //actionGetToken, actionChangePassword
+                'only' => ['logout',/* 'add-admin',*/], //actionGetToken, actionChangePassword
                 'rules' => [
                     [
-                        'actions' => ['logout', 'add-admin', 'get-token', 'change-password'], //actionGetToken, actionChangePassword
+                        'actions' => ['logout', /*'add-admin',*/ ], //actionGetToken, actionChangePassword
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -90,7 +88,7 @@ class ShopLiqpaySimpleController extends Controller
 	
 	
     /**
-     * Displays homepage.
+     * Displays Shop_2 Simple homepage.
      *
      * @return string
      */
@@ -101,11 +99,44 @@ class ShopLiqpaySimpleController extends Controller
   // **                                                                                  **
     public function actionIndex()
     {
-        return $this->render('index');
+		$myInputModel = new InputModel();
+		
+		//if ($myInputModel->load(\Yii::$app->request->post()) ) { echo $myInputModel->yourInputValue;}
+		
+        return $this->render('index', [
+		      'myInputModel' => $myInputModel
+			  ]);
     }
 
 	
 
+	
+	/**
+     * Adds to cart
+     *
+     * 
+     */
+	     
+  // **************************************************************************************
+  // **************************************************************************************
+  // **                                                                                  **
+  // **                                                                                  **
+    public function actionAddToCart()
+    {
+		
+		//echo $_POST['InputModel']['yourInputValue']; //works
+		$request = Yii::$app->request->post('InputModel'); //InputModel[yourInputValue];
+		
+		$itemsQuantity = $request['yourInputValue']; //gets quantity from form
+		$productID = $request['productID']; //gets productID (hidden field) from form
+		
+		echo "Product: " . $productID . " quantity: " . $itemsQuantity;
+       
+    }
+
+	
+	
+	
 
 	
 	

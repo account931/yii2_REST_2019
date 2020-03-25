@@ -31,6 +31,10 @@
 
 
 
+.item-quantity{text-align: center;} /* font of quantity */
+
+
+
 
 
 
@@ -80,7 +84,7 @@
 
 
 
-/* Cursor for messages */
+/* Cursor for products */
 .cursorX{
 	cursor: pointer;	
 }
@@ -98,3 +102,12 @@
 /* my shop image*/
 .my-one {width:40%;}
 .my-one-modal{width:80%;}
+
+
+
+.shadowX, #txtMsg{
+	box-shadow: 0 1px 4px rgba(0, 0, 0, .3),
+            -23px 0 20px -23px rgba(0, 0, 0, .6),
+            23px 0 20px -23px rgba(0, 0, 0, .6),
+            inset 0 0 40px rgba(0, 0, 0, .1);
+}

@@ -1049,6 +1049,8 @@ if($_SERVER['REMOTE_ADDR'] == '127.0.0.1') {
 #form hidden input / add id to form input=> $form->field($model, 'wpBlog_author')->hiddenInput(['autofocus' => true, 'id' => 'some_id', 'value'=> Yii::$app->user->identity->id])->label(false); //
 #Hidden input field + default value + hide lable =>  $form->field($model, 'entity')-> hiddenInput(['value'=> '', 'id' => 'some_id'])->label(false);
 #Add id to form input => 	<?= $form->field($model, 'book_from') ->input('date')->label(false);
+#Add class to form input (class 'form-control' is a must) =>  <?= $form->field($myInputModel, 'yourInputValue')->textInput(['maxlength' => true,'value' => 4, 'class' => 'item-quantity form-control'])->label(false); //product quantity input
+
 # horizontal form => <?php $form = ActiveForm::begin( [ 'options' => ['class' => 'form-inline'] ]);  See details => https://github.com/account931/kernel/blob/master/modules/views/invoice-load-in/_form.php
 
 #dropdown <select><option> with URL links => https://github.com/account931/portal_v2/blob/master/controllers/SiteController.php  -> function actionPortal()  + /js/autocomplete.js
