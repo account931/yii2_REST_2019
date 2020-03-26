@@ -10,12 +10,11 @@
 	//Plus ++
     $('.button-plus').on('click', function(){
 		
-		//var numProduct = /*Number(*/ $(this).parent().next('.item-quantity').val()/*)*/;
 		var numProduct = Number($(this).closest('div').next().find('input:eq(1)').val()); //gets current input quantity
-		//console.log(numProduct);
-		$(this).closest('div').next().find('input:eq(1)').val(Number(numProduct) + 1); //html new value
+		$(this).closest('div').next().find('input:eq(1)').val(Number(numProduct) + 1); //html new value++
 		
-		var price = $(this).parent().parent().siblings().find('.price-x').html(); //gets price-x
+		//var price = $(this).parent().parent().siblings().find('.price-x').html(); //gets price-x. Working, but reassigned to {data-priceX}
+		var price = this.getAttribute("data-priceX"); //gets price from {data-priceX}
 		console.log(price);
 		calcPrice(numProduct+1, price);
     });
@@ -33,20 +32,21 @@
 			swal("Stop!", "Can't select zero items", "warning");
 			return false;
 		}
-		$(this).closest('div').prev().find('input:eq(1)').val(numProduct - 1); //html new value
 		
-		var price = $(this).parent().parent().siblings().find('.price-x').html(); //gets  the price from modal, price-x
+		$(this).closest('div').prev().find('input:eq(1)').val(numProduct - 1); //html new value--
 		
+		//var price = $(this).parent().parent().siblings().find('.price-x').html(); //gets the price from modal, price-x. Working, but reassigned to {data-priceX}
+		var price = this.getAttribute("data-priceX"); //gets price from {data-priceX}
 		calcPrice((numProduct-1), price);
     });
 	
 	
 	 
 	 //==================================================================
-	 //calcs the amount of sum for all items, i,e 2x16.66 = N
+	 //calcs & html the amount of sum for all items, i,e 2x16.66 = N
 	 function calcPrice(quant, itemPrice){
 		//$('.sum').html(Number(quant) + ' item x ' + itemPrice + '₴ = ' + (quant*itemPrice).toFixed(2) + '₴' );
-		  $('.sum').stop().hide(100,function(){ $(this).html( Number(quant) + ' item x ' + itemPrice + '₴ = ' + (quant*itemPrice).toFixed(2) + '₴'  )}).fadeIn(500);
+		  $('.sum').stop().hide(100,function(){ $(this).html( Number(quant) + ' item x ' + itemPrice + '₴ = ' + (quant*itemPrice).toFixed(2) + '₴'  )}).fadeIn(200);
 
 	 }
 

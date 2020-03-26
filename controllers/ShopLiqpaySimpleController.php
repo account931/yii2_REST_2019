@@ -123,21 +123,54 @@ class ShopLiqpaySimpleController extends Controller
   // **                                                                                  **
     public function actionAddToCart()
     {
-		
+		//Cart exists in format: [id => quantity]
 		//echo $_POST['InputModel']['yourInputValue']; //works
 		$request = Yii::$app->request->post('InputModel'); //InputModel[yourInputValue];
 		
-		$itemsQuantity = $request['yourInputValue']; //gets quantity from form
-		$productID = $request['productID']; //gets productID (hidden field) from form
+		$itemsQuantity = $request['yourInputValue']; //gets quantity from form $_POST[]
+		$productID = $request['productID']; //gets productID (hidden field) from form $_POST[]
 		
-		echo "Product: " . $productID . " quantity: " . $itemsQuantity;
+		//echo "Product: " . $productID . " quantity: " . $itemsQuantity;
+		
+		 if((int)$itemsQuantity == 0){
+			if (isset($_SESSION['cart-simple-931t']) && isset($_SESSION['cart-simple-931t'][$productID]) ){//if Session is set and that productID is in it
+				$temp = $_SESSION['cart-simple-931t'];//save Session to temp var
+				unset($temp[$productID]);
+				Yii::$app->session->setFlash('successX', 'Product was deleted from cart');
+			} else {}
+		} else {
+            //session_start();
+            if (!isset($_SESSION['cart-simple-931t'])) {//if Session['cart-simple-931t'] does not exist yet
+                $temp[$productID] = (int)$itemsQuantity;//в масив заносим количество of products 
+            } else {//if if Session['cart-simple-931t'] already contains some products, ie. was prev added to cart
+                $temp = $_SESSION['cart-simple-931t'];//save Session to temp var
+                if (!array_key_exists($productID, $temp)) {//проверяем есть ли в корзине уже такой товар
+                    $temp[$productID] = (int)$itemsQuantity; //в масив заносим количество тавара 1
+                } else { //if product was not prev selected (added to cart)
+				    $temp[$productID] = (int)$itemsQuantity;
+			    }				
+            }
+			Yii::$app->session->setFlash('successX', 'Product added to cart');
+		}
+		
+        //$count = count($temp);//count products in cart
+        $_SESSION['cart-simple-931t'] = $temp;//write temp var to Cart
        
+	   
+       return Yii::$app->getResponse()->redirect(['shop-liqpay-simple/index']);
     }
 
 	
 	
 	
-
+   // **************************************************************************************
+  // **************************************************************************************
+  // **                                                                                  **
+  // **                                                                                  **
+    public function actionCart()
+    {
+		return $this->render('cart');
+	}
 	
 	
 	

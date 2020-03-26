@@ -100,11 +100,17 @@
 }
 
 /* my shop image*/
-.my-one {width:40%;}
+.my-one {width:90%;}
 .my-one-modal{width:80%;}
 
 
-
+/* ---------------------------------------- Mobile */
+@media screen and (max-width: 480px) { 
+    .my-one {width:100%;} /* my shop image*/
+}
+ 
+ 
+/* ---- Shadow CSS */
 .shadowX, #txtMsg{
 	box-shadow: 0 1px 4px rgba(0, 0, 0, .3),
             -23px 0 20px -23px rgba(0, 0, 0, .6),

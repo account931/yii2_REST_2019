@@ -31,7 +31,8 @@ class InputModel extends Model
            
         ];
     }
-public function attributeLabels()
+	
+    public function attributeLabels()
     {
         return [
             'yourInputValue' => 'quantity',
@@ -39,6 +40,19 @@ public function attributeLabels()
             
         ];
     }
-
     
+	
+	//truncate/crop the text
+	public function truncateTextProcessor($text, $maxLength)
+	{
+        $length = $maxLength; 
+		if(strlen($text) > $length){
+		    $text = substr($text, 0, $length) . "...";
+		} 
+	return $text;		
+	}
+	
+	
+	
+	
 }

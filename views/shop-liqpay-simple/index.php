@@ -31,8 +31,8 @@ $this->params['breadcrumbs'][] = $this->title;
 		<!-------- Cart icon with badge ----------->
 		<?php 
 		//get the car quantity
-		if (isset($_SESSION['car-simple-931t'])) { 
-		    $c = count($_SESSION['car-simple-931t']); 
+		if (isset($_SESSION['cart-simple-931t'])) { 
+		    $c = count($_SESSION['cart-simple-931t']); 
 		} else { 
 			    $c = 0; 
 		} ?>
@@ -44,6 +44,19 @@ $this->params['breadcrumbs'][] = $this->title;
         <!-------- Cart icon with badge ----------->	
 		
    </div>
+	
+	
+	
+	<!------ FLASH Success from BookingCpg/actionIndex() ----->
+   <?php if( Yii::$app->session->hasFlash('successX') ): ?>
+    <div class="alert alert-success alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <?php echo Yii::$app->session->getFlash('successX'); ?>
+    </div>
+    <?php endif;?>
+  <!------ END FLASH Successfrom BookingCpg/actionIndex() ----->
+  
+  
 	
 	
 	<!-------------------- Progress Status Icons by component ----------------->
@@ -63,10 +76,10 @@ $this->params['breadcrumbs'][] = $this->title;
  <?php 
   //all products array, as if we get from DB
   $productsX = [
-      ['id'=> 0, 'name'=> 'Esprit Ruffle Shirt', 'price' => 16.64, 'image' => 'canon.jpg', 'description' => 'Esprit Ruffle Shirt.....some description'],
-      ['id'=> 1, 'name'=> 'Herschel supply',     'price' => 35.31, 'image' => 'hp.jpg', 'description' => 'Herschel supply.........some description'],
-	  ['id'=> 2, 'name'=> 'Classic Trench Coat', 'price' => 75.00, 'image' => 'iphone_3.jpg', 'description' => 'Classic Trench Coat.....some description'],
-	  ['id'=> 3, 'name'=> 'Front Pocket Jumper', 'price' => 75.00, 'image' => 'iphone_5.jpg', 'description' => 'Front Pocket Jumper.....some description'],
+      ['id'=> 0, 'name'=> 'Canon camera', 'price' => 16.64, 'image' => 'canon.jpg', 'description' => '30 Mpx, 5kg'],
+      ['id'=> 1, 'name'=> 'HP notebook',     'price' => 35.31, 'image' => 'hp.jpg', 'description' => '8Gb Ram, 500Gb SSD'],
+	  ['id'=> 2, 'name'=> 'Iphone 3', 'price' => 75.00, 'image' => 'iphone_3.jpg', 'description' => 'TFT capacitive touchscreen, 3.5 inches, 16M colors, 2 Mpx '],
+	  ['id'=> 3, 'name'=> 'Iphone 5', 'price' => 75.00, 'image' => 'iphone_5.jpg', 'description' => 'Front Pocket Jumper.....some description'],
 	  
 	  ['id'=> 4, 'name'=> 'Shirt in Stretch Cotton', 'price' => 2.66,  'image' => 'ipod_classic_3.jpg', 'description' => 'some description'],
 	  ['id'=> 5, 'name'=> 'Pieces Metallic Printed', 'price' => 18.96, 'image' => 'samsung_sync.jpg', 'description' => 'some description'],
@@ -91,9 +104,9 @@ $this->params['breadcrumbs'][] = $this->title;
 		       
 			   	
 			echo '<div id="' . $productsX[$i]['id'] . '" class="col-sm-5 col-xs-12  list-group-item bg-success cursorX" data-toggle="modal" data-target="#myModal' . $i . '">' .  //data-toggle="modal" data-target="#myModal' . $i .   for modal
-			       '<div class="col-sm-2 col-xs-3">' . $productsX[$i]['name'] . '</div>' . 
-				   '<div class="col-sm-4 col-xs-2 word-breakX">' . $productsX[$i]['price']. '</div>' .
-				   '<div class="col-sm-2 col-xs-3">' . $productsX[$i]['name'] .  '</div>' .  	
+			       '<div class="col-sm-4 col-xs-3">' . $productsX[$i]['name'] . '</div>' . 
+				   '<div class="col-sm-2 col-xs-2 word-breakX">' . $productsX[$i]['price']. '₴</div>' .
+				   '<div class="col-sm-2 col-xs-3">' . $myInputModel->truncateTextProcessor($productsX[$i]['description'], 8) .  '</div>' .  	
 				   '<div class="col-sm-4 col-xs-4 word-breakX">'. 
 				       Html::img(Yii::$app->getUrlManager()->getBaseUrl().'/images/shopLiqPay_Simple/' . $productsX[$i]['image'] , $options = ["id"=>"","margin-left"=>"","class"=>"my-one","width"=>"","title"=>"product"]).
                    '</div>' .   
@@ -117,6 +130,13 @@ $this->params['breadcrumbs'][] = $this->title;
                        <div class="modal-header">
                            <button type="button" class="close" data-dismiss="modal">&times;</button>
                            <h4 class="modal-title"><i class="fa fa-delicious" style="font-size:3em; color: navy;"></i> <b> Product</b> </h4>
+						   <?php
+						    //checks if this product already in the cart
+						    if (isset($_SESSION['cart-simple-931t']) && isset($_SESSION['cart-simple-931t'][$productsX[$i]['id']])){
+								echo "<p class='text-danger'>Already " . $_SESSION['cart-simple-931t'][$productsX[$i]['id']] . " items was added to the cart.</p>";
+							} else {
+							}
+						   ?>
                        </div>
 					   
                       <div class="modal-body">
@@ -155,15 +175,23 @@ $this->params['breadcrumbs'][] = $this->title;
 						
 						<!--- Plus button -->
 					     <div class="col-sm-1 col-xs-2"> 
-						     <button type="button" class="btn btn-primary button-plus">+</button>
+						     <button type="button" class="btn btn-primary button-plus" data-priceX="<?=$productsX[$i]['price'];?>">+</button>
 						 </div>
 						 
 						 
 						 <!-- form with input -->
 						 <div class="col-sm-2 col-xs-3">
 					         <?php 
+							 
+							 //check if product already in cart, if Yes-> get its quantity, if no-. sets to 1
+							 if (isset($_SESSION['cart-simple-931t']) && isset($_SESSION['cart-simple-931t'][$productsX[$i]['id']])){
+							     $quantityX = $_SESSION['cart-simple-931t'][$productsX[$i]['id']]; //gets the quantity from cart
+							 } else {
+								 $quantityX = 1;
+		                     }
+							 
 					         $form = ActiveForm::begin(['action' => ['shop-liqpay-simple/add-to-cart'],'options' => ['method' => 'post', 'id' => 'formX'],]); 
-                                 echo $form->field($myInputModel, 'yourInputValue')->textInput(['maxlength' => true,'value' => 4, 'class' => 'item-quantity form-control'])->label(false); //product quantity input
+                                 echo $form->field($myInputModel, 'yourInputValue')->textInput(['maxlength' => true,'value' => $quantityX, 'class' => 'item-quantity form-control'])->label(false); //product quantity input
                                  echo $form->field($myInputModel, 'productID')->hiddenInput(['value' => $productsX[$i]['id'],])->label(false); //product ID hidden input
 
 							 ?>
@@ -179,7 +207,7 @@ $this->params['breadcrumbs'][] = $this->title;
 						  
 						  <!--- Minus button -->
 						  <div class="col-sm-1 col-xs-2"> 
-						     <button type="button" class="btn btn-danger button-minus">-</button>
+						     <button type="button" class="btn btn-danger button-minus" data-priceX="<?=$productsX[$i]['price'];?>">-</button>
 						 </div>
 						 
                          <!--- Empty div to keep distance -->						 
