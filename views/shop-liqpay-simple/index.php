@@ -62,7 +62,7 @@ $this->params['breadcrumbs'][] = $this->title;
 	<!-------------------- Progress Status Icons by component ----------------->
 	<?php
 	       //display shop timeline progress => Progress Status Icons
-	       echo \app\componentsX\views_components\LiqPay\ShopTimelineProgress::showProgress("Shop");
+	       echo \app\componentsX\views_components\LiqPay_Simple\ShopTimelineProgress2::showProgress2("Shop");
 	?>
 	
 	<!--------------  END  Progress Status Icons by component ----------------->
@@ -74,19 +74,38 @@ $this->params['breadcrumbs'][] = $this->title;
 	<hr>
 
  <?php 
-  //all products array, as if we get from DB
+  //all products hardcoded artificial array, as if we get from DB. Now it is commented as we use real DB data, table {liqpay_shop_simple}
+  /*
   $productsX = [
       ['id'=> 0, 'name'=> 'Canon camera', 'price' => 16.64, 'image' => 'canon.jpg', 'description' => '30 Mpx, 5kg'],
       ['id'=> 1, 'name'=> 'HP notebook',     'price' => 35.31, 'image' => 'hp.jpg', 'description' => '8Gb Ram, 500Gb SSD'],
-	  ['id'=> 2, 'name'=> 'Iphone 3', 'price' => 75.00, 'image' => 'iphone_3.jpg', 'description' => 'TFT capacitive touchscreen, 3.5 inches, 16M colors, 2 Mpx '],
-	  ['id'=> 3, 'name'=> 'Iphone 5', 'price' => 75.00, 'image' => 'iphone_5.jpg', 'description' => 'Front Pocket Jumper.....some description'],
+	  ['id'=> 2, 'name'=> 'Iphone 3', 'price' => 75.55, 'image' => 'iphone_3.jpg', 'description' => 'TFT capacitive touchscreen, 3.5 inches, 16M colors, 2 Mpx '],
+	  ['id'=> 3, 'name'=> 'Iphone 5', 'price' => 45.00, 'image' => 'iphone_5.jpg', 'description' => 'Iphone 5 description......'],
 	  
-	  ['id'=> 4, 'name'=> 'Shirt in Stretch Cotton', 'price' => 2.66,  'image' => 'ipod_classic_3.jpg', 'description' => 'some description'],
-	  ['id'=> 5, 'name'=> 'Pieces Metallic Printed', 'price' => 18.96, 'image' => 'samsung_sync.jpg', 'description' => 'some description'],
-	  ['id'=> 6, 'name'=> 'Femme T-Shirt In Stripe', 'price' => 25.85, 'image' => 'samsung_tab_5.jpg', 'description' => 'some description'],
-	  ['id'=> 7, 'name'=> 'T-Shirt with Sleeve',     'price' => 18.49, 'image' => 'sony_vaio_1.jpg', 'description' => 'some description'],
+	  ['id'=> 4, 'name'=> 'Ipod', 'price' => 2.66,  'image' => 'ipod_classic_3.jpg', 'description' => 'Ipod description....'],
+	  ['id'=> 5, 'name'=> 'Samsung Sync', 'price' => 18.96, 'image' => 'samsung_sync.jpg', 'description' => 'Samsung Sync description...'],
+	  ['id'=> 6, 'name'=> 'Samsung Tab 5', 'price' => 25.85, 'image' => 'samsung_tab_5.jpg', 'description' => 'Samsung Tab 5 description..'],
+	  ['id'=> 7, 'name'=> 'Sony Vaio',     'price' => 18.49, 'image' => 'sony_vaio_1.jpg', 'description' => 'Sony Vaio description...'],
   ];
- 
+  */
+  
+  $productsX = array(); // array to store formatted results from DB (from controller)
+  
+  //getting results from DB to array in format => [ ['id'=>0, 'name'=> 'canon'], [], ]
+  //We get from DB an array of object {$allDBProducts} and here convert to array of arrays[$productsX]. It is just another variation, we could use direct referring to array of object {$allDBProducts} like {$allDBProducts->l_name}, but in this case we have to rewrite the code below, as it was originally designed for array of arrays[$productsX] (as firstly I created artificial hardcoded array of arrays[$productsX]) 
+  foreach($allDBProducts as $a){ 
+	  $tempo = array();
+	  $tempo['id'] = $a->l_id;
+	  $tempo['name'] = $a->l_name;
+	  $tempo['price'] = $a->l_price;
+	  $tempo['image'] = $a->l_image;
+	  $tempo['description'] = $a->l_descript;
+	 // array_push($tempo['description'], $a->l_descript);
+	  
+	  array_push($productsX, $tempo ); //adds to final array
+  }
+  
+  //var_dump($productsX);
   
   $_SESSION['productCatalogue'] = $productsX; //all products from DB to session
   
@@ -103,7 +122,7 @@ $this->params['breadcrumbs'][] = $this->title;
 			
 		       
 			   	
-			echo '<div id="' . $productsX[$i]['id'] . '" class="col-sm-5 col-xs-12  list-group-item bg-success cursorX" data-toggle="modal" data-target="#myModal' . $i . '">' .  //data-toggle="modal" data-target="#myModal' . $i .   for modal
+			echo '<div id="' . $productsX[$i]['id'] . '" class="col-sm-5 col-xs-12  list-group-item bg-success cursorX shadowX modal-trigger" data-toggle="modal" data-target="#myModal' . $i . '">' .  //data-toggle="modal" data-target="#myModal' . $i .   for modal
 			       '<div class="col-sm-4 col-xs-3">' . $productsX[$i]['name'] . '</div>' . 
 				   '<div class="col-sm-2 col-xs-2 word-breakX">' . $productsX[$i]['price']. '₴</div>' .
 				   '<div class="col-sm-2 col-xs-3">' . $myInputModel->truncateTextProcessor($productsX[$i]['description'], 8) .  '</div>' .  	
@@ -152,6 +171,7 @@ $this->params['breadcrumbs'][] = $this->title;
 						      <div class="col-sm-4 col-xs-9"><?=$productsX[$i]['description'];?></div> 
 						  </div>
 						  
+						  <!--- Total product sum calculation (2x16.64=N) -->
 						   <div class="row list-group-item">
 						      <div class="col-sm-1 col-xs-3">Total</div>
 						      <div class="col-sm-4 col-xs-9 shadowX"><span class="sum"></span></div> 
@@ -165,6 +185,17 @@ $this->params['breadcrumbs'][] = $this->title;
 					 
                      </div>
 					 
+					 <!--- Dublicate: Total product sum calculation (2x16.64=N) -->
+					  <!--<div class="col-sm-12 col-xs-12">
+					      <div class="col-sm-5 col-xs-2 shadowX"></div> 
+						  
+					      <div class="col-sm-3 col-xs-6 list-group-item ">
+						      <span class="sum"></span>
+						  </div>
+					  </div>-->
+						 
+						 
+						 
 					 <!---------- Section ++button /form input/--button ------->
 					 <div class="row">
 					 
@@ -179,6 +210,7 @@ $this->params['breadcrumbs'][] = $this->title;
 						 </div>
 						 
 						 
+						
 						 <!-- form with input -->
 						 <div class="col-sm-2 col-xs-3">
 					         <?php 
@@ -190,6 +222,7 @@ $this->params['breadcrumbs'][] = $this->title;
 								 $quantityX = 1;
 		                     }
 							 
+							 //Form with quantity input
 					         $form = ActiveForm::begin(['action' => ['shop-liqpay-simple/add-to-cart'],'options' => ['method' => 'post', 'id' => 'formX'],]); 
                                  echo $form->field($myInputModel, 'yourInputValue')->textInput(['maxlength' => true,'value' => $quantityX, 'class' => 'item-quantity form-control'])->label(false); //product quantity input
                                  echo $form->field($myInputModel, 'productID')->hiddenInput(['value' => $productsX[$i]['id'],])->label(false); //product ID hidden input
@@ -197,7 +230,7 @@ $this->params['breadcrumbs'][] = $this->title;
 							 ?>
 								 
  	                             <div class="form-group">
-                                    <?= Html::submitButton(Yii::t('app', 'Add to cart'), ['class' => 'btn btn-primary shadowX' , 'id'=>'']) ?>
+                                    <?= Html::submitButton(Yii::t('app', 'Add to cart'), ['class' => 'btn btn-primary shadowX submitX rounded' , 'id'=>'']) ?>
                                  </div>
                              <?php ActiveForm::end(); ?>
 						  </div>
@@ -206,8 +239,16 @@ $this->params['breadcrumbs'][] = $this->title;
 						  
 						  
 						  <!--- Minus button -->
+						  <?php
+						  //getting flag, used to detect if product is already in cart
+						  if (isset($_SESSION['cart-simple-931t']) && isset($_SESSION['cart-simple-931t'][$productsX[$i]['id']])){
+							  $ifInCartFlag = " data-cartFlag ='true'";
+						  } else {
+							  $ifInCartFlag = " data-cartFlag ='false' ";
+						  }
+						  ?>
 						  <div class="col-sm-1 col-xs-2"> 
-						     <button type="button" class="btn btn-danger button-minus" data-priceX="<?=$productsX[$i]['price'];?>">-</button>
+						     <button type="button" class="btn btn-danger button-minus" data-priceX="<?php echo $productsX[$i]['price'].'"'; echo $ifInCartFlag; ?>>-</button>
 						 </div>
 						 
                          <!--- Empty div to keep distance -->						 

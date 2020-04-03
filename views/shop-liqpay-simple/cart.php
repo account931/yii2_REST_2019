@@ -62,7 +62,7 @@ $this->params['breadcrumbs'][] = $this->title;
 	<!-------------------- Progress Status Icons by component ----------------->
 	<?php
 	       //display shop timeline progress => Progress Status Icons
-	       echo \app\componentsX\views_components\LiqPay\ShopTimelineProgress::showProgress("Cart");
+	       echo \app\componentsX\views_components\LiqPay_Simple\ShopTimelineProgress2::showProgress2("Cart");
 	?>
 	
 	<!--------------  END  Progress Status Icons by component ----------------->
@@ -98,7 +98,7 @@ $this->params['breadcrumbs'][] = $this->title;
   ?>
   
    
-  
+      <!------------  CART Products List ------------->
       <div class="row shop-items">
 	     <div class="col-sm-12 col-xs-12 shadowX"><h3>You have <?=count($_SESSION['cart-simple-931t']);?> items in your cart </h3></div>
 		 
@@ -107,7 +107,7 @@ $this->params['breadcrumbs'][] = $this->title;
 		    <div class="col-sm-4 col-xs-3">Name</div>
 			<div class="col-sm-2 col-xs-2">Image</div>
 			<div class="col-sm-2 col-xs-2">Price</div>
-			<div class="col-sm-2 col-xs-2">Quant</div>
+			<div class="col-sm-1 col-xs-2">Quant</div>
 			<div class="col-sm-2 col-xs-3">Sum</div>
 		 </div>
 		 <!-- End THEAD -->
@@ -116,6 +116,7 @@ $this->params['breadcrumbs'][] = $this->title;
 		  <?php
 		  $i = 0;	
           $totalSum = 0;
+		  $form = ActiveForm::begin(['action' => [''],'options' => ['method' => 'post', 'id' => ''],]); 
 		  
 		  foreach($_SESSION['cart-simple-931t'] as $key => $value){
 		      $i++;
@@ -124,19 +125,28 @@ $this->params['breadcrumbs'][] = $this->title;
 			  $keyN = array_search($key, array_keys($_SESSION['productCatalogue'])); //find in $_SESSION['productCatalogue'] index the product by id
 										    						
 
-			   	
-			echo '<div id="' . $_SESSION['productCatalogue'][$keyN]['id'] . '" class="col-sm-12 col-xs-12  list-group-item bg-success cursorX" data-toggle="modal" data-target="#myModal' . $i . '">' .  //data-toggle="modal" data-target="#myModal' . $i .   for modal
-			       '<div class="col-sm-4 col-xs-3">' . $_SESSION['productCatalogue'][$keyN]['name'] . '</div>' . //name
-				   '<div class="col-sm-2 col-xs-2 word-breakX">'. 
+			  //Dispalay products	
+		      echo '<div id="' . $_SESSION['productCatalogue'][$keyN]['id'] . '" class="col-sm-12 col-xs-12  list-group-item bg-success cursorX" data-toggle="modal" data-target="#myModal' . $i . '">';  //data-toggle="modal" data-target="#myModal' . $i .   for modal
+			    echo '<div class="col-sm-4 col-xs-3">' . $_SESSION['productCatalogue'][$keyN]['name'] . '</div>'; //name
+			    echo '<div class="col-sm-2 col-xs-2 word-breakX">'. 
 				       Html::img(Yii::$app->getUrlManager()->getBaseUrl().'/images/shopLiqPay_Simple/' . $_SESSION['productCatalogue'][$keyN]['image'] , $options = ["id"=>"","margin-left"=>"","class"=>"my-one","width"=>"","title"=>"product"]).
-                   '</div>' . 
-				   '<div class="col-sm-2 col-xs-2 word-breakX">' . $_SESSION['productCatalogue'][$keyN]['price']. '₴</div>' .
-				   '<div class="col-sm-2 col-xs-2">' . $_SESSION['cart-simple-931t'][$keyN] .  '</div>' .   //quantity	
-				   '<div class="col-sm-2 col-xs-3">' . ($_SESSION['cart-simple-931t'][$keyN]*$_SESSION['productCatalogue'][$keyN]['price']) .  '₴</div>' .   //total sum for this product, price*quantity
-				     
-				 '</div>';
+                   '</div>'; 
+			    echo '<div class="col-sm-2 col-xs-2 word-breakX">' . $_SESSION['productCatalogue'][$keyN]['price']. '₴</div>';
 				 
-			$totalSum+= $_SESSION['cart-simple-931t'][$keyN]*$_SESSION['productCatalogue'][$keyN]['price']; //Total sum for all products
+				//quantity div => contains Yii2 ActiveForm 
+		        echo '<div class="col-sm-1 col-xs-2">'; // . $_SESSION['cart-simple-931t'][$keyN]; //quantity
+				    $quantityX = $_SESSION['cart-simple-931t'][$keyN]; //gets the quantity
+				    //$form = ActiveForm::begin(['action' => ['shop-liqpay-simple/add-to-cart'],'options' => ['method' => 'post', 'id' => ''],]); 
+					echo $form->field($myInputModel, 'yourInputValue')->textInput(['maxlength' => true,'value' => $quantityX, 'class' => 'form-control'])->label(false); //product quantity input
+					//ActiveForm::end();
+				echo '</div>' ;   //quantity	
+				//END quantity div => contains Yii2 ActiveForm 
+				
+			    echo '<div class="col-sm-2 col-xs-3">' . ($_SESSION['cart-simple-931t'][$keyN]*$_SESSION['productCatalogue'][$keyN]['price']) .  '₴</div>';   //total sum for this product, price*quantity
+				     
+		      echo '</div>';
+				 
+			$totalSum+= $_SESSION['cart-simple-931t'][$keyN]*$_SESSION['productCatalogue'][$keyN]['price']; //Total sum for this one product (2x16.64=N)
 		  }
 		  ?>
 	  </div> <!-- row shop-items -->
@@ -152,6 +162,9 @@ $this->params['breadcrumbs'][] = $this->title;
        <div class="col-sm-12 col-xs-12">
 	     <hr>
 	     <button class="btn btn-info btn-lg shadowX">Check-out</button>
+		 <?=Html::submitButton(Yii::t('app', 'Test'), ['class' => 'btn  btn-info btn-lg shadowX' , 'id'=>'']);
+         ActiveForm::end();
+		 ?>
 	  </div>
   
   <?php

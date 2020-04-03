@@ -4,6 +4,16 @@
 	
 	
 	
+	 //==============================================
+	 //on opening a modal pop-up (when u click a product), do reset any changes if they were applied early (e.g <button> css was changed)
+	 $('.modal-trigger').on('click', function(){
+		normalizeAddToCartButton();
+	 });
+	 
+	 
+	 
+	 
+	
 	 //==================================================================
      //[ +/- num product ]*/
 	
@@ -17,27 +27,42 @@
 		var price = this.getAttribute("data-priceX"); //gets price from {data-priceX}
 		console.log(price);
 		calcPrice(numProduct+1, price);
+		
+		normalizeAddToCartButton()
     });
 	
 	 
 
 	 
-	 
+	  
 	 
 	//*==================================================================
 	//Minus --
     $('.button-minus').on('click', function(){
 		var numProduct = Number($(this).closest('div').prev().find('input:eq(1)').val()); //gets current input quantity
+		
+		if(numProduct == 0){
+			return fallse;
+		}
+		
 		if(numProduct <= 1){
-			swal("Stop!", "Can't select zero items", "warning");
-			return false;
+			if(this.getAttribute("data-cartFlag")=="true"){ //if product was prev selected and now is in cartFlag
+			    $('.submitX').html('Remove from cart?'); 
+				$('.submitX').css('background', 'red'); //change button style 
+			} else {
+			    swal("Stop!", "Can't select zero items", "warning");
+			    return false;
+			}
 		}
 		
 		$(this).closest('div').prev().find('input:eq(1)').val(numProduct - 1); //html new value--
 		
 		//var price = $(this).parent().parent().siblings().find('.price-x').html(); //gets the price from modal, price-x. Working, but reassigned to {data-priceX}
 		var price = this.getAttribute("data-priceX"); //gets price from {data-priceX}
-		calcPrice((numProduct-1), price);
+		
+		
+		
+		calcPrice((numProduct-1), price); //quantity*price
     });
 	
 	
@@ -82,6 +107,19 @@
 			  e.preventDefault();
 		  }
     });
+	
+	
+  //return normal text, bg and attribute to "Add to cart" button if it was changed by -- for instance when you  -- last item in modal window
+  // **************************************************************************************
+  // **************************************************************************************
+  // **                                                                                  **
+  // **                                                                                  **
+	function normalizeAddToCartButton(){
+		//$('.my-button-x').prop('disabled', false);
+		$('.submitX').html('Add to cart');
+		$('.submitX').css('background', '#717fe0');
+    }
+	
   
 	  
 

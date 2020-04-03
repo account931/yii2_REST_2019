@@ -49,7 +49,7 @@
     });
 
 	
-	
+	//Button to close the modal
     $('.js-hide-modal1').on('click',function(){
         $('.js-modal1').removeClass('show-modal1');
     });
@@ -62,7 +62,7 @@
 	
 	
 	 /*==================================================================
-    [ Adds product to cart via ajax]*/
+    [ Adds product to cart via ajax, triggered onClick button in modal pop-up window]*/
     $('.js-addcart-detail').on('click',function(){ 
 	    sendAjaxAddProduct($(this));
         
@@ -75,7 +75,7 @@
 	
 	
 	
-	
+	//NOT USED???????
     /*==================================================================
     [ Cart ]*/
     $('.js-show-cart').on('click',function(){ alert(45);
@@ -104,7 +104,7 @@
     /*==================================================================
     [ +/- num product ]*/
 	
-	//Minus
+	//Minus --
     $('.btn-num-product-down').on('click', function(){
         var numProduct = Number($(this).next().val());
 		
@@ -125,7 +125,7 @@
 		   $(this).next().val(numProduct - 1);
 		   //mine
 		   $('#quantX').html(numProduct - 1);
-		   $('#totalX').html( ((numProduct - 1) * productsJS[window.id].price).toFixed(2)); //.toFixed(2) -> rounds 2.005 to 2.01
+		   $('#totalX').html( ((numProduct - 1) * productsJS[window.id].price).toFixed(2)); //.toFixed(2) -> rounds 2.005 to 2.01 //Total for 2 items is 70.62 ₴
 		}
 		
 		
@@ -133,7 +133,7 @@
 	
 	
     
-	//Plus
+	//Plus ++
     $('.btn-num-product-up').on('click', function(){
         var numProduct = Number($(this).prev().val());
         $(this).prev().val(numProduct + 1);
@@ -156,7 +156,7 @@
 	
 	
 	
-  //send ajax to add a selected product to $_SESSION['cart']	     
+  //send ajax to add a selected product to $_SESSION['cart'], triggered in modal window 	     
   // **************************************************************************************
   // **************************************************************************************
   // **                                                                                  **
@@ -177,9 +177,9 @@
 				  },
 	
               success: function(data) {
-				  if(parseInt($('#productQuantity').val()) > 0 ){
+				  if(parseInt($('#productQuantity').val()) > 0 ){ //if user selected 1 or more products in modal
 				      swal("!", "Added to cart => " + productsJS[data.id].name + " => " + data.quantity + " items", "success"); //sweet alert
-				  } else {
+				  } else { //if user selected '0' products, which is only possible if this product was added to cart earlier, otherwise user can't decrement -- further than "1"
 					  swal("!", "Removed from cart", "warning"); //sweet alert
 					  $('.js-modal1').removeClass('show-modal1'); //hide the modal
 					  
@@ -193,12 +193,14 @@
 		         }
 				 
 				 
-				 //!!!!!!FIX HERE !!!!!!!!!!!!!!!!
-				 //if if(parseInt($('#productQuantity').val()) > 0 ){} else { REMOVE FROM temporaryJSCartArray[]}
+				 //!!!!!!Mega FIX HERE !!!!!!!!!!!!!!!!
 				 //renew JS var temporaryJSCartArray (otherwise modal window displays old value)
-				 temporaryJSCartArray[thisX.attr('id')] = $('#productQuantity').val();
-				 $("#cartStatus").html('Product was already selected. You picked ' + $('#productQuantity').val() + ' items.');
-				 
+				 if(parseInt($('#productQuantity').val()) > 0 ){ //if user selected 1 or more products in modal
+				     temporaryJSCartArray[thisX.attr('id')] = $('#productQuantity').val();
+				     //$("#cartStatus").html('Product was already selected. You picked ' + $('#productQuantity').val() + ' items.');  //Don't need it??? Should be used in GetQuantity(idX) only, when u click a single product and modal windows pop-up
+				 } else { //if user selected '0' products, which is only possible if this product was added to cart earlier, otherwise user can't decrement -- further than "1"
+				     delete temporaryJSCartArray[parseInt(thisX.attr('id'))]; //remove product from cart JS object
+				 }
 				 
               },  //end success
 			  error: function (error) {

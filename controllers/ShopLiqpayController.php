@@ -157,6 +157,9 @@ class ShopLiqpayController extends Controller
         //$found = Messages::find()->where(['m_status_read' => self::STATUS_NOT_READ])->andWhere(['m_receiver_id' => Yii::$app->user->identity->id]);
 		//$count = $found->count();
 		
+		if(!isset($_POST['serverID'])){
+			throw new \yii\web\NotFoundHttpException("Bad request, You are not expected to enter this page. It is for ajax only");
+		}
 
 		$id = (int)$_POST['serverID'];//get product ID from ajax
 

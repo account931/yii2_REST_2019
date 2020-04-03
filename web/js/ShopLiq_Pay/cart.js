@@ -1,23 +1,28 @@
 //used in cart operations (++/--)
  
-	 
+//MEGA FIX_1 must be applied => should change counting OBJECT length style from {temporaryJSCartArray.length} to {Object.keys(temporaryJSCartArray).length} as we count OBJECT not ARRAY;
+//MEGA FIX_2 must be applied => in function calcAllSum() => To get values (price, quantity) should use not HTML tages ($(".priceX"), $(".my-quantity-field")) but JS OBJECT temporaryJSCartArray
+	
 (function ($) {
     "use strict";
 	
 	var temporaryJSCartArray; //temp array to hold in JS $_SESSION['cart']
 	
-	//check if $_SESSION['cart'] exists, i.e was passed from views/cart to Js var cartJS
+	//check if $_SESSION['cart'] exists, i.e was passed from views/cart to Js var cartJS, cartJS type is OBJECT
 	if (typeof cartJS != 'undefined') { 
 	    temporaryJSCartArray = cartJS; 
 		console.log(cartJS);
 	} else {
-		temporaryJSCartArray = []; //will never fire & will never be array type, as if $_SESSION['cart'] does not exist, it will display "So far, no products in cart"
+		temporaryJSCartArray = []; //must be = {} // anyway it will never fire & will never be array type, as if $_SESSION['cart'] does not exist, it will display "So far, no products in cart"
 	}	
 	
     //calc and html the general amount of all cart products
 	calcAllSum();	
 	
-	console.log(typeof temporaryJSCartArray);
+	console.log(typeof temporaryJSCartArray); //it is objetc
+	
+	console.log('length ' + temporaryJSCartArray.length);
+	console.log('Count JS Object ' + Object.keys(temporaryJSCartArray).length);
 	
 	
    // on click on ++ button in cart => sum all amount. 
@@ -118,6 +123,7 @@
 				   
 		           console.log(temporaryJSCartArray);
 				   console.log(temporaryJSCartArray.length);
+				   console.log('Count JS Object ' + Object.keys(temporaryJSCartArray).length);
 		 
 				   
 				   //re-calc all sum amount
@@ -221,7 +227,7 @@
 	  
 	  
 	
-	 
+  //calculates/sum all products price. To get values (price, quantity) should use not HTML tages ($(".priceX"), $(".my-quantity-field")) but JS OBJECT temporaryJSCartArray
   // **************************************************************************************
   // **************************************************************************************
   // **                                                                                  **

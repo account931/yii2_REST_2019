@@ -6,12 +6,12 @@ use Yii;
 use yii\base\Model;
 
 /**
- * This is the model class for form input in Shop {Simple}, used in modal window
+ * This is the model class for form input
  *
  * @property int $yourInput
 
  */
-class InputModel extends Model
+class CartInputModel extends Model
 {
 	
 	
