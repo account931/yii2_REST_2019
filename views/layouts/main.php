@@ -81,8 +81,10 @@ $menuItems = [
 			['label' => 'Send mail (N/A)', 'url' => ['#']],
 			['label' => 'Test for middle(auth via email)', 'url' => ['/test-middle/index']],
 			['label' => 'Shop Liq E-pay Cozastore (amado cart)', 'url' => ['/shop-liqpay/index']],
-			['label' => 'Shop Liq E-pay {SIMPLE}', 'url' => ['/shop-liqpay-simple/index']],
+			['label' => 'Shop Liq E-pay_2 {:SIMPLE}', 'url' => ['/shop-liqpay-simple/index']],
 			['label' => 'Distance radius(N/A)', 'url' => ['#']],
+			['label' => 'Sms Api', 'url' => ['/sms-api/index']],
+			['label' => 'My oAuth Api Server', 'url' => ['#']],
 			
             //submenu with image,(won't  work  without  {encodeLabels' => false,}  ,  it  is  inserted  below)   /*/yii/basic_download/web*/
             ['label' => Html::img(Yii::$app->request->baseUrl.'/images/system_key.jpg' , $options = ["id"=>"sx","margin-left"=>"","class"=>"s","width"=>"16%","title"=>"my title"]) . ' My login(no use)',  'url' => ['/site/login'],     ],  

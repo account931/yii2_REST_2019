@@ -253,6 +253,24 @@
 		
 		//}, 200);
 		
+		//Variant 2=> calculates using JS OBJECT temporaryJSCartArray-------------------------
+		//var lengthX = Object.keys(temporaryJSCartArray).length;
+		var sum2 = 0;
+		
+		for(var key in temporaryJSCartArray){ //loop for Object
+			//alert( priceSpan[i].innerHTML);
+			console.log(productsJS);
+			//alert(key);
+			var x = productsJS.findIndex(x => x.id == key); //find index in array of objects where 'id' == key. Key is the product id 
+			var price = productsJS[x].price; //gets the price from productsJS
+			var quantity = temporaryJSCartArray[key]; //get value of the key
+			//alert(price);
+			var s = price * quantity;
+			sum2+= s;
+		}
+		
+		//alert(sum2);
+		$(".testt").append('<li class="list-group-item">Obj: ' + sum2 + '</li>');
 		
 	 }
 	 
