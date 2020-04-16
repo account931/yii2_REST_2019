@@ -25,6 +25,7 @@ class Shop_LiqPay_Simple_AssertOnly extends AssetBundle
 		'https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.css', //Sweet Alert CSS
 		
 		
+		
 
     ];
 	
@@ -32,6 +33,7 @@ class Shop_LiqPay_Simple_AssertOnly extends AssetBundle
 	     'js/ShopLiq_Pay_Simple/main.js',
 		//'https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert-dev.min.js',
 		 'https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js', //Sweet Alert JS
+	     'js/ShopLiq_Pay_Simple/LazyLoad/jquery.lazyload.js', //Lazy Load lib JS
     ];
 	
     public $depends = [

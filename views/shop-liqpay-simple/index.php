@@ -115,6 +115,9 @@ $this->params['breadcrumbs'][] = $this->title;
   
       <div class="row shop-items">
 	      <?php
+	
+		  
+		  
 		  //generate shop products, Loop ----------------------------------------------------------
 	      for($i = 0; $i < count($productsX); $i++){
           
@@ -126,9 +129,18 @@ $this->params['breadcrumbs'][] = $this->title;
 			       '<div class="col-sm-4 col-xs-3">' . $productsX[$i]['name'] . '</div>' . 
 				   '<div class="col-sm-2 col-xs-2 word-breakX">' . $productsX[$i]['price']. '₴</div>' .
 				   '<div class="col-sm-2 col-xs-3">' . $myInputModel->truncateTextProcessor($productsX[$i]['description'], 8) .  '</div>' .  	
-				   '<div class="col-sm-4 col-xs-4 word-breakX">'. 
-				       Html::img(Yii::$app->getUrlManager()->getBaseUrl().'/images/shopLiqPay_Simple/' . $productsX[$i]['image'] , $options = ["id"=>"","margin-left"=>"","class"=>"my-one","width"=>"","title"=>"product"]).
-                   '</div>' .   
+				   '<div class="col-sm-4 col-xs-4">' . 
+				       //Html::img(Yii::$app->getUrlManager()->getBaseUrl().'/images/shopLiqPay_Simple/' . $productsX[$i]['image'] , $options = ["id"=>"","margin-left"=>"","class"=>"my-one lazy", "data-original" => '', "width"=>"","title"=>"product"]).
+                       
+					   //LightBox variant, need downloading spec css/js libraries, see https://github.com/account931/portal_v2/blob/master/assets/AppAsset.php
+					   /*"<a href= " . Yii::$app->getUrlManager()->getBaseUrl(). '/images/shopLiqPay_Simple/'. $productsX[$i]['image']  . "  data-lightbox='image-1' data-title='My caption'>" .
+					       '<img data-src=' .  Yii::$app->getUrlManager()->getBaseUrl(). '/images/shopLiqPay_Simple/'. $productsX[$i]['image']  . ' class="my-one lightboxed">'. //LazyLoad
+						"</a>" .*/
+						
+						//lazyLoad
+						'<img class="lazy my-one" data-original="' . Yii::$app->getUrlManager()->getBaseUrl(). '/images/shopLiqPay_Simple/'. $productsX[$i]['image'] . '" >' .
+						
+				   '</div>' .   
 				 '</div>';
 				 
 			

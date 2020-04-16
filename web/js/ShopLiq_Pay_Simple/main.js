@@ -1,8 +1,24 @@
+//Lazy Load (to use: 1.download js=> <script src="jquery.lazyload.js"></script> 2. use in html=> <img class="lazy" data-original="img/example1.jpg"; 3. use code below in js
+//https://vash-webmaster.ru/2017/08/11/lazyload-js/
+$(function() {
+	
+    $("img.lazy").lazyload({
+		 effect : "fadeIn", //appear effect
+         threshold : 10 //content will load only on scrolling down 10px
+    });
+
+});
+//Lazy Load
+
+
+
+
 //Js for front SHOP {Simple}, (main) part of the shop (page with products)
 (function ($) {
     "use strict";
 	
 	
+   
 	
 	 //==============================================
 	 //on opening a modal pop-up (when u click a product), do reset any changes if they were applied early (e.g <button> css was changed)

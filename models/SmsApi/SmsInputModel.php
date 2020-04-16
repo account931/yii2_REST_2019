@@ -25,28 +25,38 @@ class SmsInputModel extends Model
     {
         return [
             [['cellNumber', 'smsText'], 'required'],
-            ['smsText', 'string', 'message'=>'your sms'],
-			['cellNumber','validateDatesX'], //my validation
+            ['smsText', 'string', 'message'=>'error message'],
+			['cellNumber','validatePhoneX'] //my validation
            
         ];
     }
 public function attributeLabels()
     {
         return [
-            'cellNumber' => 'Phone  ',
+            'cellNumber' => 'Phone # ',
 
             
         ];
     }
 	
 	
+	
+	
+	
+	
+	
 	 //my validation
-	 public function validateDatesX($attribute, $params){
+	 public function validatePhoneX($attribute, $params){
 		  //$RegExp_Phone = '/^[+]380\([\d]{1,4}\)[0-9]+$/';
 		  $RegExp_Phone = '/^[+]380[\d]{1,4}[0-9]+$/';
 		  if (!preg_match($RegExp_Phone, $this->$attribute)){
 			  $this->addError('$attribute','Phone must be in format 380********* ');
 		  }
+		  /*
+		   if ($this->$attribute == 'a'){
+			  $this->addError('$attribute','Phone must be in format 380********* ');
+			  return false;
+		  }*/
      }
 	 
 	 

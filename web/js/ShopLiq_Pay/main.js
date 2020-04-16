@@ -197,7 +197,7 @@
 				 //renew JS var temporaryJSCartArray (otherwise modal window displays old value)
 				 if(parseInt($('#productQuantity').val()) > 0 ){ //if user selected 1 or more products in modal
 				     temporaryJSCartArray[thisX.attr('id')] = $('#productQuantity').val();
-				     //$("#cartStatus").html('Product was already selected. You picked ' + $('#productQuantity').val() + ' items.');  //Don't need it??? Should be used in GetQuantity(idX) only, when u click a single product and modal windows pop-up
+				     $("#cartStatus").html('Product was already selected. You picked ' + $('#productQuantity').val() + ' items.');  //Don't need it??? => FALSE, WE NEED IT!!!!!  Should be used in GetQuantity(idX) only, when u click a single product and modal windows pop-up
 				 } else { //if user selected '0' products, which is only possible if this product was added to cart earlier, otherwise user can't decrement -- further than "1"
 				     delete temporaryJSCartArray[parseInt(thisX.attr('id'))]; //remove product from cart JS object
 				 }

@@ -267,10 +267,12 @@
 			//alert(price);
 			var s = price * quantity;
 			sum2+= s;
+			
 		}
-		
+		 sum2 = sum2.toFixed(2);
 		//alert(sum2);
-		$(".testt").append('<li class="list-group-item">Obj: ' + sum2 + '</li>');
+		//$(".testt").append('<li class="list-group-item">Obj: ' + sum2 + '</li>');
+		$("#finalSumByObject").stop().fadeOut(100, function(){ $(this).html(sum2 + "₴")}).fadeIn(100); //with animation
 		
 	 }
 	 

@@ -16,8 +16,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
 	
 	 <div class="alert alert-success">
-        <?= nl2br("<h4><span class='glyphicon glyphicon-flag' style='font-size:38px;'></span> This page is Sms Api</h4>" .
-		             "<p><b></b></p>" .
+        <?= nl2br("<h4><span class='glyphicon glyphicon-flag' style='font-size:38px;'></span> This Sms Api page</h4>" .
+		             "<p> Requests are executed via cURL (does not work on localhost)</p>" .
 		             "<hr>" .
 					 $text .
 					 "<br>"); 

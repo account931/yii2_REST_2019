@@ -167,13 +167,14 @@ $this->params['breadcrumbs'][] = $this->title;
                                         <td class="price">
                                             <span class="priceX"> <?=$_SESSION['productCatalogue'][$keyN]['price'];?> </span>
                                         </td>
+										
                                         <td class="qty border">
                                             <div class="qty-btn d-flex">
                                                 <p>Qty</p>
                                                 <div class="quantity"> 
 												
 												    <!-------------- CART -- minus operation --------->
-                                                    <span class="qty-minus my-cart-minus"><i class="fa fa-minus" aria-hidden="true"></i></span>
+                                                    <span class="qty-minus my-cart-minus"><i class="fa fa-minus size-x" aria-hidden="true"></i></span>
                                                     
 													
 													<!--------------    Quantity    --------->
@@ -181,7 +182,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                                     
 													
 													<!-------------- CART ++ plus operation --------->
-                                                    <span class="qty-plus  my-cart-plus"><i class="fa fa-plus" aria-hidden="true"></i></span>
+                                                    <span class="qty-plus  my-cart-plus"><button class="my-btn-fix"><i class="fa fa-plus size-x" aria-hidden="true"></i></button></span>
                                                 
 												</div>
                                             </div>
@@ -209,6 +210,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 <!--<li><span>subtotal:</span> <span>$140.00</span></li>-->
                                 <li class="list-group-item"><span>delivery:</span> <span>Free</span></li>
                                 <li class="list-group-item"><span>total:</span> <span  id="finalSum"> 0 </span></li>
+								<li class="list-group-item"><span>By Object:</span> <span  id="finalSumByObject"> 0 </span></li><!-- just test, erase in production -->
                             </ul>
                             <div class="cart-btn mt-100">
 							    <?=Html::a( "Check-out", ["/shop-liqpay/check-out"], $options = ["title" => "Check-out", "class" => "btn amado-btn w-100 my-check-out"]); ?>
