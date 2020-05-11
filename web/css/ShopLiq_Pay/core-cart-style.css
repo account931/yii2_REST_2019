@@ -38,7 +38,7 @@
  
  .icon-item{display: inline-block; width: 8%;}
  .icon-item p{font-size:0.7em;}
- .my-btn-fix{padding-left:1.8em;} /* fix minus button in mobile */
+ .my-btn-fix{padding-left:2.4em;} /* fix minus button in mobile */
  /*.qty{width:200px;}*/
  /*.size-x{font-size:4em;}*/ /* plus and minus in cart */
 }

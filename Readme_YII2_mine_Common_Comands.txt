@@ -712,7 +712,14 @@ How to add multilanguages:
            }
        }
 
-   
+   ====================\
+   VARIANT 2
+   Simply use => 
+   public $RegExp_Phone = '/^[+]380[\d]{1,4}[0-9]+$/';
+    public function rules()
+    {
+        return [
+           ['cellar_numb', 'match', 'pattern' => $this->RegExp_Phone, 'message' => 'Incorrect phone'], 
  
  
  
@@ -1094,7 +1101,10 @@ if($_SERVER['REMOTE_ADDR'] == '127.0.0.1') {
   
   
 ========================================================
-98.2.V.A(php)
+98.2.V.A(php) => see some more JS tips at https://github.com/account931/miscellaneous_2018
+#Arrays: $cars = array("Volvo", "BMW"); //length=> count($cars); //add as lastEl => array_push($cars,"blue","yellow"); //Add to associative => $cars[$category] = $question;
+      //Delete=> unset($cars[2]); //Delete from associative => unset($cars['key-here']);
+	  //Remove the first elementfrom array => $b = array_shift($cars);
 #Use CLI in full screen =>   mode 800
 #Check php version => php -v
 #Difference in foreach (array vs object)=> foreach($_OBJECT as $b){echo $b->propertyName} vs foreach($_ARRAY as $b=>$v){echo $b . "" .$v} 
@@ -1123,8 +1133,15 @@ if($_SERVER['REMOTE_ADDR'] == '127.0.0.1') {
 # php even odd css class => echo '<div class="row list-group-item cursorX ' .($i%2 ? 'evenX':''). '">'; . See Css => https://github.com/account931/kernel/blob/master/web/css/myCss.css
 # variable in for loop => ${'current'.$i} 
 
+
+-----------------
 	 
-JS=>
+JS => see some more JS tips at https://github.com/account931/miscellaneous_2018/blob/master/JavaScript/README.txt
+   =>
+   # Arrays: var cars = ["Saab", "Volvo"]; cars[0] = "Opel"; ArrLength => cars.length; lastEl = cars[cars.length - 1; 
+          //Add as lastElem => cars.push("Lemon");  // Adds newEl as firstEl to cars[]=>  cars.unshift("Lemon");   
+         // Removes the lastEl from cars[] => cars.pop();       // Removes 1st El from cars[] to var => var x = cars.shift();     // Delete the first element of cars[] => cars.splice(0, 1);  
+
    # IOS, safari JS click fix => add empty {onClick}  => <span onClick="" id="someID"></span>   OR => cursor: pointer;
    # JS alert object => alert(JSON.stringify(aucompleteX, null, 4));
    # animate=>  $(".all-6-month").stop().fadeOut("slow",function(){ $(this).html(finalText)}).fadeIn(2000);

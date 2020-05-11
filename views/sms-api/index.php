@@ -18,6 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
 	 <div class="alert alert-success">
         <?= nl2br("<h4><span class='glyphicon glyphicon-flag' style='font-size:38px;'></span> This Sms Api page</h4>" .
 		             "<p> Requests are executed via cURL (does not work on localhost)</p>" .
+					 "<p class='small font-italic'> Working Yii2 Textbelt Sms Api version. More simple than {https://github.com/account931/sms_Textbelt_Api} version (Here, in Yii2 there is no regExp, sms delivery status, text length count, etc).</p>" .
 		             "<hr>" .
 					 $text .
 					 "<br>"); 

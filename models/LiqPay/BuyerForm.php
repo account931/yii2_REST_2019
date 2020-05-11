@@ -17,6 +17,7 @@ class BuyerForm extends Model
 	public $last_name;
 	public $address;
  
+    public $RegExp_Phone = '/^[+]380[\d]{1,4}[0-9]+$/';
     /**
      * @inheritdoc
      */
@@ -32,7 +33,7 @@ class BuyerForm extends Model
             ['email', 'email'],
             ['email', 'string', 'max' => 255],
 			//['cellar_numb', 'number', 'max' => 14], 
-			['cellar_numb', 'validateDatesX'], //my validation
+			['cellar_numb', 'match', 'pattern' => $this->RegExp_Phone, 'message' => 'Incorrect phone'],  //['cellar_numb', 'validateDatesX'], //my validation
 			
             /*
 			['email', 'unique', 'targetClass' => '\app\models\User', 'message' => 'This email address has already been taken.'],

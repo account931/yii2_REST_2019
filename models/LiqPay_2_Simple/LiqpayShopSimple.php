@@ -15,6 +15,7 @@ use Yii;
  */
 class LiqpayShopSimple extends \yii\db\ActiveRecord
 {
+	private $customer; // for AR, not taken from db
     /**
      * @inheritdoc
      */
@@ -49,4 +50,14 @@ class LiqpayShopSimple extends \yii\db\ActiveRecord
             'l_descript' => Yii::t('app', 'L Descript'),
         ];
     }
+	
+	
+	 /**
+     * @return mixed
+     */
+    public function getCustomer($value) {
+		 $this->customer = "P=> " . $value;
+	     return $this->customer;
+    }
+	
 }

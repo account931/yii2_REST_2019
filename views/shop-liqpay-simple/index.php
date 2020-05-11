@@ -7,6 +7,8 @@ use yii\bootstrap\ActiveForm;
 
 use app\assets\Shop_LiqPay_Simple_AssertOnly;   // use your custom asset
 Shop_LiqPay_Simple_AssertOnly::register($this); // register your custom asset to use this js/css bundle in this View only(1st name-> is the name
+
+use app\componentsX\getters_setters\shopSimple\ShopSimple;
 ?>
 
 
@@ -96,7 +98,7 @@ $this->params['breadcrumbs'][] = $this->title;
   foreach($allDBProducts as $a){ 
 	  $tempo = array();
 	  $tempo['id'] = $a->l_id;
-	  $tempo['name'] = $a->l_name;
+	  $tempo['name'] = $a->getCustomer($a->l_name);//$a->l_name;//  ShopSimple::getLabel();
 	  $tempo['price'] = $a->l_price;
 	  $tempo['image'] = $a->l_image;
 	  $tempo['description'] = $a->l_descript;
@@ -186,7 +188,7 @@ $this->params['breadcrumbs'][] = $this->title;
 						  <!--- Total product sum calculation (2x16.64=N) -->
 						   <div class="row list-group-item">
 						      <div class="col-sm-1 col-xs-3">Total</div>
-						      <div class="col-sm-4 col-xs-9 shadowX"><span class="sum"></span></div> 
+						      <div class="col-sm-9 col-xs-9 shadowX"><span class="sum"></span></div> 
 						  </div>
 						  
 						  
