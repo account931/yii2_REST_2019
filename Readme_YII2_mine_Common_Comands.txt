@@ -1105,8 +1105,10 @@ if($_SERVER['REMOTE_ADDR'] == '127.0.0.1') {
 #Arrays: $cars = array("Volvo", "BMW"); //length=> count($cars); //add as lastEl => array_push($cars,"blue","yellow"); //Add to associative => $cars[$category] = $question;
       //Delete=> unset($cars[2]); //Delete from associative => unset($cars['key-here']);
 	  //Remove the first elementfrom array => $b = array_shift($cars);
+# Arrays are Immutable, Objects are mutable  => in PHP arrays are assigned by copy, while objects are assigned by reference =>https://stackoverflow.com/questions/1532618/is-there-a-function-to-make-a-copy-of-a-php-array-to-another
 #Use CLI in full screen =>   mode 800
 #Check php version => php -v
+#To see ajax requests -> F12-> Network -> XHR
 #Difference in foreach (array vs object)=> foreach($_OBJECT as $b){echo $b->propertyName} vs foreach($_ARRAY as $b=>$v){echo $b . "" .$v} 
 #get current URL => $_SERVER['HTTP_HOST']
 
@@ -1132,16 +1134,25 @@ if($_SERVER['REMOTE_ADDR'] == '127.0.0.1') {
 
 # php even odd css class => echo '<div class="row list-group-item cursorX ' .($i%2 ? 'evenX':''). '">'; . See Css => https://github.com/account931/kernel/blob/master/web/css/myCss.css
 # variable in for loop => ${'current'.$i} 
+#Php 7 return type =>   declare(strict_types = 1); function returnIntValue(int $value): int {return $value;}
+#PhpDoc    /**
+	         * @param string $_POST[]
+             * @return array $text 
+             */
+
 
 
 -----------------
+
+
 	 
 JS => see some more JS tips at https://github.com/account931/miscellaneous_2018/blob/master/JavaScript/README.txt
    =>
    # Arrays: var cars = ["Saab", "Volvo"]; cars[0] = "Opel"; ArrLength => cars.length; lastEl = cars[cars.length - 1; 
           //Add as lastElem => cars.push("Lemon");  // Adds newEl as firstEl to cars[]=>  cars.unshift("Lemon");   
          // Removes the lastEl from cars[] => cars.pop();       // Removes 1st El from cars[] to var => var x = cars.shift();     // Delete the first element of cars[] => cars.splice(0, 1);  
-
+   # Arrays and objects are mutable, primitive values (string, bool,etc) are immutable (they are hardcoded and therefore cannot be changed).
+   
    # IOS, safari JS click fix => add empty {onClick}  => <span onClick="" id="someID"></span>   OR => cursor: pointer;
    # JS alert object => alert(JSON.stringify(aucompleteX, null, 4));
    # animate=>  $(".all-6-month").stop().fadeOut("slow",function(){ $(this).html(finalText)}).fadeIn(2000);
@@ -1165,8 +1176,8 @@ JS => see some more JS tips at https://github.com/account931/miscellaneous_2018/
              if ($(this).find('img').length) { var a_href = $(this).find('div a').attr('href'); if( a_href == "https://www.mintme.com/"){  $(this).find('div').css('display', 'none');}}
          });  }, 2000);
 	#  myVar = setInterval(countUserRegisterRequests, 1000 );
-
-   
+    # Cors in Ajax (Cross-origin resource sharing)(Same-Origin-Policy) => see https://github.com/account931/sms_Textbelt_Api_React_JS/blob/master/README_MY.txt
+    # js regExp, regular expression match => https://github.com/account931/sms_Textbelt_Api/blob/master/js/validate_regExp.js
 
 CSS=>
    #Bootstrap grid => <div class="col-lg-3 col-md-3 col-sm-3">  <div class="col-sm-6 col-xs-12">
@@ -1176,6 +1187,9 @@ CSS=>
    # div shadow 2 => .shadowX22 {-moz-box-shadow: inset 0px 0px 47px 3px #4c3f37; -webkit-box-shadow: inset 0px 0px 47px 3px #4c3f37; box-shadow: inset 0px 0px 277px 3px #4c3f37; }
    # text shadow => https://html-css-js.com/css/generator/text-shadow/
    # text not to overlap the div => word-wrap: break-word;
+   # add transition effect to class => -webkit-transition:  1.5s linear;
+   # Imitation of fadeIn/fadeOut animation with overlay div, see=> https://github.com/account931/sms_Textbelt_Api_React_JS/blob/master/README_MY_React.txt => 25. React imitation of fadeIn/fadeOut animation with overlay div, i.e analogue of{$(".del-st").stop().fadeOut("slow",function(){ /*$(this).html(finalText) */}).fadeIn(3000); 
+
 
 
    
