@@ -18,8 +18,9 @@ $this->params['breadcrumbs'][] = $this->title;
 	 <div class="alert alert-success">
         <?= nl2br("<h4><span class='glyphicon glyphicon-flag' style='font-size:38px;'></span> This Sms Api page</h4>" .
 		             "<p> Requests are executed via cURL (does not work on localhost)</p>" .
-					 "<p class='small font-italic'> Working Yii2 Textbelt Sms Api version. More simple than {https://github.com/account931/sms_Textbelt_Api} version (Here, in Yii2 there is no regExp, sms delivery status, text length count, etc).</p>" .
-		             "<hr>" .
+					 "<p class='small font-italic'> It is working Yii2 Textbelt Sms Api version, but is deprecated. More functional version is outlined to stand-alone application to {https://github.com/account931/sms_Textbelt_Api} and to the most functional ReactJS version (https://github.com/account931/sms_Textbelt_Api_React_JS) .</p>" .
+		             "<p class='small font-italic'>(Here, in Yii2 there is no regExp, sms delivery status, text length count, etc)</p>" .
+					 "<hr>" .
 					 $text .
 					 "<br>"); 
 		?>
@@ -62,7 +63,7 @@ $this->params['breadcrumbs'][] = $this->title;
     ]); ?>
 
 
-        <?= $form->field($model, 'cellNumber')->textInput(['autofocus' => true, 'value'=> '+380976641342','placeholder' => 'Phone in format 38097********']) ?>
+        <?= $form->field($model, 'cellNumber')->textInput(['autofocus' => true, 'value'=> '+38097664***','placeholder' => 'Phone in format 38097********']) ?>
         <?= $form->field($model, 'smsText')->textarea(['rows' => '6', 'maxlength' => 60, 'value'=>'Hello. Eng version. Русская версия', 'placeholder' => 'sms text....' ]) ?> 
 
         <div class="form-group">

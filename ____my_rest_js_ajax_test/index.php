@@ -41,7 +41,7 @@
                   <h1>Test Yii2 Rest API XML</h1>
 				  <p>If 'authenticator' => is Enabled in controllers/RestController,<br> ajax URL must contain user token (from SQL rest_access_tokens) <br> i.e => url: '../web/rest?access-token=57Wpa-dlg-EonG6kB3myfsEjpo7v8R5b</p>
 				  <hr  style="width: 90%; color: black; height: 2px; background-color:black;">
-				  <p><b>Yii2 Restful Api response:</b></p>
+				  <p><b>Yii2 Restful Api GET/ response:</b></p>
 				  <p id="result"></p><!-- rest api results go here -->
 				  
 				  
@@ -52,7 +52,9 @@
 				      $.ajax({
 						  //url: '../web/rest',  //url if 'authenticator' => is disabled in controllers/RestController
                           url: '../web/rest?access-token=57Wpa-dlg-EonG6kB3myfsEjpo7v8R5b', //we use here url with this user access-token(from DB), it is universal, if authenticator' => is disabled, the script just won't pay attaention to this $_GET['access-token']
-                          type: 'GET', //must be GET, as it is REST /GET method
+                          //'../web/rest?access-token=57Wpa-dlg-EonG6kB3myfsEjpo7v8R5b' equals to => '../web/rest/index?access-token=57Wpa-dlg-EonG6kB3myfsEjpo7v8R5b
+						  //to get user 4 => '../web/rest/view/4?access-token=57Wpa-dlg-EonG6kB3myfsEjpo7v8R5b'
+						  type: 'GET', //must be GET, as it is REST /GET method
 						  crossDomain: true,
 						  contentType: "application/json; charset=utf-8",
 			              dataType: 'json', // without this it returned string(that can be alerted), now it returns object
@@ -80,7 +82,73 @@
                     //END AJAXed  part 
 				  </script>
 			  </div> <!--END <div class="col-sm-4" style="background-color:lavender;">-->
+			 <!----------------- END  TEST /GET HTTP REQUEST, i.e  get all users ----------------------->  
+				 
+				 
+				 
+				 
+				 
+				 
+				 
+				 
+				 
+				 
+				 
+				 
+			<!----------------- TEST_2 /POST/PUT/DELETE/ HTTP REQUESTS, i.e  INSERT, UPDATE, DELETE ----------------------->  
+			  <div class="col-sm-12 col-xs-12 text-center" style="background-color:lavender;"> 
+			  <hr  style="width: 90%; color: black; height: 2px; background-color:black;">
+
+				 <p><b>Yii2 Restful Api POST/ HTTP REQUEST, i.e INSERT:</b></p>
+				  <p id="result2"></p><!-- rest api results go here -->
+				  
+				  
+				  <script>
+				      //below script makes a test request to Yii2 Rest Api
+					  //this file must be run on localhost(i.e must have .php extension not .html)
+					  //By default Yii2 rest returns xml, but it must not bother,just specify in ajax {contentType: "application/json; charset=utf-8",} and it will return json
+				      $.ajax({
+						  //url: '../web/rest',  //url if 'authenticator' => is disabled in controllers/RestController
+                          url: '../web/rest/15?access-token=57Wpa-dlg-EonG6kB3myfsEjpo7v8R5b', //we use here url with this user access-token(from DB), it is universal, if authenticator' => is disabled, the script just won't pay attaention to this $_GET['access-token']
+                          type: 'DELETE', //must be GET, as it is REST /GET method
+						  crossDomain: true,
+						  contentType: "application/json; charset=utf-8",
+			              dataType: 'json', // without this it returned string(that can be alerted), now it returns object
+			              //passing the city
+                          data: { 
+			                  serverCity:'dima'
+							  //'dima', 'some']
+			              },
+                          success: function(data) {
+                             // do something;
+                           
+			                //alert(data);
+							console.log(data);
+							var ress = "REST Api Response POST/(INSERT): <br>";
+							for (var i = 0; i < data.length; i++){
+								ress+= data[i].username + "-> " + data[i].email + "<br>";
+							}
+							$("#result2").stop().fadeOut("slow",function(){ $(this).html(ress) }).fadeIn(2000);
 				
+                          },  //end success
+			              error: function (error) {
+				              $("#result2").stop().fadeOut("slow",function(){ $(this).html("<h4 style='color:red;padding:3em;'>ERROR!!! <br> Rest API crashed <br><br>" + error.responseJSON.name + "<br>" + error.responseJSON.message + "</h4>")}).fadeIn(2000);
+                              console.log(error);
+						  }	  
+                     });                             
+                    //END AJAXed  part 
+				  </script>
+				 </div>
+				 <!----------------- END TEST_2 /POST/PUT/DELETE/ HTTP REQUESTS, i.e  INSERT, UPDATE, DELETE -----------------------> 
+				 
+				 
+				 
+				 
+				 
+				 
+				 
+				 
+				 
 				 
 	                            
      

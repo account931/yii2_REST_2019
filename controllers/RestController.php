@@ -36,9 +36,7 @@ class RestController extends ActiveController
    //public $enableCsrfValidation = false; //disable _csrf
    
    
- 
-   
-   
+
    
    
    
@@ -76,9 +74,7 @@ public static function allowedDomains()
 
 
 public function behaviors()
-{
-	
-	 
+{	 
 	//array_merge accepts as args arrays and merge them in one  
     return array_merge(parent::behaviors(), [
 

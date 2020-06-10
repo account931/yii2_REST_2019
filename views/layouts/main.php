@@ -63,8 +63,12 @@ $menuItems = [
         'template' => '<a href="{url}" >{label}<i class="fa fa-angle-left pull-right"></i></a>',
         'items' => [
             
-            ['label' => 'Rest Controller (core)', 'url' => ['/rest/index', "access-token" => "57Wpa-dlg-EonG6kB3myfsEjpo7v8R5b", ]],   //rest controller //we use here url with this user access-token(from DB), it is universal, if authenticator' => is disabled, the script just won't pay attaention to this $_GET['access-token']
-            ['label' => 'Rest Controller (my custom action)', 'url' => ['/rest/new', "access-token" => "57Wpa-dlg-EonG6kB3myfsEjpo7v8R5b", ]], //my custom rest action with WHERE statement
+            ['label' => 'Rest Controller(core) GET/', 'url' => ['/rest/index', "access-token" => "57Wpa-dlg-EonG6kB3myfsEjpo7v8R5b", ]],   //rest controller //we use here url with this user access-token(from DB), it is universal, if authenticator' => is disabled, the script just won't pay attaention to this $_GET['access-token']
+            ['label' => 'Rest Controller (my custom action) GET/', 'url' => ['/rest/new', "access-token" => "57Wpa-dlg-EonG6kB3myfsEjpo7v8R5b", ]], //my custom rest action with WHERE statement
+			['label' => 'Rest(insert data via POST/)', 'url' => ['#', "access-token" => "57Wpa-dlg-EonG6kB3myfsEjpo7v8R5b", ]], //rest action to insert data via POST
+            ['label' => 'Test Rest(GET/, PUT/, DELETE/)', 'url' => ['../____my_rest_js_ajax_test/index.php', "access-token" => "57Wpa-dlg-EonG6kB3myfsEjpo7v8R5b", ]], //rest action to insert data via POST
+
+						
 			['label' => 'Rest Module (minor, no use)', 'url' => ['/admin/default/index']], //separate module with it's own controller
 			['label' => 'MultiLanguage', 'url' => ['/multilanguage/index']], //page with different language translation
 			['label' => 'Booking CPH', 'url' => ['/booking-cph/index']], //BookingCphController
@@ -84,7 +88,8 @@ $menuItems = [
 			['label' => 'Shop Liq E-pay_2 {:SIMPLE}', 'url' => ['/shop-liqpay-simple/index']],
 			['label' => 'Distance radius(N/A)', 'url' => ['#']],
 			['label' => 'Sms Api', 'url' => ['/sms-api/index']],
-			['label' => 'My oAuth Api Server', 'url' => ['#']],
+			['label' => 'My oAuth Api Server(N/A)', 'url' => ['#']],
+			['label' => 'My Widget -> Image comparison', 'url' => ['/my-widget/index']],
 			
             //submenu with image,(won't  work  without  {encodeLabels' => false,}  ,  it  is  inserted  below)   /*/yii/basic_download/web*/
             ['label' => Html::img(Yii::$app->request->baseUrl.'/images/system_key.jpg' , $options = ["id"=>"sx","margin-left"=>"","class"=>"s","width"=>"16%","title"=>"my title"]) . ' My login(no use)',  'url' => ['/site/login'],     ],  

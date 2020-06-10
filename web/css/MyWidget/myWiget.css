@@ -1,0 +1,56 @@
+
+/* ------------------------------------ W3school Exmaple of Image Comparison (pure JS -------------*/
+
+* {box-sizing: border-box;}
+
+.img-comp-container {
+  position: relative;
+  height: 200px; /*should be the same height as the images*/
+}
+
+.img-comp-img {
+  position: absolute;
+  width: auto;
+  /*width:100%;*/
+  height: auto;
+  overflow:hidden;
+}
+
+.img-comp-img img {
+  display:block;
+  vertical-align:middle;
+}
+
+.img-comp-slider {
+  position: absolute;
+  z-index:9;
+  cursor: ew-resize;
+  /*set the appearance of the slider:*/
+  width: 40px;
+  height: 40px;
+  background-color: yellow;
+  opacity: 0.8;
+  border-radius: 50%;
+}
+
+.img-comp{width:999px;height:200px;}
+
+/* ---------------------------------------- Mobile */
+@media screen and (max-width: 480px) { 
+   .img-comp{width:300px;height:200px;}
+}
+/* ---------------------------------------- Mobile */
+
+/* ----------------------------------------- END W3school Exmaple of Image Comparison (pure JS -------------*/
+
+
+
+
+
+
+
+/* -----------------------------------------  Exmaple of Images Comparison JQ Plugin -> Twentytwenty plugin -------------*/
+
+.img-comp-twenty{width:999px;height:200px;}
+
+
