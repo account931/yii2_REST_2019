@@ -25,7 +25,6 @@ class RestController extends ActiveController
    
 
    
-   
    /*
    public function init()
     {
@@ -34,10 +33,17 @@ class RestController extends ActiveController
     }*/
 
    //public $enableCsrfValidation = false; //disable _csrf
-   
-   
+
 
    
+   
+//makes action "delete" unavailable for REST access. Remove from REST access actions "delete" и "create". Or if you want to override the parent methods
+public function actions()
+{
+    $actions = parent::actions();
+    //unset($actions['delete'], $actions['create']);
+    return $actions;
+}   
    
    
    
@@ -189,7 +195,23 @@ public function behaviors()
 
 
 
-
+//my overrided test actionCreate
+// **************************************************************************************
+// **************************************************************************************
+// **                                                                                  **
+// **                                                                                  **
+   public function actionCreate()
+    {
+		$result = 'Create method is OVERRIDED </br>';
+		//$result .= $_POST['username'];
+		foreach ($_POST as $a => $b){
+			$result = $result . " " . $a . " -> " . $b . "</br>";
+		}
+        return $result;
+		//print_r($_POST);
+	}
+		
+		
 
 
 }

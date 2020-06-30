@@ -35,6 +35,7 @@ Table of contents:
 14.Register custom assets (js, css)
 15.Multilanguages
 16. Has Many relation
+16.2 Has Many relation in JSON (REST API)
 17. Yii2 my custom validation
 18. Reset password form (if you have forgotten it)
 19. Sending mail
@@ -238,7 +239,14 @@ URL specification:
   test URL from Yii2 (if prettyUrl off) -> http://localhost/yii2_REST/yii-basic-app-2.0.15/basic/web/index.php?r=rest
   test URL from Yii2 , Pretty URL, retuns  only ID and email with $_GET specified like this: http://localhost/yii2_REST/yii-basic-app-2.0.15/basic/web/rests?fields=id,email
   test URL from Yii2 (ControllerRest/actionView)(view 1 record by ID, 4 is db ID)-> http://localhost/yii2_REST/yii-basic-app-2.0.15/basic/web/rest/view/4   OR =>  /web/rest/4 
-  delete user 15 => METHOD:DELETE/,  ..web/rest/15
+  delete user 15 => METHOD: DELETE/,  ..web/rest/15
+  
+      'PUT,PATCH users/<id>' => 'user/update'`: update a user
+ * - `'DELETE users/<id>' => 'user/delete'`: delete a user
+ * - `'GET,HEAD users/<id>' => 'user/view'`: return the details/overview/options of a user
+ * - `'POST users' => 'user/create'`: create a new user
+ * - `'GET,HEAD users' => 'user/index'`: return a list/overview/options of users
+
 
 How to test Yii2 Rest Api from from non-Yii2 file, see more at =>  Readme_YII2_mine_This_Project_itself.txt -> 1.HOW TO TEST REST API from non-Yii2 file. 
 
@@ -374,7 +382,74 @@ How to implement access to Yii2 Rest Api with access token only:
 		
 
 
+7.2 Yii Restful API, POST/ method (to add a new record), see details at => https://github.com/account931/yii2_REST_and_Rbac_2019/blob/master/____my_rest_js_ajax_test/index.php
+To add a new record use => POST/ ..../web/rests  =>(not ..../web/rest)
+Two ways to implement: 
+  NB: IN MODEL FIELDS MUST BE SAFE => [['username', 'email', 'auth_key', 'password_hash', 'password_reset_token'], 'safe'], 
+  
+  1. Ajax =>
+                    
+                   
+					  
+					  
+					  $.ajax({
+						  url: '../web/rests?access-token=57Wpa-dlg-EonG6kB3myfsEjpo7v8R5b', //we use here url with this user access-token(from DB), it is universal, if authenticator' => is disabled, the script just won't pay attaention to this $_GET['access-token']
+                          type: 'POST', 
+						  crossDomain: true,
+						  contentType: "application/json; charset=utf-8",
+			              dataType: 'json', // without this it returned string(that can be alerted), now it returns object
+			              //passing the data, username and password_reset_token musr be UNIQUE!!!!!
+                          data: {username:'dima33333', auth_key:'rpWTxyZV1Oaafv' , password_hash: '$2y$13$k8v',password_reset_token: 'TQ54N3hxSR5' , email: 'accou5@ukr.net'}, //data to pass, type=>Object
+                          success: function(data) {
+                            // do something;
+                            alert(JSON.stringify(data, null, 4));
+			                
+                          },  //end success
+			              error: function (error) {
+						  }	  
+                     });  
 
+					 
+      
+  2. cURL =>
+  
+               $ch = curl_init('http://localhost/yii2_REST_and_Rbac_2019/yii-basic-app-2.0.15/basic/web/rests?access-token=57Wpa-dlg-EonG6kB3myfsEjpo7v8R5b');
+
+                $data = array(
+                    'username' =>  'dimacccc', 'auth_key' => 'rpWTxyZV1Oaafv60zWyEaMRoDCOs2S_V', 'password_reset_token' => 'TQ54N3hxSR5tAsZ5CA5Y0ykUHgXJcab8_1567766765',
+					'email' => 'accou5454@ukr.net'
+                 );
+				
+				//convert array to json
+				$json = json_encode($data);
+
+              
+				  
+               curl_setopt($ch, CURLOPT_POST, 1); //sets method POST
+               //curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data)); //http_build_query=> Генерирует URL-кодированную строку запроса, i.e => foo=bar&baz=boom&cow=milk&php=hypertext+processor
+			   curl_setopt($ch, CURLOPT_POSTFIELDS, $json); //sends data
+
+               curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);// TRUE для возврата результата передачи в качестве строки из curl_exec() вместо прямого вывода в браузер
+               curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); //must option to Kill SSL, otherwise sets an error
+			   //curl_setopt($ch, CURLOPT_CUSTOMREQUEST, POST);
+ 
+               $response = curl_exec($ch);
+		       $err = curl_error($ch);
+               curl_close($ch);
+		
+	          
+	          //info if any curl error happened
+		      if ($err) {
+			      $resultX['errorX'] = $err; //'<p class="bg-warning">Sms not sent.</p>' . $err;
+              } else {
+		          $resultX['errorX'] = "No cURL error detected";
+              }
+			  
+			  //MEGA FIX, $response is already JSON, but later in ajax/sendSms we do it json encode once again that cause crash. So, firstly we deJSON it!!!!
+			  $response2 = json_decode($response, true); 
+
+			  var_dump($response2);
+  
 
 
 		
@@ -694,8 +769,9 @@ How to add multilanguages:
  
  
  
- 
- 
+ ==============================================================
+ 16.2 Has Many relation in JSON (REST API)
+ use { public function fields()} in model,  see details at => https://github.com/account931/kernel/blob/master/modules/models/InvoiceLoadOut.php
  
  
  
@@ -1125,7 +1201,7 @@ if($_SERVER['REMOTE_ADDR'] == '127.0.0.1') {
 #create Enum SQL => choose enum + in Length/Values column put there : '0' ,'1'
 # cURL library => https://github.com/account931/MapBox_Store_Location_2019/blob/master/Classes/AddMarker.php
 
-#function return mulitple values => https://github.com/account931/yii2_REST_and_Rbac_2019/blob/master/models/BookingCph.php
+#function return multiple/several values => https://github.com/account931/yii2_REST_and_Rbac_2019/blob/master/models/BookingCph.php
     function some(){return array($a, $b);}  $r = some(); $value1 = $r[0]; $value2 = $r[1];  
     function some(){return array('a'=> $a, 'b'=> $b);}  $r = some(); $value1 = $r['a']; $value2 = $r['b'];
 #Php constructor =>
@@ -1193,7 +1269,7 @@ CSS=>
    # text not to overlap the div => word-wrap: break-word;
    # add transition effect to class => -webkit-transition:  1.5s linear;
    # Imitation of fadeIn/fadeOut animation with overlay div, see=> https://github.com/account931/sms_Textbelt_Api_React_JS/blob/master/README_MY_React.txt => 25. React imitation of fadeIn/fadeOut animation with overlay div, i.e analogue of{$(".del-st").stop().fadeOut("slow",function(){ /*$(this).html(finalText) */}).fadeIn(3000); 
-   # Bootstrap small font-size =>  <span class='small font-italic'>
+   # Bootstrap small red font-size =>  <span class='small font-italic text-danger'>
 
 
    

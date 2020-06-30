@@ -59,6 +59,7 @@ class User extends ActiveRecord implements IdentityInterface, \yii\filters\RateL
         return [
             ['status', 'default', 'value' => self::STATUS_ACTIVE],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
+			[['username', 'email', 'auth_key', 'password_hash', 'password_reset_token'], 'safe'], //must be safe for REST Api POST/, i.e creating a new user
         ];
     }
  

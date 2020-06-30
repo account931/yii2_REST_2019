@@ -65,8 +65,8 @@ $menuItems = [
             
             ['label' => 'Rest Controller(core) GET/', 'url' => ['/rest/index', "access-token" => "57Wpa-dlg-EonG6kB3myfsEjpo7v8R5b", ]],   //rest controller //we use here url with this user access-token(from DB), it is universal, if authenticator' => is disabled, the script just won't pay attaention to this $_GET['access-token']
             ['label' => 'Rest Controller (my custom action) GET/', 'url' => ['/rest/new', "access-token" => "57Wpa-dlg-EonG6kB3myfsEjpo7v8R5b", ]], //my custom rest action with WHERE statement
-			['label' => 'Rest(insert data via POST/)', 'url' => ['#', "access-token" => "57Wpa-dlg-EonG6kB3myfsEjpo7v8R5b", ]], //rest action to insert data via POST
-            ['label' => 'Test Rest(GET/, PUT/, DELETE/)', 'url' => ['../____my_rest_js_ajax_test/index.php', "access-token" => "57Wpa-dlg-EonG6kB3myfsEjpo7v8R5b", ]], //rest action to insert data via POST
+			//['label' => 'Rest(insert data via POST/)', 'url' => ['#', "access-token" => "57Wpa-dlg-EonG6kB3myfsEjpo7v8R5b", ]], //rest action to insert data via POST
+            ['label' => 'Test Rest out of Yii(GET/, PUT/, DELETE/)', 'url' => ['../____my_rest_js_ajax_test/index.php', "access-token" => "57Wpa-dlg-EonG6kB3myfsEjpo7v8R5b", ]], //rest action to insert data via POST
 
 						
 			['label' => 'Rest Module (minor, no use)', 'url' => ['/admin/default/index']], //separate module with it's own controller
@@ -77,7 +77,7 @@ $menuItems = [
 			['label' => 'HasMany::relation', 'url' => ['/site/has-many']],
 			['label' => 'Reset Password <br>(when u forget your password & cant login,<br> used at login page only)', 'url' => ['/password-reset/request-password-reset']],
 			['label' => 'Codexception', 'url' => ['/site/codexcept']],
-			['label' => 'Vote/comment Widgets(N/A)', 'url' => ['#']],
+			['label' => 'Vote/comment Widgets(N/A, available in other Yii)', 'url' => ['#']],
 			['label' => 'Dektrium/Yii2_User Module(N/A)', 'url' => ['#']],
 			['label' => 'WPress alternative', 'url' => ['/wpress-blog/show-all-blogs']],
 			['label' => 'Bot chat', 'url' => ['/bot/bot-chat']],
@@ -87,7 +87,7 @@ $menuItems = [
 			['label' => 'Shop Liq E-pay Cozastore (amado cart)', 'url' => ['/shop-liqpay/index']],
 			['label' => 'Shop Liq E-pay_2 {:SIMPLE}', 'url' => ['/shop-liqpay-simple/index']],
 			['label' => 'Distance radius(N/A)', 'url' => ['#']],
-			['label' => 'Sms Api', 'url' => ['/sms-api/index']],
+			['label' => 'Sms Textbelt Api', 'url' => ['/sms-api/index']],
 			['label' => 'My oAuth Api Server(N/A)', 'url' => ['#']],
 			['label' => 'My Widget -> Image comparison', 'url' => ['/my-widget/index']],
 			

@@ -13,7 +13,7 @@ class HiWidget extends Widget
 		$model = User::find()->all();
 		
         //return '<h2>Hello!</h2>';
-		return $this->render('hi', [
+		return $this->render('Hi', [
             'model' => $model,
         ]);
     }
