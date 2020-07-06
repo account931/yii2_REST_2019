@@ -220,3 +220,10 @@ a.desc:after {
         }
    /* } */
 }
+
+/* to make submenu "Rest & other" scrollable vertically */
+.dropdown-menu{
+	height: 500px; overflow-y: auto;
+}
+	
+	

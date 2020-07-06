@@ -184,7 +184,7 @@
 					  $.ajax({
 						  //url: '../web/rest',  //url if 'authenticator' => is disabled in controllers/RestController
                           
-						  url: '../web/rests/28?access-token=57Wpa-dlg-EonG6kB3myfsEjpo7v8R5b', //we use here url with this user access-token(from DB), it is universal, if authenticator' => is disabled, the script just won't pay attaention to this $_GET['access-token']
+						  url: '../web/rests/24?access-token=57Wpa-dlg-EonG6kB3myfsEjpo7v8R5b', //we use here url with this user access-token(from DB), it is universal, if authenticator' => is disabled, the script just won't pay attaention to this $_GET['access-token']
                           type: 'DELETE', //DELETE a certain user
 						  crossDomain: true,
 						  contentType: "application/json; charset=utf-8",

@@ -1267,10 +1267,10 @@ CSS=>
    # div shadow 2 => .shadowX22 {-moz-box-shadow: inset 0px 0px 47px 3px #4c3f37; -webkit-box-shadow: inset 0px 0px 47px 3px #4c3f37; box-shadow: inset 0px 0px 277px 3px #4c3f37; }
    # text shadow => https://html-css-js.com/css/generator/text-shadow/
    # text not to overlap the div => word-wrap: break-word;
-   # add transition effect to class => -webkit-transition:  1.5s linear;
+   # add transition effect to class => -webkit-transition:  4.5s linear;  transition:  4.5s linear;
    # Imitation of fadeIn/fadeOut animation with overlay div, see=> https://github.com/account931/sms_Textbelt_Api_React_JS/blob/master/README_MY_React.txt => 25. React imitation of fadeIn/fadeOut animation with overlay div, i.e analogue of{$(".del-st").stop().fadeOut("slow",function(){ /*$(this).html(finalText) */}).fadeIn(3000); 
    # Bootstrap small red font-size =>  <span class='small font-italic text-danger'>
-
+   # W3school how to => https://www.w3schools.com/howto/default.asp
 
    
    
@@ -1307,5 +1307,6 @@ CSS=>
   
  99.3 While on Ipad, bootstrap navbar menu does not collapse => see SECTION {if iPad Portrait do collapse navbar menu always} at https://github.com/account931/yii2_REST_and_Rbac_2019/blob/master/web/css/site.css
   
-  
+ 99.4 To make submenu "Rest & other" scrollable vertically, as last items dont fit screen height => edit bootsrap class "dropdown-menu' (calss is assigned by bootsrap automatically to dropdown submenu)
+.dropdown-menu{height: 500px; overflow-y: auto;}
   

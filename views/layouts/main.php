@@ -90,7 +90,10 @@ $menuItems = [
 			['label' => 'Sms Textbelt Api', 'url' => ['/sms-api/index']],
 			['label' => 'My oAuth Api Server(N/A)', 'url' => ['#']],
 			['label' => 'My Widget -> Image comparison', 'url' => ['/my-widget/index']],
+			['label' => 'W3school How To', 'url' => ['/w3school/index']],
 			
+
+		
             //submenu with image,(won't  work  without  {encodeLabels' => false,}  ,  it  is  inserted  below)   /*/yii/basic_download/web*/
             ['label' => Html::img(Yii::$app->request->baseUrl.'/images/system_key.jpg' , $options = ["id"=>"sx","margin-left"=>"","class"=>"s","width"=>"16%","title"=>"my title"]) . ' My login(no use)',  'url' => ['/site/login'],     ],  
         ],         

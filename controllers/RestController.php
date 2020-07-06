@@ -37,7 +37,7 @@ class RestController extends ActiveController
 
    
    
-//makes action "delete" unavailable for REST access. Remove from REST access actions "delete" и "create". Or if you want to override the parent methods
+//Remove from REST access actions "delete" и "create". Or if you want to override the parent methods with your own
 public function actions()
 {
     $actions = parent::actions();
@@ -195,7 +195,10 @@ public function behaviors()
 
 
 
-//my overrided test actionCreate
+
+
+//my overrided test actionCreate, instead of build REST actionCreate(\vendor\yiisoft\yii2\rest\CreateAction). Works only if you { unset($actions['create'])} in  public function actions(){}
+
 // **************************************************************************************
 // **************************************************************************************
 // **                                                                                  **

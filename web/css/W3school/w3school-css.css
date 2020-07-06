@@ -1,0 +1,195 @@
+
+/* --------------------------- Social Media Buttons  https://www.w3schools.com/howto/howto_css_social_media_buttons.asp  -------------*/
+/* Style all font awesome icons */
+.fa {
+ padding: 20px;
+  font-size: 3em;
+  width: 3em;
+  text-align: center;
+  text-decoration: none;
+  margin: 5px 2px;
+}
+
+/* Add a hover effect if you want */
+.fa:hover {
+  opacity: 0.7;
+}
+
+/* Set a specific color for each brand */
+.fa-skype {
+  background: #00aff0;
+  color: white;
+}
+/* Set a specific color for each brand */
+.fa-android {
+  background: #a4c639;
+  color: white;
+}
+
+
+/* ---------------------------- END Social Media Buttons  https://www.w3schools.com/howto/howto_css_social_media_buttons.asp -------------*/
+
+
+
+
+
+
+
+/* ---------------------------- Fading Buttons  https://www.w3schools.com/howto/howto_css_fading_buttons.asp -------------*/
+.btn-fade-my {
+  background-color: #f4511e;
+  border: none;
+  color: black;
+  padding: 16px 32px;
+  text-align: center;
+  font-size: 16px;
+  margin: 4px 2px;
+  /*transition: 0.5s;*/
+  -webkit-transition:  0.3s linear;  transition:  0.3s linear;
+}
+
+.btn-fade-my:hover {
+  background-color: #3e8e41;
+  color: white;
+}
+
+
+
+
+
+
+
+
+
+
+
+/* ---------------------------- Blagosvet Gallery image sliders  ----------------------------------------------------------*/
+#container_slide {
+	width: 90%; /* 970px; */
+	overflow: hidden;
+	margin: 10px auto;
+	background: white;
+}
+
+
+/*photobanner*/
+
+.photobanner { height: 203px; width: 3550px; margin: 10px 0px 40px 0px; }
+
+.photobanner img {
+	-webkit-transition: all 0.5s ease;
+	-moz-transition: all 0.5s ease;
+	-o-transition: all 0.5s ease;
+	-ms-transition: all 0.5s ease;
+	transition: all 0.5s ease;
+}
+
+.photobanner img:hover {
+	-webkit-transform: scale(1.1);
+	-moz-transform: scale(1.1);
+	-o-transform: scale(1.1);
+	-ms-transform: scale(1.1);
+	transform: scale(1.1);
+	cursor: pointer;
+
+	-webkit-box-shadow: 0px 3px 5px rgba(0,0,0,0.2);
+	-moz-box-shadow: 0px 3px 5px rgba(0,0,0,0.2);
+	box-shadow: 0px 3px 5px rgba(0,0,0,0.2);
+}
+
+
+/*keyframe animations, SPEED IS SET HERE => bannermove 130s  */
+.first { 	-webkit-animation: bannermove 100s linear infinite; 	-moz-animation: bannermove 100s linear infinite; -ms-animation: bannermove 100s linear infinite; 	animation: bannermove 100s linear infinite; }
+
+@keyframes "bannermove" {
+ 0% {   margin-left: 0px; }
+ 100% {    margin-left: -2125px; }
+
+}
+
+@-moz-keyframes bannermove {
+ 0% {  margin-left: 0px;  }
+ 100% {   margin-left: -2125px; }
+}
+
+@-webkit-keyframes "bannermove" {
+ 0% {  margin-left: 0px; }
+ 100% {   margin-left: -2125px; }
+}
+
+@-ms-keyframes "bannermove" {
+ 0% {   margin-left: 0px; }
+ 100% {   margin-left: -2125px; }
+
+}
+
+@-o-keyframes "bannermove" {
+ 0% {   margin-left: 0px; }
+ 100% {   margin-left: -2125px; }
+}
+/* ---------------------------- End Blagosvet Gallery image sliders  ----------------------------------------------------------*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*----------- W3school Horizontal Scroll Menu =>  https://www.w3schools.com/howto/howto_css_menu_horizontal_scroll.asp ---- */
+div.scrollmenu {
+  background-color: #333;
+  overflow: auto;
+  white-space: nowrap;
+}
+
+div.scrollmenu a {
+  display: inline-block;
+  color: white;
+  text-align: center;
+  padding: 14px;
+  text-decoration: none;
+}
+
+div.scrollmenu a:hover {
+  background-color: #777;
+}
+/*----------- End W3school Horizontal Scroll Menu =>  https://www.w3schools.com/howto/howto_css_menu_horizontal_scroll.asp ---- */
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+
+
+
+/* ---------------------------------------- Mobile */
+@media screen and (max-width: 480px) { 
+   
+}
+/* ---------------------------------------- Mobile */
+
+
+
+
+
+
+
+
+
+
