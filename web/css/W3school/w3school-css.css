@@ -101,6 +101,12 @@
 /*keyframe animations, SPEED IS SET HERE => bannermove 130s  */
 .first { 	-webkit-animation: bannermove 100s linear infinite; 	-moz-animation: bannermove 100s linear infinite; -ms-animation: bannermove 100s linear infinite; 	animation: bannermove 100s linear infinite; }
 
+/* ----------SPEED for Mobile devices */
+@media screen and (max-width: 480px) { 
+   .first { 	-webkit-animation: bannermove 50s linear infinite; 	-moz-animation: bannermove 50s linear infinite; -ms-animation: bannermove 50s linear infinite; 	animation: bannermove 50s linear infinite; }
+}
+/* --------------SPEED for Mobile devices */
+
 @keyframes "bannermove" {
  0% {   margin-left: 0px; }
  100% {    margin-left: -2125px; }

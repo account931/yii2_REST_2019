@@ -1,0 +1,8 @@
+
+/* ----------------  Multi Step Form with JQ Validation Plug-in and Progress Bar     --------------- */
+/* ------------ https://www.phpflow.com/php/multi-step-form-using-php-bootstrap-jquery/ + https://djaodjin.com/blog/jquery-multi-step-validation.blog  -------------*/
+
+/*  hide other steps except first step*/
+#regiration_form fieldset:not(:first-of-type) {
+    display: none;
+  }

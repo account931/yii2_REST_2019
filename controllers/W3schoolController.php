@@ -8,7 +8,8 @@ use yii\web\Response;
 use yii\filters\VerbFilter;
 
 
-use app\models\ChangePasswordForm;
+use yii\base\ErrorException;
+use yii\web\NotFoundHttpException;
 
 class W3schoolController extends Controller
 {
@@ -91,6 +92,8 @@ class W3schoolController extends Controller
      */
     public function actionIndex()
     {
+		//throw new NotFoundHttpException('Yeahhh');
+
         return $this->render('index');
     }
 
