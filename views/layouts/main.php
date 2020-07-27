@@ -86,11 +86,12 @@ $menuItems = [
 			['label' => 'Test for middle(auth via email)', 'url' => ['/test-middle/index']],
 			['label' => 'Shop Liq E-pay Cozastore (amado cart)', 'url' => ['/shop-liqpay/index']],
 			['label' => 'Shop Liq E-pay_2 {:SIMPLE}', 'url' => ['/shop-liqpay-simple/index']],
+			['label' => 'AdminPanel Shop2 {:SIMPLE} <i class="fa fa-floppy-o"></i>', 'url' => ['#']],
 			['label' => 'Distance radius(N/A)', 'url' => ['#']],
 			['label' => 'Sms Textbelt Api', 'url' => ['/sms-api/index']],
 			['label' => 'My oAuth Api Server(N/A)', 'url' => ['#']],
 			['label' => 'My Widget -> Image comparison', 'url' => ['/my-widget/index']],
-			['label' => 'W3school How To', 'url' => ['/w3school/index']],
+			['label' => 'W3school How To <i class="fa fa-briefcase"></i>', 'url' => ['/w3school/index']],
 			
 
 		

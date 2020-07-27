@@ -1,5 +1,5 @@
 <?php
-
+//model for SQL table {test_for_middle_regist_token}
 namespace app\models\TestMiddle;
 
 use Yii;

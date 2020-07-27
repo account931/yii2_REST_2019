@@ -1178,7 +1178,11 @@ if($_SERVER['REMOTE_ADDR'] == '127.0.0.1') {
 # use personal function /place-to-define-common-function => https://stackoverflow.com/questions/37648935/in-yii2-framework-better-place-to-define-common-function-which-is-accessible-ev
   1. namespace app\components; Class MyComponent extends Component { public static function unwind(){
   2. echo \app\components\Mycomponent::unwind();
-  
+ 
+# Get id of last saved/inserted model instance =>  $model->save(); return $model->id;  <- VS -> $lastInsertID = $db->getLastInsertID();
+# Random string => Yii::$app->security->generateRandomString() . '_' . time();  Random int => mt_rand($min, $max) || rand($min, $max)
+
+
   
 ========================================================
 98.2.V.A(php) => see some more JS tips at https://github.com/account931/miscellaneous_2018
@@ -1258,6 +1262,8 @@ JS => see some more JS tips at https://github.com/account931/miscellaneous_2018/
 	#  myVar = setInterval(countUserRegisterRequests, 1000 );
     # Cors in Ajax (Cross-origin resource sharing)(Same-Origin-Policy) => see https://github.com/account931/sms_Textbelt_Api_React_JS/blob/master/README_MY.txt
     # js regExp, regular expression match => https://github.com/account931/sms_Textbelt_Api/blob/master/js/validate_regExp.js
+	# js even odd css class =>	'<input type="button" name="previousQ" class="previousQ btn btn-info' + (i == 0 ? ' hidden-btn':'') + '" value="Prev" />' +
+
 
 CSS=>
    #Bootstrap grid => <div class="col-lg-3 col-md-3 col-sm-3">  <div class="col-sm-6 col-xs-12">
@@ -1280,8 +1286,8 @@ CSS=>
                     => https://github.com/account931/yii2_REST_and_Rbac_2019/blob/master/controllers/WpressBlogController.php (use loader_Wpress.css + wpress.js (loader section))
 #React Bakcground Loader =>  https://github.com/account931/myWaze_GeoCode_Modules_CommonJS-18/blob/master/REDUX_REACT_REDUX/README_MY_REDUX.txt
 
-
-
+# JQ Validate Plugin => https://github.com/account931/yii2_REST_and_Rbac_2019/blob/master/web/js/W3school/multi-step-form-with-progerssBar-and-jqValidation-plugin.js
+# simpleImage Library (resize) + GD library (color filters) => https://github.com/account931/mvc_2017/blob/master/templates/central/servicetool.tpl + gdlibrary.tpl
 
 
 

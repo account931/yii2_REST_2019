@@ -1,4 +1,5 @@
 <?php
+//model for EMAIL input in form (NO ACTIVE RECORD) + sendEmal method + method to generate token (random string + time)
 
 namespace app\models\TestMiddle;
 //namespace frontend\models;

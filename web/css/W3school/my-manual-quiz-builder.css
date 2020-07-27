@@ -1,9 +1,9 @@
 
-/* ----------------  Multi Step Form with JQ Validation Plug-in and Progress Bar     --------------- */
+/* ----------------  My Quiz Multi Step Form with JQ Validation Plug-in and Progress Bar     --------------- */
 /* ------------ https://www.phpflow.com/php/multi-step-form-using-php-bootstrap-jquery/ + https://djaodjin.com/blog/jquery-multi-step-validation.blog  -------------*/
 
 /*  hide other steps except first step*/
-#regiration_form fieldset:not(:first-of-type) {
+#quiz_form fieldset:not(:first-of-type) {
     display: none;
 }
 
@@ -12,12 +12,12 @@
 
 /* --------------- RadioButton in form of buttons CSS styling */
 
-.form_radio_btn{
+.form_radio_btn_quiz{
 	display: inline-block;
 	margin-right: 10px;
 }
 
-.form_radio_btn label {
+.form_radio_btn_quiz label {
 	display: inline-block;
 	cursor: pointer;
 	padding: 0px 15px;
@@ -28,24 +28,36 @@
 }
 
 /* Checked */
-.form_radio_btn input[type=radio]:checked + label {
+.form_radio_btn_quiz input[type=radio]:checked + label {
 	background: lime; /*#ffe0a6;*/
 }
  
 /* Hover */
-.form_radio_btn label:hover {
+.form_radio_btn_quiz label:hover {
 	color: green; /*#666;*/
 	border: 1px solid green;
 }
 
 /* Disabled */
-.form_radio_btn input[type=radio]:disabled + label {
+.form_radio_btn_quiz input[type=radio]:disabled + label {
 	background: #efefef;
 	color: #666;
 }
 
-.form_radio_btn input[type=radio] {
+.form_radio_btn_quiz input[type=radio] {
 	/* display: none; */   /* this Css caused the failure of validationg radioButton with JQ Validate Plug-in. And by default, JQ Validate Plug-in ignores all hidden inputs. The solution is to change {display: none;} to {opacity:0;}  */
 	opacity:0; 
 }
 /* --------- End RadioButton in form of buttons CSS styling */
+
+
+
+/* CSS to hide "Next", "Prev" button on some iteration */
+.hidden-btn{display:none;}
+
+
+
+/* quiz image */
+.img-quiz{width:42%; margin-bottom:20px;}
+ @media screen and (max-width: 480px) { 
+    .img-quiz{width:62%; } }

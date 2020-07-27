@@ -21,6 +21,7 @@ $this->title = 'W3schools tips and tricks';
 	<?= Html::encode($this->title); ?>
 	
 	
+	
 	<!-- Social Media Buttons  https://www.w3schools.com/howto/howto_css_social_media_buttons.asp -->
 	<a href="#" class="fa fa-skype"></a>
     <a href="#" class="fa fa-android"></a>
@@ -35,6 +36,35 @@ $this->title = 'W3schools tips and tricks';
 		
 		<br><hr style="width: 90%; color: black; height: 2px; background-color:black;"><br>
 
+		
+		
+		
+		
+		
+		<?php
+		//example of converting phone number to partially hidden, i.e +38097*****77 ---------------------------------------
+		$phone = "+380978765442";
+		$pnone_hidden = ""; //will be array 
+		for($i = 0; $i < strlen($phone); $i++){ 
+			if($i > 5 AND $i < 10){
+			    $pnone_hidden[$i] = "*"; //turns to array	
+			} else {
+				$pnone_hidden[$i] = $phone[$i];
+			}
+		}
+		//echo strlen($phone);
+		echo '<p>Converting phone number => <span class="small font-italic text-danger">iterate over  for($i = 0; $i < strlen($phoneString); $i++){ }, changing string to array, then converts back to string to echo with {implode("", $pnone_hidden)} </span>  </p>';
+		echo implode('', $pnone_hidden) . "<br>";
+		echo '<br><hr style="width: 90%; color: black; height: 2px; background-color:black;"><br>';
+
+		//echo $phone[2];
+	    //End example of converting phone number to partially hidden, i.e +38097*****77 ----------------------------
+		?>
+		
+		
+		
+		
+		
 		
 		
 		
@@ -80,6 +110,34 @@ $this->title = 'W3schools tips and tricks';
 	
 	
 	
+	<!----------- Fullscreen-slit-slider Gallery -----------------------> <!-- https://tympanus.net/codrops/2012/06/05/fullscreen-slit-slider-with-jquery-and-css3/ -->
+	<div style="width:80%; overflow:hidden;"> <!-- style="width:80%; overflow:hidden;" IS JUST TO TEMPO FIT SCREEN IN MOBILE (remove this div entirely) -->
+	<?php //render sub file ?>
+	<?= $this->render('@app/views/w3school/sub_views/fullscreen-slit-slider-gallery') ?>
+	</div>
+	<br><hr style="width: 90%; color: black; height: 2px; background-color:black;"><br>
+	<!----------- End Fullscreen-slit-slider Gallery -----------------------> <!-- https://tympanus.net/codrops/2012/06/05/fullscreen-slit-slider-with-jquery-and-css3/ -->
+
+	
+	
+	
+	
+	
+	
+	
+	
+	<!----------- Fotorama Gallery -----------------------> <!-- https://fotorama.io/#eaaee377-f1b5-49d7-a7db-d7a1f86b2805 -->
+	<?php //render sub file ?>
+	<?= $this->render('@app/views/w3school/sub_views/fotorama-gallery') ?>
+	
+	<br><hr style="width: 90%; color: black; height: 2px; background-color:black;"><br>
+	<!----------- End Fotorama Gallery -----------------------> <!-- https://fotorama.io/#eaaee377-f1b5-49d7-a7db-d7a1f86b2805 -->
+
+	
+	
+	
+	
+	
 	
 	
 	
@@ -91,11 +149,11 @@ $this->title = 'W3schools tips and tricks';
 	
 	
 	<!--start Waze gallery plugin-->
-    <div id="wrapper">
+    <div id="wrapper" style="width:80%; overflow:hidden;"> <!-- style="width:80%; overflow:hidden;" IS JUST TO TEMPO FIT SCREEN IN MOBILE -->
         <div id="below">
 		
-<div id="slide1" class="slideshow">
-	<div class="img_cont">
+        <div id="slide1" class="slideshow">
+	        <div class="img_cont">
 	
   <ul id="desc1" class="descriptions">
     <li>
@@ -188,6 +246,7 @@ $this->title = 'W3schools tips and tricks';
 
 </div>
 </div>
+</div>
 <!--end plugin-->
 
 
@@ -268,7 +327,7 @@ $this->title = 'W3schools tips and tricks';
 	<center><h3 class="text-primary">Multi Step Form with JQ Validation Plug-in and Progress Bar </h3></center>
 	
 	<div class="progress">
-	    <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
+	    <div class="progress-bar-1 progress-bar progress-bar-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
      </div>
 	 
      <form id="regiration_form" novalidate action=""  method="post">
@@ -287,7 +346,20 @@ $this->title = 'W3schools tips and tricks';
             <label for="exampleConfirmInputPassword1">Confirm Password</label>
             <input type="password" class="form-control" id="conf_password" name="conf_password" placeholder="Confirm Password">
         </div>
-        <input type="button" name="next" class="next btn btn-info" value="Next" />
+		
+		<!-- radiobutton as buttons https://snipp.ru/html-css/style-radio#link-gruppa-knopok -->
+		<div class="form-group">
+		    <div class="form_radio_btn">
+                <input type='radio' name='Color' value='Red' id="myRadio1"/><label for="myRadio1">Red</label>
+            </div>
+            <div class="form_radio_btn">
+                <input type='radio' name='Color' value='Green'id="myRadio2"/><label for="myRadio2">Green</label>
+            </div>
+		</div>
+		<!-- end radiobutton as buttons https://snipp.ru/html-css/style-radio#link-gruppa-knopok -->
+
+  
+        <br><input type="button" name="next" class="next btn btn-info" value="Next" />
      </fieldset>
 	 
      <fieldset>
@@ -353,7 +425,29 @@ $this->title = 'W3schools tips and tricks';
 	<!----------- End JQ Surver Builder ----------------------->
 	
 	
-
+	
+	
+	
+	
+	
+	
+    <!----------- My manual multi steps Quiz Builder with JQ Validation and RadioButtons in form of buttons  ----------------------->
+	<!-- Multi steps quiz form content is loaded to <div id="quizDiv"> by JS ajax in (my-manual-quiz-builder.js.js). List of questions is in W3schoolController/actionAjaxQuizQuestionsList(). See details => https://github.com/account931/yii2_REST_and_Rbac_2019/blob/master/web/js/W3school/my-manual-quiz-builder.js-->
+	<center><h3 class="text-primary">My manual Quiz Builder with JQ Validation and RadioButtons in form of buttons</h3></center>
+	
+	<?php //render sub file ?>
+	<?= $this->render('@app/views/w3school/sub_views/my-manual-quiz-builder') ?>
+	
+	<br><hr style="width: 90%; color: black; height: 2px; background-color:black;"><br>
+	<!----------- End My manual Quiz Builder with JQ Validation and RadioButtons in form of buttons----------------------->
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	<!----------- XXXXX ----------------------->
 	<center><h3 class="text-primary">XXXX</h3></center>

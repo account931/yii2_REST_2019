@@ -1,10 +1,17 @@
 //used in -> Multi Step Form with JQ Validation Plug-in and Progress Bar 
-	
+
+//JQ Validate Plug-in ReadMe, how to use => 
+// 1.) Add => <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.js"></script>
+// 2.) Specify your validation rules, regExp, etc in your js, see function JQ_Validate_Plugin_checking_fields()
+
+//# The problem/failure with JQ Validate Plug-in validating RadioButton input was caused by using custom radiobutton in form of square buttons, 
+//    and thus in css we had {.form_radio_btn input[type=radio] {display: none;}. And by default, JQ Validate Plug-in ignores all hidden inputs. The solution is to change {display: none;} to {opacity:0;}}
 
 $(document).ready(function(){
 	
   var current = 1,current_step,next_step,steps;
-  steps = $("fieldset").length;
+  steps = $("#regiration_form fieldset").length; 
+  //alert("Multi steps contains steps => " + steps);
   
   
   /*
@@ -14,7 +21,8 @@ $(document).ready(function(){
   |
   |
   */
-  
+ 
+  //click "Next" button
   $(".next").click(function(){
 	  
 	 // First goes JQ Validation Plugin function, vaidation works on NAME attributes, i.e  <input type="password" class="form-control" name="password">
@@ -22,7 +30,7 @@ $(document).ready(function(){
 	
 	//if JQ Valiadion Plug in is OK (in JQ_Validate_Plugin_checking_fields()), then move to next page
 	if ($("#regiration_form").valid() === true){ 
-        current_step = $(this).parent(); //current visiblle fieldset
+        current_step = $(this).parent(); //get current visiblle fieldset
 	    //console.log(current_step);
         next_step = $(this).parent().next();
         next_step.show(); //next fieldset
@@ -55,7 +63,7 @@ $(document).ready(function(){
   function setProgressBar(curStep){
     var percent = parseFloat(100 / steps) * curStep;
     percent = percent.toFixed();
-    $(".progress-bar")
+    $(".progress-bar-1")
       .css("width",percent+"%")
       .html(percent+"%");   
   }
@@ -68,6 +76,9 @@ $(document).ready(function(){
 	  if ($("#regiration_form").valid() === true){
 	      alert('implement sending ajax here or something else. If u want just php submit, comment {evt.preventDefault() in  $("#submitBtn").click(function(evt)} ');
 	      alert( $("#regiration_form").serialize());
+		  //show all inputs results
+		  $("#regiration_form").stop().fadeOut("slow",function(){ $(this).html('<div class="red alert alert-success"><h3>Thanks, your provided data is </h3><span class="glyphicon glyphicon-log-in"></span><br>' + $("#regiration_form").serialize() + ' </div>')}).fadeIn(2000);
+
 	  }
   
   });
@@ -94,16 +105,19 @@ $(document).ready(function(){
 	}, "phone number must be in format +380...");
 			
 			
-    var form = $("#regiration_form");
+    var form = $("#regiration_form"); //selector to var
 	
 	form.validate({
-	    errorElement: 'span',
+		//ignore:'', //which items ignore to validate, by default -> all hidden
+	    errorElement: 'p', //span
 		errorClass: 'help-block',
 		highlight: function(element, errorClass, validClass) {
 		    $(element).closest('.form-group').addClass("has-error");
 		},
 		unhighlight: function(element, errorClass, validClass) {
 		    $(element).closest('.form-group').removeClass("has-error");
+			//$('#Color-error').remove();
+			$(element).next('.help-block').remove(); //My Mega fix for radiobuttons, removes <p class="help-block">, which is appended by Plug-in when validation false. It is Ok for all inputs, except for RadioButton (specifically for 1st radioButton, thatno longer can be selected)
 		},
 					
 		//validation rules for NAME attributes, not id
@@ -121,6 +135,7 @@ $(document).ready(function(){
 				minlength: 4,
 		        equalTo: '#password',
 		    },
+			
 			fName: {
 	            required: true,
 				myCustomeRegex: true, //uses my custom RegExp
@@ -138,7 +153,8 @@ $(document).ready(function(){
 		        required: true,
 				 minlength: 13,
 		    },
-	        
+			//radiobutton validation
+			Color:{ required:true },	
 						
 		},
 		    //set your error messages,
@@ -164,7 +180,6 @@ $(document).ready(function(){
   }
   
   
-  
-  
+
   
 });

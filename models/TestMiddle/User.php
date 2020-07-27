@@ -1,6 +1,7 @@
 <?php
 
-//copied from models/User and edited. 
+//copied from models/User and edited for login by email. 
+
 namespace app\models\TestMiddle;
  
 use Yii;
