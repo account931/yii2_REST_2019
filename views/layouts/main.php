@@ -92,6 +92,7 @@ $menuItems = [
 			['label' => 'My oAuth Api Server(N/A)', 'url' => ['#']],
 			['label' => 'My Widget -> Image comparison', 'url' => ['/my-widget/index']],
 			['label' => 'W3school How To <i class="fa fa-briefcase"></i>', 'url' => ['/w3school/index']],
+			['label' => 'Manual Quiz Auto <i class="fa fa-briefcase"></i>', 'url' => ['#']],
 			
 
 		

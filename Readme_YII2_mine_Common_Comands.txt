@@ -1181,6 +1181,8 @@ if($_SERVER['REMOTE_ADDR'] == '127.0.0.1') {
  
 # Get id of last saved/inserted model instance =>  $model->save(); return $model->id;  <- VS -> $lastInsertID = $db->getLastInsertID();
 # Random string => Yii::$app->security->generateRandomString() . '_' . time();  Random int => mt_rand($min, $max) || rand($min, $max)
+# Allow Ajax only =>  if (!Yii::$app->request->isAjax) { return "screw you"} 
+
 
 
   
@@ -1238,7 +1240,7 @@ JS => see some more JS tips at https://github.com/account931/miscellaneous_2018/
    # Arrays and objects are mutable, primitive values (string, bool,etc) are immutable (they are hardcoded and therefore cannot be changed).
    
    # IOS, safari JS click fix => add empty {onClick}  => <span onClick="" id="someID"></span>   OR => cursor: pointer;
-   # JS alert object => alert(JSON.stringify(aucompleteX, null, 4));
+   # JS alert object => alert(JSON.stringify(aucompleteX, null, 4)); JSON.stringify(data);
    # animate=>  $(".all-6-month").stop().fadeOut("slow",function(){ $(this).html(finalText)}).fadeIn(2000);
    # click for for newly generated => $(document).on("click", '.subfolder', function() {      //for newly generated 
    #get the clicked id=> //alert(this.id); // this.attr("id");   vs  var b = $(this);

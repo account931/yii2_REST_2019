@@ -29,11 +29,13 @@ $(document).ready(function(){
 				//alert(JSON.stringify(data));
 				//alert(data.questionList[0].questions);
 				
-				//Promise, otherwise proccessFiledset() does not see loaded by ajax new DOM elemnets
+				//Promise, otherwise proccessFiledset() does not see loaded by ajax new DOM elemnets. UPDATE => Promise is not necessary????
 				constructQuestionsList(data)
 				.then(
 				   proccessFiledset()
-                 );
+                 ).then(
+				   setProgressBarQ(currentQ)
+				 );
 				
             },  //end success
 			
@@ -48,14 +50,22 @@ $(document).ready(function(){
 	   
 	   //constructs ajax success answer
 	   function constructQuestionsList(data){
-		 return new Promise((resolve, reject) => {  //Promise, otherwise proccessFiledset() does not see loaded by ajax new DOM elemnets
-
-		   //building multisteps form 
+		 return new Promise((resolve, reject) => {  //Promise, otherwise proccessFiledset() does not see loaded by ajax new DOM elemnets. UPDATE => Promise is not necessary????
+           
+		   //if data.result_status not OK, stop further, e.g if $quizQuestionList_Initial[['name_id_attr']] in function W3schoolController/actionAjaxQuizQuestionactionAjaxQuizQuestionsList() has duplicate values
+		   if (data.result_status != "OK"){
+			   	$("#quizDiv").stop().fadeOut("slow",function(){ $(this).html("<span class='text-danger'> " + data.error + "</span>") }).fadeIn(2000); //Error, you have duplicate key value in your array
+				return ;
+		   }
+		   
+		   
+		   //If (data.result_status == "OK"), go further building multisteps form 
 		   var finalText = '<form id="quiz_form" novalidate action=""  method="post">';
 		   
 		   for(var i = 0; i < data.questionList.length; i++){
 			   
 			   finalText+= '<fieldset class="q-fields">' +
+			               '<p>Question ' + (i+1) + '</p>' +
 			               '<p>' + data.questionList[i].questions + '</p>' +  //display the quiz question
 			               '<div class="form-group">';
 			   
@@ -64,7 +74,7 @@ $(document).ready(function(){
 			   
 			   //built/display variants of quiz answers 
 			   for(var j = 0; j < data.questionList[i].answer.length; j++){ 
-				   //finalText+= '<p>' + data.questionList[i].answer[j] + '</p>';
+				   
 				   finalText+=  '<div class="form_radio_btn_quiz">' + 
                                     '<input type="radio" name="' + data.questionList[i].name_id_attr +  '"' + //input name
 			                        'value="' + data.questionList[i].answer[j] + '" ' + 
@@ -89,9 +99,9 @@ $(document).ready(function(){
 		   
 		   //setTimeout(function(){
 		       $("#loaderQuiz").hide(900); //show the loader
-			   $("#quizDiv").html(finalText);
+			   $("#quizDiv").html(finalText).fadeOut();
 		       $("#quizDiv").stop().fadeOut("slow",function(){ $(this).html(finalText) }).fadeIn(2000);
-		   //},1000);
+		   //},2000);
 		   
 		  /* setTimeout(function(){
 		      proccessFiledset(); //because ajax succes is async 
@@ -113,12 +123,12 @@ $(document).ready(function(){
 var currentQ = 1, current_stepQ, next_stepQ, stepsQ;
   //stepsQ = $("#quiz_form fieldset").length;
   //alert('q2 ' + stepsQ );
-setProgressBarQ(currentQ);
+//setProgressBarQ(currentQ);
 
 
 //gets the quantioty of questions/fieldsets	   
 function proccessFiledset(){	
-stepsQ = $("#quiz_form fieldset").length;
+  stepsQ = $("#quiz_form fieldset").length;
   alert('Quantity of questions in My manual Quiz builder ' + stepsQ );
 }   
   
@@ -143,6 +153,7 @@ stepsQ = $("#quiz_form fieldset").length;
 	    console.log(current_stepQ);
         next_stepQ = $(this).parent().next();
         next_stepQ.show(); //next fieldset
+		//next_stepQ.show("slide", { direction: "left" }, 1000);
         current_stepQ.hide();
         setProgressBarQ(++currentQ);
 	//}
@@ -162,6 +173,7 @@ stepsQ = $("#quiz_form fieldset").length;
     current_stepQ = $(this).parent();
     next_stepQ = $(this).parent().prev();
     next_stepQ.show();
+    //next_stepQ.show("slide", { direction: "left" }, 1000);
     current_stepQ.hide();
     setProgressBarQ(--currentQ);
   });
@@ -170,6 +182,7 @@ stepsQ = $("#quiz_form fieldset").length;
   
  // Change progress bar action, based on $("fieldset").length;
   function setProgressBarQ(curStep){
+	//stepsQ = $("#quiz_form fieldset").length;
     var percent = parseFloat(100 / stepsQ) * curStep;
     percent = percent.toFixed();
     $(".progress-barQ")
@@ -178,16 +191,15 @@ stepsQ = $("#quiz_form fieldset").length;
   }
   
   
-  //form submit btn on cick
+  //user click to SUBMIT form, then sends ajax to check answers
   $(document).on("click", '#submitBtnQ', function(evt) {  //for newly generated 
 	  evt.preventDefault(); //prevent submit
 	  //if JQ Valiadion Plug in is OK (in JQ_Validate_Plugin_checking_fields()), then move to next page
 	  //if ($("#quiz_form").valid() === true){
-	      alert('implement sending ajax here or something else. If u want just php submit, comment {evt.preventDefault() in  $("#submitBtn").click(function(evt)} ');
-	      alert( $("#quiz_form").serialize());
+	      //alert( $("#quiz_form").serialize());
 		  //show all inputs results
-		  $("#quizDiv").stop().fadeOut("slow",function(){ $(this).html('<div class="red alert alert-success"><h3>Thanks, your provided data is </h3><span class="glyphicon glyphicon-log-in"></span><br>' + $("#regiration_form").serialize() + ' </div>')}).fadeIn(2000);
-
+		  //$("#quizDiv").stop().fadeOut("slow",function(){ $(this).html('<div class="red alert alert-success"><h3>Thanks, your provided data is </h3><span class="glyphicon glyphicon-log-in"></span><br>' + $("#quiz_form").serialize() + ' </div>')}).fadeIn(2000);
+          sendsAjaxToCheckAnswers();
 	  //}
   
   });
@@ -203,8 +215,31 @@ stepsQ = $("#quiz_form fieldset").length;
 
 
 
+ //sends ajax to check answers
+ function sendsAjaxToCheckAnswers(){
+	 // send ajax onLoad to PHP handler action to get list of questions  ************ 
+        $.ajax({
+            url: urlX ,
+            type: 'POST',
+			dataType: 'JSON', // without this it returned string(that can be alerted), now it returns object
+            data: { 
+			    serverAnswer:$("#quiz_form").serialize()
+			},
+            success: function(data) {
+                // do something;			    
+				//alert(JSON.stringify(data));
+				$("#quizDiv").stop().fadeOut("slow",function(){ $(this).html('<div class="red alert alert-success"><h3>Thanks, your provided data is </h3><span class="glyphicon glyphicon-log-in"></span><br>' + JSON.stringify(data) + ' </div>')}).fadeIn(2000);
 
-	   
+            },  //end success
+			
+			error: function (error) {
+				$("#quizDiv").stop().fadeOut("slow",function(){ $(this).html("<h4 style='color:red;padding:3em;'>ERROR!!! <br> Quiz check answers failed " + JSON.stringify(error) + "</h4>")}).fadeIn(2000);
+            }	
+        });
+                                               
+       //  END AJAXed  part 
+ }
+ 
 	   
 	   
 	   

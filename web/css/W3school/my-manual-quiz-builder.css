@@ -61,3 +61,16 @@
 .img-quiz{width:42%; margin-bottom:20px;}
  @media screen and (max-width: 480px) { 
     .img-quiz{width:62%; } }
+
+#quiz_form{
+  margin:10px;
+}
+
+#quizDiv{word-wrap: break-word; /* text not to overlap the div  */ }
+
+/* CSS for Gif loader */
+.loaderQuiz{width:20%;}
+ @media screen and (max-width: 480px) { 
+    .loaderQuiz{width:60%;} }
+
+

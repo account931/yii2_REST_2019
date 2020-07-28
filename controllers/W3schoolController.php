@@ -110,6 +110,7 @@ class W3schoolController extends Controller
      */
     public function actionAjaxQuizQuestionsList()
     {
+		
 		//array to contain all quiz questions, set your questions only here, all the rest will be done automatically
 		//if you want to add some new array element to be displayed in quiz, i.e image, etc, after adding this el here, process it in next step {//filtering $quizQuestionList_Initial} where we specify what is returned to client, e.g {'correctAnswer'} is not ruturned for security reson
 		$quizQuestionList_Initial = array(
@@ -149,6 +150,102 @@ class W3schoolController extends Controller
 		);
 		
 		
+        //if request is not ajax, stop anything further
+        if (!Yii::$app->request->isAjax) { /* текущий запрос является AJAX запросом */ 
+		    return "screw you";
+		}
+
+		
+		//if it is request to check anwsers
+		if(isset($_POST['serverAnswer'])){
+			
+			//check if $_POST['serverAnswer']) length ==
+			
+		   //$_POST['serverAnswer']) is a string (as it is sent via ajax as data:{serverAnswer:$("#quiz_form").serialize()} ), so convert it here to array
+		   $answers = explode('&', $_POST['serverAnswer']); //convers to array ('question9311=Vesterbro', 'question9312=Amager', etc)
+		   $answerArrayFinal = array();
+		   
+		   //reurns normal array $answerArrayFinal with ajax answers, ie ['name9311'=>'Nuhavn', 'name9312'=>'Amager']
+		   foreach($answers as $v){
+			   $t = array();
+			   $t = explode('=', $v);
+			   $key = $t[0];
+			   //array_push($tempoArray, $k['name_id_attr']);
+			   $answerArrayFinal[$key] = $t[1] ;
+
+		   }
+		   
+		   
+		   //checking/compare answers
+		   $yourScorsForAnswers = array();
+		   
+		   //$n = array_column($quizQuestionList_Initial, 'name_id_attr'); //CAN NOT USE in Php <5.5 //gets every column 'name_id_attr' to new array $n, i.e $n = ['name9311', 'name9312', etc] 
+		   $n = array_map(function($element){return $element['name_id_attr'];}, $quizQuestionList_Initial);
+
+		   //foreach($quizQuestionList_Initial as $m){
+			   foreach($answerArrayFinal as $key => $val){
+			   
+			       $indexx = array_search($key, $n ); //(/* whatwe look for */, arrayName, column)
+				   if( $quizQuestionList_Initial[$indexx]['correctAnswer'] == $val ) { //if your answer == answer from $quizQuestionList_Initial
+					   array_push($yourScorsForAnswers, 'correct', $quizQuestionList_Initial[$indexx]['questions'], $answerArrayFinal[$key] ); //('correct', question, your answer)
+				   } else {
+					   array_push($yourScorsForAnswers, 'wrong', $quizQuestionList_Initial[$indexx]['questions'], $answerArrayFinal[$key] ); //('correct', question, your answer)
+
+				   }
+               }
+		   //}
+			   
+		   
+		   
+		   
+		   
+			
+			//RETURN JSON DATA
+		    // Specify what data to echo with JSON, ajax usese this JSOn data to form the answer and html() it, it appears in JS consol.log(res)
+            \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;  
+             return [
+                 'result_status' => $yourScorsForAnswers, // return ajx status
+				 //'error' => "Error, you have duplicate key value in your array",		 
+             ]; 
+			
+		
+		//**********************************************************************************************************************
+        //if it is request to get list of questions, i.e contains no $_POST['serverAnswer'])		
+		} else {
+
+		
+		
+		
+		
+		//check if user's array {$quizQuestionList_Initial} accidentally has duplicate value for key {'name_id_attr'}, that is unacceptable
+		$z = 0;
+		$ifHasDublicate = FALSE;
+		$tempoArray = array();
+		foreach($quizQuestionList_Initial as $k ){
+			if( !in_array( $k['name_id_attr'], $tempoArray ) ){ //if value does not exist in tempoArray['name_id_attr']
+			   array_push($tempoArray, $k['name_id_attr']);
+				} else {
+					$ifHasDublicate = TRUE;
+					$result = "false";
+					
+				}
+		}
+		
+		//if $quizQuestionList_Initial[['name_id_attr']] has duplicates, return Error to ajax
+		if($ifHasDublicate == TRUE){
+			//RETURN JSON DATA
+		    // Specify what data to echo with JSON, ajax usese this JSOn data to form the answer and html() it, it appears in JS consol.log(res)
+            \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;  
+             return [
+                 'result_status' => $result, //"OK", // return ajx status
+				 'error' => "Error, you have duplicate key value in your array",		 
+             ]; 
+		}
+		
+	   //End check if user's array {$quizQuestionList_Initial} accidentally has duplicate value for key {'name_id_attr'}, that is unacceptable
+
+		
+		
 		
 		//filtering $quizQuestionList_Initial to $quizQuestionList (what to return to client)(here removing from array elements {correctAnswer} not them to be visible on client side), e.g {'correctAnswer'} is not ruturned for security reson  
 		//and copying to new array {$quizQuestionList} that will be outputed to client
@@ -162,6 +259,9 @@ class W3schoolController extends Controller
 			}
 			$i++;
 		}
+		
+		$result = "OK"; 
+		
 		
 		
 	
@@ -184,14 +284,14 @@ class W3schoolController extends Controller
 		  // Specify what data to echo with JSON, ajax usese this JSOn data to form the answer and html() it, it appears in JS consol.log(res)
          \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;  
           return [
-             'result_status' => "OK", // return ajx status
-             'code' => 100,	
+             'result_status' => $result, //"OK", // return ajx status
+             //'code' => 100,	
              'questionList' => $quizQuestionList,			 
 			 
           ]; 
     }
 	
-	
+	}
 	
 
 }

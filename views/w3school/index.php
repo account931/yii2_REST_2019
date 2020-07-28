@@ -52,9 +52,13 @@ $this->title = 'W3schools tips and tricks';
 				$pnone_hidden[$i] = $phone[$i];
 			}
 		}
+		echo gettype($pnone_hidden), "\n";
 		//echo strlen($phone);
 		echo '<p>Converting phone number => <span class="small font-italic text-danger">iterate over  for($i = 0; $i < strlen($phoneString); $i++){ }, changing string to array, then converts back to string to echo with {implode("", $pnone_hidden)} </span>  </p>';
-		echo implode('', $pnone_hidden) . "<br>";
+		/*$res = implode(", ", $pnone_hidden);
+		echo gettype($res), "\n";
+		echo $res;
+        echo "<br>"; */
 		echo '<br><hr style="width: 90%; color: black; height: 2px; background-color:black;"><br>';
 
 		//echo $phone[2];
