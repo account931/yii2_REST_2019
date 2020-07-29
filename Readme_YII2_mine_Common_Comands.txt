@@ -1226,8 +1226,11 @@ if($_SERVER['REMOTE_ADDR'] == '127.0.0.1') {
              * @return array $text 
              */
 
-
-
+# Search/find index in multi array by key, e.g find index array where 'name_id_attr' => 'q9311' in  $$quizQuestionList_Initial =array( array('name_id_attr' => 'q9311', 'correctAnswer' => 'Vesterbro'),  array('name_id_attr' => 'q9312', 'correctAnswer' => 'Vesterbro'), ) =>
+     //see details at =>????
+	 //$n = array_column($quizQuestionList_Initial, 'name_id_attr'); //CAN NOT USE in Php <5.5 //gets every column 'name_id_attr' to new array $n, i.e $n = ['name9311', 'name9312', etc] 
+	  $n = array_map(function($element){return $element['name_id_attr'];}, $quizQuestionList_Initial);
+	  $indexx = array_search($key, $n ); //(/* what we look for */, arrayName, column)
 -----------------
 
 

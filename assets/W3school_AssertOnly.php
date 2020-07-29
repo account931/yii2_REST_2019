@@ -35,7 +35,7 @@ class W3school_AssertOnly extends AssetBundle
 		
 		'https://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.css', //Fotorama CSS
 		
-		'css/W3school/my-manual-quiz-builder.css', // my-manual-quiz-builder CSS
+		
 		
 
 		
@@ -69,7 +69,7 @@ class W3school_AssertOnly extends AssetBundle
 		  
 		  'https://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.js', //Fotorama gallery
 		  
-		  'js/W3school/my-manual-quiz-builder.js', // my-manual-quiz-builder
+		  
 
 		  
 

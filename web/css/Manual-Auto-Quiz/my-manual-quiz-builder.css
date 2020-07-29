@@ -74,3 +74,47 @@
     .loaderQuiz{width:60%;} }
 
 
+	
+	
+	
+	
+	
+	
+	
+	/* --------------------------- Social Media Buttons  https://www.w3schools.com/howto/howto_css_social_media_buttons.asp  -------------*/
+/* Style all font awesome icons */
+.fa-my {
+ padding: 20px;
+  font-size: 3em;
+  width: 3em;
+  text-align: center;
+  text-decoration: none;
+  margin: 5px 2px;
+}
+
+/* Add a hover effect if you want */
+.fa:hover {
+  opacity: 0.7;
+}
+
+/* Set a specific color for each brand */
+.fa-empire {
+  background: #00aff0;
+  color: white;
+}
+/* Set a specific color for each brand */
+.fa-eercast {
+  background: #a4c639;
+  color: white;
+}
+
+
+/* ---------------------------- END Social Media Buttons  https://www.w3schools.com/howto/howto_css_social_media_buttons.asp -------------*/
+
+
+/* correct/wrong scores */
+.score{padding:10px; border:1px solid black;}
+.lavender{padding:10px; background:lavender;}
+
+
+

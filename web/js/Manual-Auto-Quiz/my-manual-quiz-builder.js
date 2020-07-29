@@ -39,8 +39,9 @@ $(document).ready(function(){
 				
             },  //end success
 			
+				
 			error: function (error) {
-				$("#quizDiv").stop().fadeOut("slow",function(){ $(this).html("<h4 style='color:red;padding:3em;'>ERROR!!! <br> Quiz failed</h4>")}).fadeIn(2000);
+				$("#quizDiv").stop().fadeOut("slow",function(){ $(this).html("<h4 style='color:red;padding:3em;'>ERROR!!! <br> Quiz failed" + JSON.stringify(error) + "</h4>")}).fadeIn(2000);
             }	
         });
                                                
@@ -48,7 +49,7 @@ $(document).ready(function(){
 	   
 	   
 	   
-	   //constructs ajax success answer
+	   //constructs ajax success answer, i.e builds questions list
 	   function constructQuestionsList(data){
 		 return new Promise((resolve, reject) => {  //Promise, otherwise proccessFiledset() does not see loaded by ajax new DOM elemnets. UPDATE => Promise is not necessary????
            
@@ -215,7 +216,7 @@ function proccessFiledset(){
 
 
 
- //sends ajax to check answers
+ //sends ajax to server to check if answers are correct
  function sendsAjaxToCheckAnswers(){
 	 // send ajax onLoad to PHP handler action to get list of questions  ************ 
         $.ajax({
@@ -228,8 +229,8 @@ function proccessFiledset(){
             success: function(data) {
                 // do something;			    
 				//alert(JSON.stringify(data));
-				$("#quizDiv").stop().fadeOut("slow",function(){ $(this).html('<div class="red alert alert-success"><h3>Thanks, your provided data is </h3><span class="glyphicon glyphicon-log-in"></span><br>' + JSON.stringify(data) + ' </div>')}).fadeIn(2000);
-
+				//$("#quizDiv").stop().fadeOut("slow",function(){ $(this).html('<div class="red alert alert-success"><h3>Thanks, your provided data is </h3><span class="glyphicon glyphicon-log-in"></span><br>' + JSON.stringify(data) + ' </div>')}).fadeIn(2000);
+                buildQuizScoreResult(data);
             },  //end success
 			
 			error: function (error) {
@@ -240,8 +241,26 @@ function proccessFiledset(){
        //  END AJAXed  part 
  }
  
-	   
-	   
+	 
+    //builds  scores for your answers	 
+	function buildQuizScoreResult(dataX){
+		var finalScoreText = "<p> Your scores.</p>";
+		finalScoreText+= "<p><i class='fa fa-check' style='font-size:21px;color:lime'></i> <b> There were " + dataX.questionsCount + " questions.</b></p>"; 
+		finalScoreText+= "<p><i class='fa fa-check' style='font-size:21px;color:lime'></i> <b>You have " + dataX.amountOfCorrectAnswers + " correct answers.</b></p>";
+		
+		console.log(dataX.result_status);
+		for(var i = 0; i < dataX.result_status.length; i++){ 
+			if(dataX.result_status[i][0] == 'correct'){
+			    finalScoreText+= "<p class='bg-success score'><b>Question " + (i+1) + " => Correct!!!</b> <br> <i class='fa fa-check' style='font-size:48px;color:lime'></i> <br> <b>Question: </b> " + dataX.result_status[i][1] + "<br> <b>Your answer was:</b> " + dataX.result_status[i][2] + "</p>";
+			} else {
+			    finalScoreText+= "<p class='bg-danger score'><b>Question " + (i+1) + " => Wrong!!!    </b><br> <i class='fa fa-close' style='font-size:48px;color:red'></i>  <br> <b>Question: </b>" + dataX.result_status[i][1] + " <br><b>Your answer was: </b> " + dataX.result_status[i][2] +  "<br> <b>Correct answer was: " + dataX.result_status[i][3]+ "</b></p>";
+
+			}
+		}
+		
+	    $("#quizDiv").stop().fadeOut("slow",function(){ $(this).html('<div class="lavender"><h3>Thanks, </h3><span class="glyphicon glyphicon-log-in"></span><br>' + finalScoreText + ' </div>')}).fadeIn(2000);
+
+	}		
 	   
 	   
 	   

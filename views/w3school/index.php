@@ -438,9 +438,8 @@ $this->title = 'W3schools tips and tricks';
     <!----------- My manual multi steps Quiz Builder with JQ Validation and RadioButtons in form of buttons  ----------------------->
 	<!-- Multi steps quiz form content is loaded to <div id="quizDiv"> by JS ajax in (my-manual-quiz-builder.js.js). List of questions is in W3schoolController/actionAjaxQuizQuestionsList(). See details => https://github.com/account931/yii2_REST_and_Rbac_2019/blob/master/web/js/W3school/my-manual-quiz-builder.js-->
 	<center><h3 class="text-primary">My manual Quiz Builder with JQ Validation and RadioButtons in form of buttons</h3></center>
+	<?= Html::a( "Quiz Builder has moved to new controller -> ManualAutoQuizController ", ["/manual-auto-quiz/index", "period" => "",   ], $options = ["title" => "Quiz Builder",] );?>
 	
-	<?php //render sub file ?>
-	<?= $this->render('@app/views/w3school/sub_views/my-manual-quiz-builder') ?>
 	
 	<br><hr style="width: 90%; color: black; height: 2px; background-color:black;"><br>
 	<!----------- End My manual Quiz Builder with JQ Validation and RadioButtons in form of buttons----------------------->
