@@ -171,6 +171,7 @@ class ManualAutoQuizController extends Controller
 		   
 		   //reurns normal array $answerArrayFinal with ajax answers, ie ['name9311'=>'Nuhavn', 'name9312'=>'Amager']
 		   foreach($answers as $v){
+			   $v = str_replace("%20"," ", $v); //removes %20 symbols from string if any, e.g {The%Latin%Quarter} comes from ajax, as u can t have raw spaces in the URL. 
 			   $t = array();
 			   $t = explode('=', $v);
 			   $key = $t[0];

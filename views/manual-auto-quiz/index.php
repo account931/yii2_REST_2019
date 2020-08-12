@@ -25,7 +25,8 @@ $this->title = 'Manual Auto Quiz Builder';
 	<!-- Social Media Buttons -->
 	</h1>
 
-	
+	 <!-- Link to admin panel -->
+     <?=Html::a('Admin Panel', ['#'], ['class'=>'btn btn-lg btn-info']);?>
 	
 	<div class="col-lg-12 col-md-12 col-sm-12 my-samples " >
 	
