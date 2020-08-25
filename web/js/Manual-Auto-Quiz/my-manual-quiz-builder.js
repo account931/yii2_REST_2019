@@ -153,9 +153,11 @@ function proccessFiledset(){
         current_stepQ = $(this).parent(); //get current visiblle fieldset
 	    console.log(current_stepQ);
         next_stepQ = $(this).parent().next();
-        next_stepQ.show(); //next fieldset
+		//$("#loaderQuiz").show(200); //show the loader
+		current_stepQ.hide(1200); //hide prev question fieldset
+        next_stepQ.fadeIn(900); //next question fieldset
 		//next_stepQ.show("slide", { direction: "left" }, 1000);
-        current_stepQ.hide();
+        
         setProgressBarQ(++currentQ);
 	//}
   });
@@ -218,13 +220,22 @@ function proccessFiledset(){
 
  //sends ajax to server to check if answers are correct
  function sendsAjaxToCheckAnswers(){
+	 
+	 
+	 //make sure at least one question is answered
+	 /*if($("#quiz_form").serialize() == ""){
+		 var answers = "";
+	 } else {
+		  var answers = $("#quiz_form").serialize();
+	 }*/
+	 
 	 // send ajax onLoad to PHP handler action to get list of questions  ************ 
         $.ajax({
             url: urlX ,
             type: 'POST',
 			dataType: 'JSON', // without this it returned string(that can be alerted), now it returns object
             data: { 
-			    serverAnswer:$("#quiz_form").serialize()
+			    serverAnswer: $("#quiz_form").serialize()
 			},
             success: function(data) {
                 // do something;			    

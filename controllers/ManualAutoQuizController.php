@@ -156,39 +156,46 @@ class ManualAutoQuizController extends Controller
 		
         //if request is not ajax, stop anything further
         if (!Yii::$app->request->isAjax) { /* текущий запрос является AJAX запросом */ 
-		    return "screw you";
+		    //return "screw you";
 		}
 
 		
 		//if it is an ajax request to check correct anwsers, i.e request contains _POST['serverAnswer']
 		if(isset($_POST['serverAnswer'])){
 			
-			//check if $_POST['serverAnswer']) length ==
+			//if user didn't answer any question, i.e $_POST['serverAnswer'] is Empty
+			if(empty($_POST['serverAnswer'])){
+				$yourScorsForAnswers = 0; // return to ajax srores results
+				$amountOfCorrect = 0;
+				
+			} else { //$_POST['serverAnswer'] is Empty, i.e user answered at least one question
 			
-		   //$_POST['serverAnswer']) is a string (as it is sent via ajax as data:{serverAnswer:$("#quiz_form").serialize()} ), so convert it here to array
-		   $answers = explode('&', $_POST['serverAnswer']); //convers to array ('question9311=Vesterbro', 'question9312=Amager', etc)
-		   $answerArrayFinal = array();
+			    //check if $_POST['serverAnswer']) length ==
+			
+		       //$_POST['serverAnswer']) is a string (as it is sent via ajax as data:{serverAnswer:$("#quiz_form").serialize()} ), so convert it here to array
+		       $answers = explode('&', $_POST['serverAnswer']); //convers to array ('question9311=Vesterbro', 'question9312=Amager', etc)
+		       $answerArrayFinal = array();
 		   
-		   //reurns normal array $answerArrayFinal with ajax answers, ie ['name9311'=>'Nuhavn', 'name9312'=>'Amager']
-		   foreach($answers as $v){
-			   $v = str_replace("%20"," ", $v); //removes %20 symbols from string if any, e.g {The%Latin%Quarter} comes from ajax, as u can t have raw spaces in the URL. 
-			   $t = array();
-			   $t = explode('=', $v);
-			   $key = $t[0];
-			   //array_push($tempoArray, $k['name_id_attr']);
-			   $answerArrayFinal[$key] = $t[1] ;
+		       //reurns normal array $answerArrayFinal with ajax answers, ie ['name9311'=>'Nuhavn', 'name9312'=>'Amager']
+		       foreach($answers as $v){
+			       $v = str_replace("%20"," ", $v); //removes %20 symbols from string if any, e.g {The%Latin%Quarter} comes from ajax, as u can t have raw spaces in the URL. 
+			       $t = array();
+			       $t = explode('=', $v);
+			       $key = $t[0];
+			       //array_push($tempoArray, $k['name_id_attr']);
+			       $answerArrayFinal[$key] = $t[1] ;
 
-		   }
+		       }
 		   
 		   
-		   //checking/compare answers
-		   $yourScorsForAnswers = array();
+		       //checking/compare answers
+		       $yourScorsForAnswers = array();
 		   
-		   //$n = array_column($quizQuestionList_Initial, 'name_id_attr'); //CAN NOT USE in Php <5.5 //gets every column 'name_id_attr' to new array $n, i.e $n = ['name9311', 'name9312', etc] 
-		   $n = array_map(function($element){return $element['name_id_attr'];}, $quizQuestionList_Initial);
+		       //$n = array_column($quizQuestionList_Initial, 'name_id_attr'); //CAN NOT USE in Php <5.5 //gets every column 'name_id_attr' to new array $n, i.e $n = ['name9311', 'name9312', etc] 
+		       $n = array_map(function($element){return $element['name_id_attr'];}, $quizQuestionList_Initial);
  
-           $amountOfCorrect = 0;
-		   //foreach($quizQuestionList_Initial as $m){
+               $amountOfCorrect = 0;
+		       //foreach($quizQuestionList_Initial as $m){
 			   foreach($answerArrayFinal as $key => $val){
 			   
 			       $indexx = array_search($key, $n ); //(/* what we look for */, arrayName, column)
@@ -205,7 +212,7 @@ class ManualAutoQuizController extends Controller
 		   
 		   
 		   
-		   
+			}
 			
 			//RETURN JSON DATA
 		    // Specify what data to echo with JSON, ajax usese this JSOn data to form the answer and html() it, it appears in JS consol.log(res)
