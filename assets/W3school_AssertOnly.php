@@ -47,7 +47,7 @@ class W3school_AssertOnly extends AssetBundle
 	      
 		  //'js/W3school/jqpool.js', //NOT USED???
 		  
-          'http://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.js', // JQ Validate plugin. Used in Multi Step Form with JQ Validation Plug-in and Progress Bar
+          'https://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.js', //Must Be https!!!// JQ Validate plugin. Used in Multi Step Form with JQ Validation Plug-in and Progress Bar
 		  'js/W3school/multi-step-form-with-progerssBar-and-jqValidation-plugin.js',   //used in Multi Step Form with JQ Validation Plug-in and Progress Bar
 
 		 //'https://code.jquery.com/jquery-3.5.1.min.js',

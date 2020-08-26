@@ -9,11 +9,16 @@
 
 
 $(document).ready(function(){
+	
+	if(screen.width <= 640){ 
+	    scrollResults(".scroll-my"); //scroll the page down to certain div
+	}
+	
 	$("#loaderQuiz").show(200); //show the loader
 	
 	//getting the path to current folder with JS to form url for ajax, i.e /yii2_REST_and_Rbac_2019/yii-basic-app-2.0.15/basic/web/booking-cph/ajax_get_6_month
 		var loc = window.location.pathname;
-        var dir = loc.substring(0, loc.lastIndexOf('/'));
+        var dir = loc.substring(0, loc.lastIndexOf('/'));  ///yii2_REST_and_Rbac_2019/yii-basic-app-2.0.15/basic/web/manual-auto-quiz
 		var urlX = dir + '/ajax-quiz-questions-list';
 	
    // send ajax onLoad to PHP handler action to get list of questions  ************ 
@@ -77,11 +82,11 @@ $(document).ready(function(){
 			   for(var j = 0; j < data.questionList[i].answer.length; j++){ 
 				   
 				   finalText+=  '<div class="form_radio_btn_quiz">' + 
-                                    '<input type="radio" name="' + data.questionList[i].name_id_attr +  '"' + //input name
-			                        'value="' + data.questionList[i].answer[j] + '" ' + 
-									/* 'id="' + data.questionList[i].name_id_attr + '"/>' */ '/>' +  //input id
-									'<label for="' + data.questionList[i].name_id_attr + '"> ' + data.questionList[i].answer[j]  + '</label>' +
-                                '</div>';
+			   '<input type="radio" name="' + data.questionList[i].name_id_attr +  '"' + //input name, i.e {question9311}, the same for each fieldset, i.e the same for all radiobtn of one question, next question has other 
+			                        'value="' + data.questionList[i].answer[j] + '" ' + //Norrebro
+									'id="' + data.questionList[i].name_id_attr + j + '"/>' +  //input id  //MEga Fix => click on RadioButton was not working due to missing {id}. ID must be unique, so we add {j} to {name_id_attr} which the same for all radiobtn of one question, e.g we recieve {question93110}, next radiobtn of the same question is {question93111}									'<label for="' + data.questionList[i].name_id_attr + j + '"> ' + data.questionList[i].answer[j]  + '</label>' + //Norrebro
+                                    '<label for="' + data.questionList[i].name_id_attr + j + '"> ' + data.questionList[i].answer[j]  + '</label>' +
+								'</div>';
 			   }
 			   
 			   finalText+=  '</div><br>' +
@@ -130,8 +135,10 @@ var currentQ = 1, current_stepQ, next_stepQ, stepsQ;
 //gets the quantioty of questions/fieldsets	   
 function proccessFiledset(){	
   stepsQ = $("#quiz_form fieldset").length;
-  alert('Quantity of questions in My manual Quiz builder ' + stepsQ );
+  //alert('Quantity of questions in My manual Quiz builder ' + stepsQ );
 }   
+  
+  
   
   
   /*
@@ -141,12 +148,18 @@ function proccessFiledset(){
   |
   |
   */
- 
   //click "Next" button
   $(document).on("click", '.nextQ', function() {  //for newly generated 
 	  
 	 // First goes JQ Validation Plugin function, vaidation works on NAME attributes, i.e  <input type="password" class="form-control" name="password">
 	 //JQ_Validate_Plugin_checking_fields(); 
+	 
+	   //append child-div with Loader animation, it is 1stly added in html(views/../my-manual-quiz-builder.php) but erased by JW html()
+	   var rootPath = loc.substring(0, dir.lastIndexOf('/')); // turns path {/yii2_REST_and_Rbac_2019/yii-basic-app-2.0.15/basic/web/manual-auto-quiz} to {/yii2_REST_and_Rbac_2019/yii-basic-app-2.0.15/basic/web}
+	   //alert(rootPath);
+	   $("#quizDiv").append("<div class='col-lg-12 col-md-12 col-sm-12 child-div'> <img class='loaderQuiz' src='" + rootPath + "/images/w3school/load.gif'/></div>");
+	   $(".child-div").css('opacity', '0.6'); //shows yellow overlay div-> react imitation of animation, analogue of {$(".del-st").stop().fadeOut("slow",function(){ /*$(this).html(finalText) */}).fadeIn(3000);
+
 	
 	//if JQ Valiadion Plug in is OK (in JQ_Validate_Plugin_checking_fields()), then move to next page
 	//if ($("#regiration_form").valid() === true){ 
@@ -159,6 +172,11 @@ function proccessFiledset(){
 		//next_stepQ.show("slide", { direction: "left" }, 1000);
         
         setProgressBarQ(++currentQ);
+		
+		setTimeout(function() {
+	       $(".child-div").css('opacity', '0'); //hides yellow overlay div -> react imitation of animation, analogue of{$(".del-st").stop().fadeOut("slow",function(){ /*$(this).html(finalText) */}).fadeIn(3000);
+	       $('.child-div').remove(); //mut be removed, otherwise causes crash
+	   }, 2000);
 	//}
   });
   
@@ -218,7 +236,13 @@ function proccessFiledset(){
 
 
 
- //sends ajax to server to check if answers are correct
+ 
+  /*
+   |--------------------------------------------------------------------------
+   | sends ajax to server to check if answers are correct
+   |-------------------------------------------------------------------------- 
+   |
+   */
  function sendsAjaxToCheckAnswers(){
 	 
 	 
@@ -253,7 +277,13 @@ function proccessFiledset(){
  }
  
 	 
-    //builds  scores for your answers	 
+    
+   /*
+    |--------------------------------------------------------------------------
+    | builds  scores results for your answers (on ajax success)
+    |-------------------------------------------------------------------------- 
+    |
+    */	
 	function buildQuizScoreResult(dataX){
 		var finalScoreText = "<p> Your scores.</p>";
 		finalScoreText+= "<p><i class='fa fa-check' style='font-size:21px;color:lime'></i> <b> There were " + dataX.questionsCount + " questions.</b></p>"; 
@@ -274,7 +304,42 @@ function proccessFiledset(){
 	}		
 	   
 	   
-	   
+	
+
+
+
+
+
+
+ /*
+  |--------------------------------------------------------------------------
+  | global Function to scroll to certain div, it is global & declared out of IIFE to use in other scripts
+  |-------------------------------------------------------------------------- 
+  |
+  */
+	function scrollResults(divName, parent)  //arg(DivID, levels to go up from DivID)
+	{   //if 2nd arg is not provided while calling the function with one arg
+		if (typeof(parent)==='undefined') {
+		
+            $('html, body').animate({
+                scrollTop: $(divName).offset().top
+                //scrollTop: $('.your-class').offset().top
+             }, 'slow'); 
+		     // END Scroll the page to results
+		} else {
+			//if 2nd argument is provided
+			var stringX = "$(divName)" + parent + "offset().top";  //i.e constructs -> $("#divID").parent().parent().offset().top
+			$('html, body').animate({
+                scrollTop: eval(stringX)         //eval is must-have, crashes without it
+                }, 'slow'); 
+		}
+	}
+
+
+
+
+
+	
 
 });
 
