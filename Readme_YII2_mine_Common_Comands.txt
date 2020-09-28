@@ -1271,7 +1271,7 @@ JS => see some more JS tips at https://github.com/account931/miscellaneous_2018/
     # Cors in Ajax (Cross-origin resource sharing)(Same-Origin-Policy) => see https://github.com/account931/sms_Textbelt_Api_React_JS/blob/master/README_MY.txt
     # js regExp, regular expression match => https://github.com/account931/sms_Textbelt_Api/blob/master/js/validate_regExp.js
 	# js even odd css class =>	'<input type="button" name="previousQ" class="previousQ btn btn-info' + (i == 0 ? ' hidden-btn':'') + '" value="Prev" />' +
-
+    # in-line JS confirm=> <button onclick="return confirm('Are you sure to delete?')" type="submit" class="btn">
 
 CSS=>
    #Bootstrap grid => <div class="col-lg-3 col-md-3 col-sm-3">  <div class="col-sm-6 col-xs-12">
