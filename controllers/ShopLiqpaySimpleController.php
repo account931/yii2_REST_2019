@@ -100,6 +100,8 @@ class ShopLiqpaySimpleController extends Controller
   // **                                                                                  **
     public function actionIndex()
     {
+		
+		
 		$myInputModel = new InputModel(); //model for input in modal window, gets id and quantity of 1 products when user adds it to cart
 		$dbProducts = new LiqpayShopSimple(); //db table with products
 		
@@ -130,10 +132,44 @@ class ShopLiqpaySimpleController extends Controller
   // **                                                                                  **
     public function actionAddToCart()
     {
+		error_reporting(E_ALL & ~E_NOTICE); //JUST TO FIX 000wen HOSTING, Hosting wants this 
+		
 		if(!Yii::$app->request->post('InputModel')){
 			throw new \yii\web\NotFoundHttpException("Bad request, You are not expected to enter this page");
-		}
-			
+		} 
+		
+
+
+        //Mega fix 2021, as a resuld of missing $_SESSION['productCatalogue'], this function crashed on 000webhost, when the Debug was ON, when Debug off worked create even on 000webhost. On localhost worked create.
+		$dbProducts = new LiqpayShopSimple(); //db table with products
+		$allDBProducts = $dbProducts->find()->all(); //all DB products
+		
+		$productsX = array(); // array to store formatted results from DB (from controller)
+  
+        //getting results from DB to array in format => [ ['id'=>0, 'name'=> 'canon'], [], ]
+        //We get from DB an array of object {$allDBProducts} and here convert to array of arrays[$productsX]. It is just another variation, we could use direct referring to array of object {$allDBProducts} like {$allDBProducts->l_name}, but in this case we have to rewrite the code below, as it was originally designed for array of arrays[$productsX] (as firstly I created artificial hardcoded array of arrays[$productsX]) 
+         foreach($allDBProducts as $a){ 
+	         $tempo = array();
+	         $tempo['id'] = $a->l_id;
+	         $tempo['name'] = $a->getCustomer($a->l_name);//$a->l_name;//  ShopSimple::getLabel();
+	         $tempo['price'] = $a->l_price;
+	         $tempo['image'] = $a->l_image;
+	         $tempo['description'] = $a->l_descript;
+	         // array_push($tempo['description'], $a->l_descript);
+	  
+	        array_push($productsX, $tempo ); //adds to final array
+       }
+  
+       //var_dump($productsX);
+  
+       $_SESSION['productCatalogue'] = $productsX; //all products from DB to session
+		//end fix 2021
+
+
+
+
+
+		
 		
 		//Cart exists in format: [id => quantity]
 		//echo $_POST['InputModel']['yourInputValue']; //works
@@ -143,6 +179,7 @@ class ShopLiqpaySimpleController extends Controller
 		$productID = $request['productID']; //gets productID (hidden field) from form $_POST[]
 		
 		
+		//000webhost ERROR IS IN A LINE BELOW!!!!!!!!!
 		//find in $_SESSION['productCatalogue'] index the product by id, used in Flash
 		 $keyN = array_search($productID , array_keys($_SESSION['productCatalogue'])); //find in $_SESSION['productCatalogue'] index the product by id
 		
@@ -178,6 +215,8 @@ class ShopLiqpaySimpleController extends Controller
        return Yii::$app->getResponse()->redirect(['shop-liqpay-simple/index']);
     }
 
+	
+	
 	
 	
 	

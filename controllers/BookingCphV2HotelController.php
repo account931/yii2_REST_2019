@@ -250,7 +250,7 @@ class BookingCphV2HotelController extends Controller
 		   $thisMonth = $model->get_All_Next_Months_List($i);  //this methods return=> array(Jul 2019, Jul) //pass {$i} as arg is a must
 		   array_push($array_All_Month, $thisMonth[0]); // $thisMonth[0] => $PrevMonth . " " . $PrevYear; //i.e Jul 2019
 		   
-		   $y = $model->correctYear($thisMonth[1]);  // $thisMonth[1] => $PrevMonth, i.e Jul //this methods returns=> array('may'=> 6, 'yearX'=> 2019)
+		   $y = $model->correctYear($thisMonth[1], $i);  // $thisMonth[1] => $PrevMonth, i.e Jul //this methods returns=> array('may'=> 6, 'yearX'=> 2019)
 		   
 		   //gets next 9 months UnixTime & adds it to array $array_All_Unix, i.e $array_All_Unix =[[CurrentStart, Currentend], [start-1, end-1], [start-2, end-2]]
 		   $unix = $model->get_Next_Months_Unix($y['may'], $y['yearX']); //$y['may']=> index of month, i.e if Jul returns => 6 //this methods returns=> array('array_tempo'=> [UnixStart, UnixEnd], 'first1'=> '2019-05-01', 'last1'=> '2019-05-31')

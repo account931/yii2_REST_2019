@@ -322,7 +322,13 @@ class BookingCph extends \yii\db\ActiveRecord
  // **************************************************************************************
  // **************************************************************************************
  //                                                                                     **
-    function correctYear($PrevMonth){
+    /**
+     * Method corrects the year in case when building 6 months content (current month + 5 next) in a loop and current month is Nov or Dec 202x, so January must be next year (i.e 202x + 1).
+     * @param integer $PrevMonth, e.g $PrevMonth = 1; (meaning it is January)
+     * @param integer $iterator, current for loop iterator
+     * @return array.
+     */
+    function correctYear($PrevMonth, $iterator){
 		 //var with year, used for creating Unix for next years, must be declared out of for loop, to save its value for further iteration, in case if($may == 1 )
 		 $MonthList= array("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"); //General array for all click actions
 		 
@@ -333,8 +339,9 @@ class BookingCph extends \yii\db\ActiveRecord
 	     $may =  array_search($PrevMonth , $MonthList); //search the index of $PrevMonth  in array, i.e index of Jul = 6
 		 $may = $may + 1;
 			
-		 //if current month in loop is 1 (i.e January), for this & next months we use the next year. As it is loop, January here could NOT BE EVER here the current month, if($may == 1 ) it can only be the next or next+1, etc, so the current is always the past year & January is the next	
-		 if($may == 1 ){
+		 //if current month in loop is 1 (i.e January), for this & next months we use the next year. Example: current month is Nov or Dec 202x, so January must be next year (i.e 202x + 1).
+		 //As it is loop, January here could NOT BE EVER here the current month, if($may == 1 ) it can only be the next or next+1, etc, so the current is always the past year & January is the next	
+		 if ($may == 1 && $i > 0) { //mega fix 2021, line was => if ($may == 1 ) and when cureent month was 1, i.e January, this function generated the next year for cureent month and next 5
 			 $y++;
 		     //$yearX must be declared out of for loop, to save its value for further iteration, in case if($may == 1 )
 		    // $yearX++ ; //was = (int)date("Y") + 1; Fix for unlimited future years// gets the current year & adds +1 to get the next year, ie. 2019 + 1 = 2020

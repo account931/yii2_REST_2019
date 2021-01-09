@@ -20,6 +20,7 @@ IF use direct Yii download (not Composer), after folder unzip must create {cooki
 Table of contents:
 1.Yii2 CLI Composer install & init.
 2.Migration.
+2.1 Seeder
 3.Add a module.
 4.Pretty URL.
 5.Yii2 basic. Registration, login via db.
@@ -51,7 +52,7 @@ Table of contents:
 27. Dropdown List in </form>
 28. Behaviors
 29. Events
-
+30. Login by email not username
 
 98.V.A Yii (ActRec,create URL, redirect, get $_POST[''], etc)
 98.2.V.A(php)
@@ -112,7 +113,33 @@ How to Add your migration(for instance in Basic, where no migration is avialble 
 Error "Could not find driver PDOException in yii2", to fix go to openserver/modules/php/version/php.ini-> Line 886, decomment (remove{;}){pdo_mysql} -> ;extension=php_pdo_mysql.dll
 
 
+========================================
+2.1 Seeder 
+(partly used directl seeding in migration files -> see files)
+Not tested variant => https://stackoverflow.com/questions/34996056/how-to-seed-database-in-yii2
+<?php
+namespace app\commands;
+use Yii;
+use yii\console\Controller;
+use yii\console\ExitCode;
+use yii\db\Command;
 
+class SeedController extends Controller
+{  
+    public function actionUsers()
+    {
+        Yii::$app->db->createCommand()->batchInsert('users',
+        [ 'username', 'password', 'createdAt' , 'updatedAt'],
+        [
+
+             ['user1', 'yourhashedpass', new \yii\db\Expression('NOW()'),new \yii\db\Expression('NOW()')],
+             ['user2', 'yourhashedpass', new \yii\db\Expression('NOW()'),new \yii\db\Expression('NOW()')]        
+        ])->execute();
+       return ExitCode::OK;
+    }
+}
+
+AND RUN IT BY => php yii seed/users
 
 ========================================
 3.Add a module.
@@ -1234,7 +1261,11 @@ if($_SERVER['REMOTE_ADDR'] == '127.0.0.1') {
 
 # Use global var in function => $text; function t(){global $text; $t = 'new value';}
 #Namespace => namespace Classes\SortingDistance; class Calc_Distance_And_Sort_By_Coords {} <==> use Classes\SortingDistance\Calc_Distance_And_Sort_By_Coords;
+# Calculating item offset for pagination => $offset = (page - 1) * itemsPerPage + 1.
 -----------------
+
+
+
 
 
 	 
@@ -1274,7 +1305,15 @@ JS => see some more JS tips at https://github.com/account931/miscellaneous_2018/
     # in-line JS confirm=> <button onclick="return confirm('Are you sure to delete?')" type="submit" class="btn">
 
 CSS=>
-   #Bootstrap grid => <div class="col-lg-3 col-md-3 col-sm-3">  <div class="col-sm-6 col-xs-12">
+   #Bootstrap grid => <div class="col-lg-3 col-md-3 col-sm-3">  <div class="col-sm-6 col-xs-12"> => Pc/mobile (Weather API)
+      
+    .xs (phones), .sm (tablets), .md (desktops), and .lg (larger desktops) 
+    .col- (extra small devices - screen width less than 576px)
+	.col-sm- (small devices - screen width equal to or greater than 576px)
+    .col-md- (medium devices - screen width equal to or greater than 768px)
+    .col-lg- (large devices - screen width equal to or greater than 992px)
+    .col-xl- (xlarge devices - screen width equal to or greater than 1200px)
+   
    # css animation smoothly=> transition: 1.25s; -webkit-animation: fadeIn 1s;animation: fadeIn 1s;
    # media query mobile => @media screen and (max-width: 480px) { }
    # div shadow => .shadowX {box-shadow: 0 1px 4px rgba(0, 0, 0, .3), -23px 0 20px -23px rgba(0, 0, 0, .6), 23px 0 20px -23px rgba(0, 0, 0, .6), inset 0 0 40px rgba(0, 0, 0, .1); }
@@ -1320,7 +1359,9 @@ CSS=>
   
   
  99.3 While on Ipad, bootstrap navbar menu does not collapse => see SECTION {if iPad Portrait do collapse navbar menu always} at https://github.com/account931/yii2_REST_and_Rbac_2019/blob/master/web/css/site.css
-  
+   
  99.4 To make submenu "Rest & other" scrollable vertically, as last items dont fit screen height => edit bootsrap class "dropdown-menu' (calss is assigned by bootsrap automatically to dropdown submenu)
 .dropdown-menu{height: 500px; overflow-y: auto;}
+
+  99.5 error_reporting(E_ALL & ~E_NOTICE); //JUST TO FIX 000wen HOSTING, Hosting wants this only for Ajax Actions!!!!!!!!!!!!!!!
   

@@ -1,4 +1,7 @@
-﻿#RestFul API and RBAC Yii2 application & so on....
+﻿
+------------------------------------------
+
+#RestFul API and RBAC Yii2 application & so on....
 #This YIi2 Basic template uses stack: RESTful API, custom REST action (with WHERE statement), 
    RBAC roles (if(Yii::$app->user->can('adminX') ), 
    SQL DB registration/authentication (check login credential), 
@@ -11,7 +14,11 @@ To get necessary DB table for this project, apply migration:
  #for Users(see Readme_YII2_mine_Common_Comands.txt ->5.Yii2 basic. Registration, login via db.)
  #for Rbac (see Readme_YII2_mine_Common_Comands.txt -> 8.Yii RBAC)
 
+ 
+ 
+ 
 TABLE OF CONTENT:
+
 1.HOW TO TEST REST API from non-Yii2 file.
 2.Rbac access management table + collapsed form to add a new Rbac to all rbac roles, i.e to auth_items DB.
 3.Automatically become an {adminX} (i.e gets adminX role) by going to link (actionAddAdmin).
@@ -23,6 +30,28 @@ TABLE OF CONTENT:
 9. Bot Yii
 10. Yii2 Wordpress analogue
 11. Shop Liq E-pay
+12. Shop Liq E-pay Simple
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 -------------------------------------------------------------
 1.HOW TO TEST REST API from non-Yii2 file. 
@@ -282,7 +311,8 @@ In action {actionShowAllBlogs} we check $_Get ['category'] and make Active Recor
 
  ===============================================================
 11. Shop Liq E-pay
-# E-shop with LiqPay payment Api.
+# DOES NOT USES SQL DB, products are hardcoded to code!!!!!!!!!!!!!!!!!!
+# E-shop with LiqPay payment Api. 
 # {shop-liqpay/index} is front page with all products
   {shop-liqpay/cart} is a cart, where u can ++/-- and proceed to final check-out (fill out out name, address, etc and pay)
   
@@ -310,3 +340,19 @@ On load, Session ['cart'] is passed to Js var cartJS[ ], after this all changes 
  FALSE => and on this page closure(when user closes browser or redirected to other page), <= FALSE
  TRUE => on clicking "Check-out", this Js var cartJS[ ]is sent via ajax to update Session ['cart']. Then page redirects to Check-out page.
  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+  ===============================================================
+
+ 12. Shop Liq E-pay Simple
+  Uses SQL DB {liqpay_shop_simple}
