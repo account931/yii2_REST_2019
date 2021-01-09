@@ -182,18 +182,19 @@ class BookingCphV2Hotel extends \yii\db\ActiveRecord
  // **************************************************************************************
  //                                                                                     **
     /**
-     * Method corrects the year in case when building 6 months content (current month + 5 next) in a loop and current month is Nov or Dec 202x, so January must be next year (i.e 202x + 1).
-     * @param integer $PrevMonth, e.g $PrevMonth = 1; (meaning it is January)
-     * @param integer $iterator, current for loop iterator
-     * @return array.
+     * Method corrects the year in case when building 6 months content (current month + 5 next) in a loop and if current month is Nov or Dec 202x, so in this case January must be next year (i.e 202x + 1).
+     * @param string $PrevMonth, e.g $PrevMonth = 'Jan'; (date("M") returns short textual representation of a month (three letters))
+     * @param integer $iterator, current for() loop iterator
+     * @return array('may'=> $integer $may, 'yearX'=> string $yearX). Example array('may'=> 1, 'yearX'=> '2021')
      */
-    function correctYear($PrevMonth){
+    function correctYear($PrevMonth, $iterator){
 		 //var with year, used for creating Unix for next years, must be declared out of for loop, to save its value for further iteration, in case if($may == 1 )
 		 $MonthList= array("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"); //General array for all click actions
 		 
-		 static $y = 0; //Mega Fix, cast static type to ++ next year. Don't need this fix in old procedure version as $year there is global
+		 static $y = 0;  //Mega Fix, cast static type to ++ next year. Don't need this fix in old procedure version as $year there is global
 		 
-		 $yearX = date("Y"); //gets the current year, i.e 2019
+		 
+		 $yearX = date("Y"); //gets the current year (string), i.e '2019'
 	     $may =  array_search($PrevMonth , $MonthList); //search the index of $PrevMonth  in array, i.e index of Jul = 6
 		 $may = $may + 1;
 			
@@ -202,15 +203,15 @@ class BookingCphV2Hotel extends \yii\db\ActiveRecord
 		 if ($may == 1 && $i > 0) { //mega fix 2021, line was => if ($may == 1 ) and when cureent month was 1, i.e January, this function generated the next year for cureent month and next 5
 			 $y++;
 		     //$yearX must be declared out of for loop, to save its value for further iteration, in case if($may == 1 )
-		     //$yearX++ ; //was = (int)date("Y") + 1; Fix for unlimited future years// gets the current year & adds +1 to get the next year, ie. 2019 + 1 = 2020
+		    // $yearX++ ; //was = (int)date("Y") + 1; Fix for unlimited future years// gets the current year & adds +1 to get the next year, ie. 2019 + 1 = 2020
 			 //$yearX = (string)$yearX;
 			
 		 }
-		
-		 $yearX = $yearX + $y; //encrease year
 		 
+		 $yearX = $yearX + $y; //encrease year
 		 return array('may'=> $may, 'yearX'=> $yearX); //
 	}
+ 
  
  
  

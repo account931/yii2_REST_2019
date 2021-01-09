@@ -305,7 +305,7 @@ class BookingCph extends \yii\db\ActiveRecord
      function get_All_Next_Months_List($i){ //pass {$i} as arg is a must
 		    //$array_All_Month = array();//will store all 6 month data
 		    //Start DATE for NEXT months  ONLY (+ this current month in first iteration)----------------------------
-            $PrevMonth = date('M', strtotime(date('Y-m'). " + " .$i. " month")); //i.e Jul  //$PrevMonth=date('M', strtotime(date('Y-m')." -1 month"));         
+            $PrevMonth = date('M', strtotime(date('Y-m'). " + " .$i. " month")); //i.e Jul  //$PrevMonth=date('M', strtotime(date('Y-m')." -1 month"));   //returns string, date("M") returns short textual representation of a month (three letters     
             $PrevYear =  date('Y', strtotime(date('Y-m')." + " .$i. " month"));  //i.e 2019 // $PrevYear=date('Y', strtotime(date('Y-m')." -1 month"));// getting Next  month  and  year;
         
 		    /*${'current'.$i}*/ $b = $PrevMonth . " " . $PrevYear; //i.e Jul 2019
@@ -323,10 +323,10 @@ class BookingCph extends \yii\db\ActiveRecord
  // **************************************************************************************
  //                                                                                     **
     /**
-     * Method corrects the year in case when building 6 months content (current month + 5 next) in a loop and current month is Nov or Dec 202x, so January must be next year (i.e 202x + 1).
-     * @param integer $PrevMonth, e.g $PrevMonth = 1; (meaning it is January)
-     * @param integer $iterator, current for loop iterator
-     * @return array.
+     * Method corrects the year in case when building 6 months content (current month + 5 next) in a loop and if current month is Nov or Dec 202x, so in this case January must be next year (i.e 202x + 1).
+     * @param string $PrevMonth, e.g $PrevMonth = 'Jan'; (date("M") returns short textual representation of a month (three letters))
+     * @param integer $iterator, current for() loop iterator
+     * @return array('may'=> $integer $may, 'yearX'=> string $yearX). Example array('may'=> 1, 'yearX'=> '2021')
      */
     function correctYear($PrevMonth, $iterator){
 		 //var with year, used for creating Unix for next years, must be declared out of for loop, to save its value for further iteration, in case if($may == 1 )
@@ -335,7 +335,7 @@ class BookingCph extends \yii\db\ActiveRecord
 		 static $y = 0;  //Mega Fix, cast static type to ++ next year. Don't need this fix in old procedure version as $year there is global
 		 
 		 
-		 $yearX = date("Y"); //gets the current year, i.e 2019
+		 $yearX = date("Y"); //gets the current year (string), i.e '2019'
 	     $may =  array_search($PrevMonth , $MonthList); //search the index of $PrevMonth  in array, i.e index of Jul = 6
 		 $may = $may + 1;
 			

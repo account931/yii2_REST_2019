@@ -165,6 +165,8 @@ $this->params['breadcrumbs'][] = $this->title;
 		 <?=Html::submitButton(Yii::t('app', 'Test'), ['class' => 'btn  btn-info btn-lg shadowX' , 'id'=>'']);
          ActiveForm::end();
 		 ?>
+		 
+		 <div class="text-danger"> <br>Check-out button is not finished, its action url is the same page</div>
 	  </div>
   
   <?php

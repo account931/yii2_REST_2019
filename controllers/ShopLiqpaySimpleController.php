@@ -132,7 +132,7 @@ class ShopLiqpaySimpleController extends Controller
   // **                                                                                  **
     public function actionAddToCart()
     {
-		error_reporting(E_ALL & ~E_NOTICE); //JUST TO FIX 000wen HOSTING, Hosting wants this 
+		//error_reporting(E_ALL & ~E_NOTICE); //JUST TO FIX 000wen HOSTING, Hosting wants this 
 		
 		if(!Yii::$app->request->post('InputModel')){
 			throw new \yii\web\NotFoundHttpException("Bad request, You are not expected to enter this page");
@@ -228,8 +228,9 @@ class ShopLiqpaySimpleController extends Controller
     {
 		$myInputModel = new CartInputModel();
 		
+		//if in cart, u press check-out button (i.e sent form), it redirect back here and fire this echo line
 		if ($myInputModel->load(\Yii::$app->request->post())){
-			echo "<h2>" .$myInputModel->yourInputValue . "</h2>";
+			echo "<h2> Check-out is not implemented further, you are actually still in cart. Quantity input: " .$myInputModel->yourInputValue . "</h2>";
 		}
 		
 		return $this->render('cart', [
