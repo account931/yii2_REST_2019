@@ -7,7 +7,7 @@ ERASE-> It is a core file, all edits from here must be copies to yii_commands an
 #DB SL is =>yii2-rest
 
 
-
+#See twin file at Laravel ReadMe => https://github.com/account931/Laravel-Yii2_Comment_Vote_widgets/blob/master/blog_Laravel/ReadMe_Laravel_Com_Commands.txt
 
 
 
