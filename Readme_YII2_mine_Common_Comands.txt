@@ -112,6 +112,25 @@ How to Add your migration(for instance in Basic, where no migration is avialble 
 
 Error "Could not find driver PDOException in yii2", to fix go to openserver/modules/php/version/php.ini-> Line 886, decomment (remove{;}){pdo_mysql} -> ;extension=php_pdo_mysql.dll
 
+#Appendix 2021 => 
+# Migration types shortcut methods  => https://www.yiiframework.com/doc/api/2.0/yii-db-schemabuildertrait
+     'product_id'     => $this->integer()->notNull()->comment("Product ID"),
+     'date'           => $this->timestamp(),
+     'elevator'       => $this->string(77)->notNull(), //varchar
+     'discription'    => $this->text()->notNull(),
+
+# Migration Foreign key => see =>https://github.com/dimmm931/Yii2_Booking/blob/main/migrations/m210408_101546_create_booking_cph_v2_hotel_table.php
+      // add foreign keys for table 'user', 'product_name'
+        $this->addForeignKey('fk-product_id',  'transfer_rights', 'product_id',  'product_name', 'pr_name_id', 'CASCADE'); //arg(some unique name in all DB), thisTable, thisID, thatTable, thatID
+        
+# Migration Enum => see => https://github.com/dimmm931/Kernel_Yii2/blob/master/migrations/m210414_110000_create_invoice_load_out_table.php
+            $this->createTable('{{%messages}}', [
+                 //.....
+                 'm_status_read' => "enum('" . 0 . "','" . 1 . "') NOT NULL DEFAULT '" . 0 . "'",
+                 
+
+
+
 
 ========================================
 2.1 Seeder 
@@ -140,6 +159,22 @@ class SeedController extends Controller
 }
 
 AND RUN IT BY => php yii seed/users
+
+#Appendix 2021 =>
+# Seed through migration =>  see => https://github.com/dimmm931/Yii2_Booking/blob/main/migrations/m190523_102536_create_user_table.php
+       //INSERT values
+		$this->batchInsert('user', ['username', 'password_hash', 'email'], [
+            ['dima', Yii::$app->getSecurity()->generatePasswordHash('dimadima'), 'dima@ukr.net'], 
+            //['category2', 'desc2'],   
+		]);
+        
+# Seed through seperated class => 
+    see example at => https://github.com/dimmm931/Yii2_Booking/tree/main/commands/SeedController.php
+    see example at => https://github.com/dimmm931/Kernel_Yii2/blob/master/commands/SeedController.php
+    in "commands/" folder create SeedController
+    run seeding by => php yii seed   
+ 
+#Faker => see example at => https://github.com/dimmm931/Yii2_Booking/tree/main/commands/SeedController.php
 
 ========================================
 3.Add a module.
@@ -665,7 +700,9 @@ How to:
  
  
  
- 
+Appendix 2021 =>
+# ACF, Access Control, Only logged are allowed => see example at => https://github.com/dimmm931/Yii2_Booking/blob/main/controllers/MyDatesGridController.php
+
  
  
  
@@ -792,8 +829,12 @@ How to add multilanguages:
  
  
  
- 
- 
+Appendix 2021 => 
+  # GriedView hasOne relation => see example
+    controller => actionIndex at => https://github.com/dimmm931/Yii2_Booking/blob/main/controllers/MyDatesGridController.php
+    view                         => https://github.com/dimmm931/Yii2_Booking/blob/main/views/my-dates-grid/index.php
+    model =>  see function getUserName() at => https://github.com/dimmm931/Yii2_Booking/blob/main/models/BookingCPH_2_Hotel/BookingCphV2Hotel.php
+
  
  
  ==============================================================
@@ -1098,6 +1139,15 @@ dropdown
 			     ->orWhere (['between', 'book_to_unix',   strtotime($first1), strtotime($last1) ])  //(MARGIN MONTHS fix, when booking include margin months, i.e 28 Aug - 3 Sept) //strtotime("12-Aug-2019") returns unixstamp
 				 // ->andWhere(['OR',['AND',[$a=>1],[$b=>1]],['AND',[$c=>1],[$d=>1]]]) //useful example
 				 ->all(); 
+				 
+#Active Recored, WHERE statements, var 3=>
+            $myBookedDates = BookingCphV2Hotel::find() ->orderBy ('book_id DESC')  /*->limit('5')*/ 
+		    ->where(['booked_by_user' => Yii::$app->user->identity->id,])   //if this line uncommented, each user has its own private booking(many users-> each user has own private booking appartment, other users cannot book it). Comment this if u want that booking is general, ie many users->one booking appartment(many users can book 1 general appartment) 
+			->andWhere(['<=', 'book_to_unix',  new Expression('NOW()')])
+			->all(); 
+            
+
+
 
 #Render=>  return $this->render('registration' , ['model' => $model, 'data' => $data]  );
  
@@ -1209,6 +1259,33 @@ if($_SERVER['REMOTE_ADDR'] == '127.0.0.1') {
 # Get id of last saved/inserted model instance =>  $model->save(); return $model->id;  <- VS -> $lastInsertID = $db->getLastInsertID();
 # Random string => Yii::$app->security->generateRandomString() . '_' . time();  Random int => mt_rand($min, $max) || rand($min, $max)
 # Allow Ajax only =>  if (!Yii::$app->request->isAjax) { return "screw you"} 
+
+# Set defaultRoute => config/web.php => 
+  $config = [
+    'defaultRoute' => 'booking-cph-v2-hotel/index',
+
+# Set Timezone => config/web.php: => 'timeZone' => 'Europe/Berlin',    
+
+
+ 
+# Add Timestamps createdAt => see example => https://github.com/dimmm931/Yii2_Booking/blob/main/models/BookingCPH_2_Hotel/BookingCphV2Hotel.php
+ add to migration (or create manually) =>  'createdAt' => $this->timestamp(),
+ add to model =>
+    use yii\behaviors\TimestampBehavior;
+    use yii\db\Expression;
+      public function behaviors()
+    {
+        return [
+            [
+            'class' => TimestampBehavior::className(),
+            'createdAtAttribute' => 'entry_date',
+            'updatedAtAttribute' => false,
+            'value' => new Expression('NOW()'),
+            ],
+        ];
+    }
+    
+    
 
 
 
