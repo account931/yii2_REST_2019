@@ -1440,5 +1440,6 @@ CSS=>
  99.4 To make submenu "Rest & other" scrollable vertically, as last items dont fit screen height => edit bootsrap class "dropdown-menu' (calss is assigned by bootsrap automatically to dropdown submenu)
 .dropdown-menu{height: 500px; overflow-y: auto;}
 
-  99.5 error_reporting(E_ALL & ~E_NOTICE); //JUST TO FIX 000wen HOSTING, Hosting wants this only for Ajax Actions!!!!!!!!!!!!!!!
+ 99.5 error_reporting(E_ALL & ~E_NOTICE); //JUST TO FIX 000wen HOSTING, Hosting wants this only for Ajax Actions!!!!!!!!!!!!!!!
   
+ # Bootsrap text + hidden modal from SQL DB caused html errors (bs modal won't close) due to SQL text in format ENG-UA
