@@ -1,3 +1,113 @@
+## Brief overview of the Yii2 application
+
+## Start page
+
+![Screenshot](public/images/Screenshots/1.png)
+
+## Custom exception
+
+![Screenshot](public/images/Screenshots/1.2.png)
+
+![Screenshot](public/images/Screenshots/2.1.png)
+
+## RBAC control
+
+![Screenshot](public/images/Screenshots/2.png)
+
+## Login page
+
+![Screenshot](public/images/Screenshots/2.2.png)
+
+## Rbac Admin Panel
+
+![Screenshot](public/images/Screenshots/3.png)
+![Screenshot](public/images/Screenshots/4.png)
+![Screenshot](public/images/Screenshots/5.png)
+![Screenshot](public/images/Screenshots/6.png)
+
+## Section "Get Token" (for Bearer Auth)
+
+![Screenshot](public/images/Screenshots/7.png)
+![Screenshot](public/images/Screenshots/8.png)
+
+## REST API
+
+![Screenshot](public/images/Screenshots/9.png)
+![Screenshot](public/images/Screenshots/10.png)
+
+## Multilanguage
+
+![Screenshot](public/images/Screenshots/11.png)
+
+## Booking
+
+![Screenshot](public/images/Screenshots/12.png)
+![Screenshot](public/images/Screenshots/13.png)
+![Screenshot](public/images/Screenshots/14.png)
+![Screenshot](public/images/Screenshots/15.png)
+
+## Booking Hotel
+
+![Screenshot](public/images/Screenshots/16.png)
+
+## Change Password
+
+![Screenshot](public/images/Screenshots/17.png)
+
+## Reset Password
+
+![Screenshot](public/images/Screenshots/18.png)
+
+## Wpress Alternative
+
+![Screenshot](public/images/Screenshots/19.png)
+![Screenshot](public/images/Screenshots/20.png)
+
+## Chat with Bot
+
+![Screenshot](public/images/Screenshots/21.png)
+![Screenshot](public/images/Screenshots/22.png)
+![Screenshot](public/images/Screenshots/23.png)
+
+
+## Test for middle
+
+![Screenshot](public/images/Screenshots/24.png)
+
+## Shop Cozastore (Amada Cart)
+
+![Screenshot](public/images/Screenshots/25.png)
+![Screenshot](public/images/Screenshots/26.png)
+
+## Shop Simple
+
+![Screenshot](public/images/Screenshots/27.png)
+
+## Textbelt Api
+
+![Screenshot](public/images/Screenshots/28.png)
+
+## Image comparison
+
+![Screenshot](public/images/Screenshots/29.png)
+
+## Gallery
+
+![Screenshot](public/images/Screenshots/30.png)
+![Screenshot](public/images/Screenshots/31.png)
+
+## Multistep form with JQ Validation
+
+![Screenshot](public/images/Screenshots/32.png)
+
+## Quiz Builder
+
+![Screenshot](public/images/Screenshots/33.png)
+![Screenshot](public/images/Screenshots/34.png)
+
+
+
+
 <p align="center">
     <a href="https://github.com/yiisoft" target="_blank">
         <img src="https://avatars0.githubusercontent.com/u/993323" height="100px">
