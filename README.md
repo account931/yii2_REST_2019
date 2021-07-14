@@ -2,11 +2,11 @@
 
 ## Start page
 
-![Screenshot](public/images/Screenshots/1.png)
+![Screenshot](web/images/Screenshots/1.png)
 
 ## Custom exception
 
-![Screenshot](public/images/Screenshots/1.2.png)
+![Screenshot](/images/Screenshots/1.2.png)
 
 ![Screenshot](public/images/Screenshots/2.1.png)
 
